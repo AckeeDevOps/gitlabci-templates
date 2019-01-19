@@ -28,6 +28,9 @@ variables:
   MINIO_ADDR: "http://minio:9000"
   MINIO_ACCESS_KEY: blah
   MINIO_SECRET_KEY: blahblah
+  
+include:
+  - remote: "https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/minio-cleanup.yml"
 
 cleanup:test:
   extends: .template-cleanup
