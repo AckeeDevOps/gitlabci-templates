@@ -1,0 +1,12 @@
+.job_template: &cleanup
+  image: vranystepan/minio-cli
+  stage: cleanup
+  variables:
+    MINIO_ADDR: "http://yourminio:9000"
+  script:
+    - /usr/bin/mc config host add myminio $MINIO_ADDR $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+    - /usr/bin/mc find myminio --name ${CI_COMMIT_SHORT_SHA}* | mc rm --force --stdin
+  cache: {}
+  when: always
+
+
