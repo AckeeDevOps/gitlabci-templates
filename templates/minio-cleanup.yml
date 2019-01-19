@@ -1,4 +1,4 @@
-.job_template: &cleanup
+.template-cleanup:
   image: vranystepan/minio-cli
   stage: cleanup
   variables:
