@@ -30,5 +30,5 @@ variables:
   MINIO_SECRET_KEY: blahblah
 
 cleanup:test:
-  <<: *cleanup
+  extends: .template-cleanup
 ```
