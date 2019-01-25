@@ -10,6 +10,13 @@
 #     - PLUGIN_SECRET_SPECS_PATH
 #     - PLUGIN_SECRET_OUTPUT_PATH
 #   'npm set unsafe-perm true' is needed for execution of post-install hooks
+# example:
+# deploy:production:
+#   before_script: *preTestWithVaultier
+#   image: ackee/docker-gcr:v0.0.5
+#   script:
+#     - gcr-init
+#     - ...
 
 .preTestWithVaultier: &preTestWithVaultier
   - mkdir ~/.ssh/
