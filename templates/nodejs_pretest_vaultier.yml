@@ -1,3 +1,16 @@
+# variables:
+#   SSH_KEY is base64 encoded private RSA key
+#   VAULTIER_RELEASE_LINK is url of Vaultier binary
+# explanation:
+#   vaultier requires a few environment variables, follow it's documentation https://github.com/vranystepan/vaultier
+#     - PLUGIN_VAULT_ADDR
+#     - PLUGIN_BRANCH
+#     - PLUGIN_RUN_CAUSE
+#     - PLUGIN_OUTPUT_FORMAT
+#     - PLUGIN_SECRET_SPECS_PATH
+#     - PLUGIN_SECRET_OUTPUT_PATH
+#   'npm set unsafe-perm true' is needed for execution of post-install hooks
+
 .preTestWithVaultier: &preTestWithVaultier
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
