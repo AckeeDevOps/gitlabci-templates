@@ -1,5 +1,5 @@
 .helmDeploy: &helmDeploy |
-  helm upgrade \
+  helm upgrade ${IMAGE_NAME} ${HELM_CHART_PATH} \
   -i \
   -f ${HELM_BASE_VALUES} \ 
   -f ${PLUGIN_SECRET_OUTPUT_PATH} \
@@ -12,9 +12,7 @@
   --set general.meta.branch=${CI_COMMIT_REF_NAME} \
   --set general.meta.repositoryUrl=${CI_PROJECT_URL} \
   --set general.gcpProjectId=${GCLOUD_PROJECT_ID} \
-  --namespace=${GCLOUD_GKE_NAMESPACE} \
-  ${IMAGE_NAME} \
-  ${HELM_CHART_PATH}
+  --namespace=${GCLOUD_GKE_NAMESPACE}
     
 .deployBranchMasterSecrets:
   image: ackee/helmer-gke:v0.0.9
