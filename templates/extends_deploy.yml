@@ -11,6 +11,7 @@
     --set general.meta.branch=${CI_COMMIT_REF_NAME} 
     --set general.meta.repositoryUrl=${CI_PROJECT_URL} 
     --set general.gcpProjectId=${GCLOUD_PROJECT_ID} 
+    --namespace=${GCLOUD_GKE_NAMESPACE} 
     ${HELM_CHART_PATH}
     
 .deployBranchMasterSecrets:
