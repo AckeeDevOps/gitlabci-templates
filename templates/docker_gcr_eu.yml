@@ -1,8 +1,0 @@
-.dockerBuild: &dockerBuild |
-  docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
-
-.dockerTag: &dockerTag |
-  docker tag ${IMAGE_NAME}:${IMAGE_TAG} eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
-
-.dockerPush: &dockerPush |
-  docker push eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
