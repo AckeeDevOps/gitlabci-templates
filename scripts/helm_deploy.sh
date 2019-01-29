@@ -1,7 +1,9 @@
 #!/bin/sh
 
-helm upgrade ${IMAGE_NAME} ${HELM_CHART_PATH} \
-  -i \
+echo "upgrading release ${IMAGE_NAME} in namespace ${GCLOUD_GKE_NAMESPACE} ..."
+
+helm upgrade \
+  --install \
   -f ${HELM_BASE_VALUES} \ 
   -f ${PLUGIN_SECRET_OUTPUT_PATH} \
   --set general.appName=${APP_NAME} \
@@ -13,4 +15,6 @@ helm upgrade ${IMAGE_NAME} ${HELM_CHART_PATH} \
   --set general.meta.branch=${CI_COMMIT_REF_NAME} \
   --set general.meta.repositoryUrl=${CI_PROJECT_URL} \
   --set general.gcpProjectId=${GCLOUD_PROJECT_ID} \
-  --namespace=${GCLOUD_GKE_NAMESPACE}
+  --namespace=${GCLOUD_GKE_NAMESPACE} \
+  ${IMAGE_NAME} \
+  ${HELM_CHART_PATH}
