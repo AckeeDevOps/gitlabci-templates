@@ -1,4 +1,4 @@
-.beforeScriptpreTestWithVaultier: &preTestWithVaultier
+.beforeScriptTestWithVaultier: &preTestWithVaultier
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
   - chmod 0400 ~/.ssh/id_rsa
@@ -8,7 +8,7 @@
   - vaultier
   - npm set unsafe-perm true
   
-.BeforeScriptpreTestWithoutVaultier: &preTestWithoutVaultier
+.BeforeScriptTestWithoutVaultier: &preTestWithoutVaultier
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
   - chmod 0400 ~/.ssh/id_rsa
@@ -19,7 +19,7 @@
   image: node:10.14.2
   stage: test
   # import private RSA key for private NPM repos
-  before_script: *beforeScriptpreTestWithVaultier
+  before_script: *preTestWithoutVaultier
   # install npm packages and run ci-test
   script:
     - npm install
