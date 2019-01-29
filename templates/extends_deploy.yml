@@ -1,18 +1,9 @@
-.helmDeploy: &helmDeploy |
-  helm upgrade ${IMAGE_NAME} ${HELM_CHART_PATH} \
-  -i \
-  -f ${HELM_BASE_VALUES} \ 
-  -f ${PLUGIN_SECRET_OUTPUT_PATH} \
-  --set general.appName=${APP_NAME} \
-  --set general.projectName=${PROJECT_NAME} \
-  --set general.environment=${CI_ENVIRONMENT_NAME} \
-  --set general.imageName=eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME} \
-  --set general.imageTag=${IMAGE_TAG} \
-  --set general.meta.buildHash=${CI_COMMIT_SHORT_SHA} \
-  --set general.meta.branch=${CI_COMMIT_REF_NAME} \
-  --set general.meta.repositoryUrl=${CI_PROJECT_URL} \
-  --set general.gcpProjectId=${GCLOUD_PROJECT_ID} \
-  --namespace=${GCLOUD_GKE_NAMESPACE}
+.deployScriptSecrets: &deployScriptSecrets
+  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/helm_deploy.sh -O /usr/local/bin/helm-deploy
+  - chmod +x /usr/local/bin/helm-deploy
+  - gke-init
+  - vaultier
+  - helm-deploy
     
 .deployBranchMasterSecrets:
   image: ackee/helmer-gke:v0.0.9
@@ -28,11 +19,7 @@
 #    PLUGIN_SECRET_OUTPUT_PATH: /tmp/secrets.json
 #    # Helm values file
 #    HELM_BASE_VALUES: helm/values/production.yaml 
-  script:
-    - export
-    - gke-init
-    - vaultier
-    - *helmDeploy
+  script: *deployScriptSecrets
   only:
     refs: ["master"]
     variables:
@@ -55,10 +42,7 @@
 #    PLUGIN_SECRET_OUTPUT_PATH: /tmp/secrets.json
 #    # Helm values file
 #    HELM_BASE_VALUES: helm/values/production.yaml 
-  script:
-    - gke-init
-    - vaultier
-    - *helmDeploy
+  script: *deployScriptSecrets
   only:
     refs: ["development"]
     variables:
