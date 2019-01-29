@@ -34,3 +34,23 @@
   artifacts:
     reports:
       junit: junit.xml
+      
+.ciTestSecrets:
+  image: node:10.14.2
+  stage: test
+  # import private RSA key for private NPM repos
+  before_script: *preTestWithVaultier
+  # install npm packages and run ci-test
+  script:
+    - npm install
+    - npm run ci-test
+  # test only pushes and merge requests
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "merge_request"
+      - $CI_PIPELINE_SOURCE == "push"
+  # record Jest coverage
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    reports:
+      junit: junit.xml
