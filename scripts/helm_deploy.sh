@@ -17,7 +17,7 @@ echo "HELM_CHART_PATH: ${HELM_CHART_PATH}"
 
 helm upgrade \
   --install \
-  -f ${HELM_BASE_VALUES} \ 
+  -f ${HELM_BASE_VALUES} \
   -f ${PLUGIN_SECRET_OUTPUT_PATH} \
   --set general.appName=${APP_NAME} \
   --set general.projectName=${PROJECT_NAME} \
