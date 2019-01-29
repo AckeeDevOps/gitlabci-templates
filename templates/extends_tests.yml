@@ -1,13 +1,25 @@
-.preTest:
+.beforeScriptpreTestWithVaultier: &preTestWithVaultier
+  - mkdir ~/.ssh/
+  - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+  - chmod 0400 ~/.ssh/id_rsa
+  - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier
+  - chmod +x /usr/local/bin/vaultier
+  - vaultier
+  - npm set unsafe-perm true
+  
+.BeforeScriptpreTestWithoutVaultier: &preTestWithoutVaultier
+  - mkdir ~/.ssh/
+  - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+  - chmod 0400 ~/.ssh/id_rsa
+  - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  - npm set unsafe-perm true
+
+.ciTestNoSecrets:
   image: node:10.14.2
   stage: test
   # import private RSA key for private NPM repos
-  before_script:
-    - mkdir ~/.ssh/
-    - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
-    - chmod 0400 ~/.ssh/id_rsa
-    - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
-    - npm set unsafe-perm true
+  before_script: *beforeScriptpreTestWithVaultier
   # install npm packages and run ci-test
   script:
     - npm install
