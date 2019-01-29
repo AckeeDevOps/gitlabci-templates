@@ -1,6 +1,0 @@
-.preTest: &preTest
-  - mkdir ~/.ssh/
-  - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
-  - chmod 0400 ~/.ssh/id_rsa
-  - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
-  - npm set unsafe-perm true
