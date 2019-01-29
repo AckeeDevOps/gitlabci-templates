@@ -29,6 +29,7 @@
 #    # Helm values file
 #    HELM_BASE_VALUES: helm/values/production.yaml 
   script:
+    - export
     - gke-init
     - vaultier
     - *helmDeploy
