@@ -54,3 +54,20 @@
   artifacts:
     reports:
       junit: junit.xml
+      
+.ciLint:
+  image: node:10.14.2
+  stage: test
+  variables:
+  before_script: *preTestWithoutVaultier
+  script:
+    - npm install
+    - npm run ci-lint
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "merge_request"
+      - $CI_PIPELINE_SOURCE == "push"
+  allow_failure: true
+  artifacts:
+    reports:
+      junit: lint.xml
