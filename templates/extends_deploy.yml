@@ -1,0 +1,64 @@
+.helmDeploy: &helmDeploy |
+  helm upgrade $IMAGE_NAME -i
+    -f ${HELM_BASE_VALUES} 
+    -f ${PLUGIN_SECRET_OUTPUT_PATH} 
+    --set general.appName=${APP_NAME} 
+    --set general.projectName=${PROJECT_NAME} 
+    --set general.environment=${CI_ENVIRONMENT_NAME} 
+    --set general.imageName=eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME} 
+    --set general.imageTag=${IMAGE_TAG} 
+    --set general.meta.buildHash=${CI_COMMIT_SHORT_SHA} 
+    --set general.meta.branch=${CI_COMMIT_REF_NAME} 
+    --set general.meta.repositoryUrl=${CI_PROJECT_URL} 
+    --set general.gcpProjectId=${GCLOUD_PROJECT_ID} 
+    ${HELM_CHART_PATH}
+    
+.deployBranchMasterSecrets:
+  image: helmer-gke:v0.0.7
+  stage: deploy
+# variables have to be specified in the certain job!
+#  variables:
+#    GCLOUD_PROJECT_ID:
+#    GCLOUD_GKE_CLUSTER_NAME:
+#    GCLOUD_GKE_ZONE:
+#    # Vaultier settings
+#    PLUGIN_RUN_CAUSE: delivery
+#    PLUGIN_OUTPUT_FORMAT: helm
+#    PLUGIN_SECRET_OUTPUT_PATH: /tmp/secrets.json
+#    # Helm values file
+#    HELM_BASE_VALUES: helm/values/production.yaml 
+  script:
+    - gke-init
+    - vaultier
+    - *helmDeploy
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: production
+    
+.deployBranchDevelopmentSecrets:
+  image: helmer-gke:v0.0.7
+  stage: deploy
+# variables have to be specified in the certain job!
+#  variables:
+#    GCLOUD_PROJECT_ID:
+#    GCLOUD_GKE_CLUSTER_NAME:
+#    GCLOUD_GKE_ZONE:
+#    # Vaultier settings
+#    PLUGIN_RUN_CAUSE: delivery
+#    PLUGIN_OUTPUT_FORMAT: helm
+#    PLUGIN_SECRET_OUTPUT_PATH: /tmp/secrets.json
+#    # Helm values file
+#    HELM_BASE_VALUES: helm/values/production.yaml 
+  script:
+    - gke-init
+    - vaultier
+    - *helmDeploy
+  only:
+    refs: ["development"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: development
