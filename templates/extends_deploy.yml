@@ -15,7 +15,7 @@
     ${HELM_CHART_PATH}
     
 .deployBranchMasterSecrets:
-  image: helmer-gke:v0.0.7
+  image: ackee/helmer-gke:v0.0.9
   stage: deploy
 # variables have to be specified in the certain job!
 #  variables:
@@ -41,7 +41,7 @@
   when: manual
     
 .deployBranchDevelopmentSecrets:
-  image: helmer-gke:v0.0.7
+  image: ackee/helmer-gke:v0.0.9
   stage: deploy
 # variables have to be specified in the certain job!
 #  variables:
