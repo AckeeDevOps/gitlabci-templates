@@ -37,6 +37,7 @@
       - $CI_PIPELINE_SOURCE == "push"
   environment:
     name: production
+  when: manual
     
 .deployBranchDevelopmentSecrets:
   image: helmer-gke:v0.0.7
