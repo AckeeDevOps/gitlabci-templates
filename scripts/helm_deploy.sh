@@ -2,6 +2,7 @@
 
 echo "upgrading release ${IMAGE_NAME} in namespace ${GCLOUD_GKE_NAMESPACE} ..."
 
+echo "--------------------------------------------------------------"
 echo "APP_NAME: ${APP_NAME}"
 echo "PROJECT_NAME: ${PROJECT_NAME}"
 echo "CI_ENVIRONMENT_NAME: ${CI_ENVIRONMENT_NAME}"
