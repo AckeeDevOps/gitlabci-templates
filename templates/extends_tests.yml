@@ -52,6 +52,21 @@
 #   lint:mr:
 #     extends: .ciLint
 #     only: merge_requests
+#
+# Examples for delivery:
+#   test:delivery:
+#     extends: .ciTestNoSecrets
+#     only:
+#       variables:
+#         - $CI_PIPELINE_SOURCE == "push"
+#       refs: ["master", "stage", "development"]
+
+#   lint:delivery:
+#     extends: .ciLint
+#       only:
+#       variables:
+#         - $CI_PIPELINE_SOURCE == "push"
+#       refs: ["master", "stage", "development"]
       
 .ciTestSecrets:
   image: node:10.14.2
