@@ -26,10 +26,6 @@
   script:
     - npm install
     - npm run ci-test
-  only:
-    variables:
-      - $CI_PIPELINE_SOURCE == "merge_request"
-      - $CI_PIPELINE_SOURCE == "push"
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     reports:
@@ -46,6 +42,16 @@
 #   PLUGIN_SECRET_OUTPUT_PATH: .env
 # before_script specific varialbes:
 #   VAULTIER_RELEASE_LINK: https://github.com/vranystepan/vaultier/releases/download/v0.0.4/vaultier-v0.0.4
+
+# also make sure you have specified 'only' conditions
+# Examples for MR:
+#   test:mr:
+#     extends: .ciTestNoSecrets
+#     only: merge_requests
+#
+#   lint:mr:
+#     extends: .ciLint
+#     only: merge_requests
       
 .ciTestSecrets:
   image: node:10.14.2
@@ -55,10 +61,6 @@
     - vaultier
     - npm install
     - npm run ci-test
-  only:
-    variables:
-      - $CI_PIPELINE_SOURCE == "merge_request"
-      - $CI_PIPELINE_SOURCE == "push"
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     reports:
@@ -72,10 +74,6 @@
   script:
     - npm install
     - npm run ci-lint
-  only:
-    variables:
-      - $CI_PIPELINE_SOURCE == "merge_request"
-      - $CI_PIPELINE_SOURCE == "push"
   allow_failure: true
   artifacts:
     reports:
