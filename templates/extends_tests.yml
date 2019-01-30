@@ -18,38 +18,41 @@
 .ciTestNoSecrets:
   image: node:10.14.2
   stage: test
-  # import private RSA key for private NPM repos
   before_script: *preTestWithoutVaultier
-  # install npm packages and run ci-test
   script:
     - npm install
     - npm run ci-test
-  # test only pushes and merge requests
   only:
     variables:
       - $CI_PIPELINE_SOURCE == "merge_request"
       - $CI_PIPELINE_SOURCE == "push"
-  # record Jest coverage
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     reports:
       junit: junit.xml
+
+# .ciTestSecrets requires following variables
+# Vaultier specific variables:
+#   PLUGIN_VAULT_ADDR: https://vault.co.uk
+#   PLUGIN_VAULT_TOKEN: sgsdfgdfghfsggdsfg
+#   PLUGIN_BRANCH: ${CI_COMMIT_REF_NAME}
+#   PLUGIN_SECRET_SPECS_PATH: secrets.yaml
+#   PLUGIN_RUN_CAUSE: test
+#   PLUGIN_OUTPUT_FORMAT: dotenv
+#   PLUGIN_SECRET_OUTPUT_PATH: .env
       
 .ciTestSecrets:
   image: node:10.14.2
   stage: test
-  # import private RSA key for private NPM repos
   before_script: *preTestWithVaultier
-  # install npm packages and run ci-test
   script:
+    - vaultier
     - npm install
     - npm run ci-test
-  # test only pushes and merge requests
   only:
     variables:
       - $CI_PIPELINE_SOURCE == "merge_request"
       - $CI_PIPELINE_SOURCE == "push"
-  # record Jest coverage
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     reports:
