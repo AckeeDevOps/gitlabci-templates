@@ -15,7 +15,6 @@
   image: ackee/docker-gcr:v0.0.5
   stage: build
   script: *buildScript
- specify conditions in the certain job!
   only:
     refs: ["development"]
     variables:
@@ -25,7 +24,6 @@
   image: ackee/docker-gcr:v0.0.5
   stage: build
   script: *buildScript
- specify conditions in the certain job!
   only:
     refs: ["master"]
     variables:
@@ -35,7 +33,6 @@
   image: ackee/docker-gcr:v0.0.5
   stage: build
   script: *buildScript
- specify conditions in the certain job!
   only:
     refs: ["stage"]
     variables:
