@@ -13,3 +13,18 @@ you can reuse them with the
 
 ### Deployment prefabs
 
+## Examples
+
+### Testing
+
+```yaml
+include:
+  - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/extends_tests.yml
+
+stages:
+  - test  
+
+test:
+  extends: .ciTestNoSecrets
+
+```
