@@ -4,21 +4,25 @@
   - gke-init
   - vaultier
   - helm-deploy
+  
+# .deployBranchMasterSecrets and .deployBranchDevelopmentSecrets
+# have to be always configured with followin variables:
+# GCP/GKE specific variables:
+#   GCLOUD_PROJECT_ID:
+#   GCLOUD_GKE_CLUSTER_NAME:
+#   GCLOUD_GKE_ZONE:
+# Vaultier specific variables:
+#   PLUGIN_VAULT_ADDR:
+#   PLUGIN_VAULT_TOKEN:
+#   PLUGIN_BRANCH:
+#   PLUGIN_SECRET_SPECS_PATH
+#   PLUGIN_RUN_CAUSE: (test or delivery)
+#   PLUGIN_OUTPUT_FORMAT: (helm or dotenv)
+#   PLUGIN_SECRET_OUTPUT_PATH
     
 .deployBranchMasterSecrets:
   image: ackee/helmer-gke:v0.0.9
   stage: deploy
-# variables have to be specified in the certain job!
-#  variables:
-#    GCLOUD_PROJECT_ID:
-#    GCLOUD_GKE_CLUSTER_NAME:
-#    GCLOUD_GKE_ZONE:
-#    # Vaultier settings
-#    PLUGIN_RUN_CAUSE: delivery
-#    PLUGIN_OUTPUT_FORMAT: helm
-#    PLUGIN_SECRET_OUTPUT_PATH: /tmp/secrets.json
-#    # Helm values file
-#    HELM_BASE_VALUES: helm/values/production.yaml 
   script: *deployScriptSecrets
   only:
     refs: ["master"]
@@ -31,17 +35,6 @@
 .deployBranchDevelopmentSecrets:
   image: ackee/helmer-gke:v0.0.9
   stage: deploy
-# variables have to be specified in the certain job!
-#  variables:
-#    GCLOUD_PROJECT_ID:
-#    GCLOUD_GKE_CLUSTER_NAME:
-#    GCLOUD_GKE_ZONE:
-#    # Vaultier settings
-#    PLUGIN_RUN_CAUSE: delivery
-#    PLUGIN_OUTPUT_FORMAT: helm
-#    PLUGIN_SECRET_OUTPUT_PATH: /tmp/secrets.json
-#    # Helm values file
-#    HELM_BASE_VALUES: helm/values/production.yaml 
   script: *deployScriptSecrets
   only:
     refs: ["development"]
