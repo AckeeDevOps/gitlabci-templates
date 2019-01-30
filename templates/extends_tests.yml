@@ -1,3 +1,7 @@
+# both before_script sections require following variables
+# NPM specific variables:
+#   SSH_KEY: base64-encoded private RSA key
+
 .beforeScriptTestWithVaultier: &preTestWithVaultier
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
