@@ -1,16 +1,42 @@
-.buildDocker:
+.buildScript: &buildScript
+  - gcr-init
+  - docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
+  - docker tag ${IMAGE_NAME}:${IMAGE_TAG} eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
+  - docker push eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
+
+# .buildDockerBranchDevelopment, .buildDockerBranchMaster and .buildDockerBranchStage require following variables:
+#    GCLOUD_PROJECT_ID: 
+#    GCLOUD_SA_KEY: base64-encoded SA key
+#    SSH_KEY: base64-encoded RSA private key
+#    IMAGE_NAME: name of the local image
+#    IMAGE_TAG: tag for local and remote images
+
+.buildDockerBranchDevelopment:
   image: ackee/docker-gcr:v0.0.5
   stage: build
-# variables specify variables in the certain job!
-#  variables:
-#    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}
-  script:
-    - gcr-init
-    - docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
-    - docker tag ${IMAGE_NAME}:${IMAGE_TAG} eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
-    - docker push eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
-# specify conditions in the certain job!
-#  only:
-#    refs: ["development"]
-#    variables:
-#      - $CI_PIPELINE_SOURCE == "push"
+  script: *buildScript
+ specify conditions in the certain job!
+  only:
+    refs: ["development"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+      
+.buildDockerBranchMaster:
+  image: ackee/docker-gcr:v0.0.5
+  stage: build
+  script: *buildScript
+ specify conditions in the certain job!
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+
+.buildDockerBranchStage:
+  image: ackee/docker-gcr:v0.0.5
+  stage: build
+  script: *buildScript
+ specify conditions in the certain job!
+  only:
+    refs: ["stage"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
