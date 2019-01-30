@@ -40,6 +40,8 @@
 #   PLUGIN_RUN_CAUSE: test
 #   PLUGIN_OUTPUT_FORMAT: dotenv
 #   PLUGIN_SECRET_OUTPUT_PATH: .env
+# before_script specific varialbes:
+#   VAULTIER_RELEASE_LINK: https://github.com/vranystepan/vaultier/releases/download/v0.0.4/vaultier-v0.0.4
       
 .ciTestSecrets:
   image: node:10.14.2
