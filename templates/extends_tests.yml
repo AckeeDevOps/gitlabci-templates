@@ -20,7 +20,7 @@
   - npm set unsafe-perm true
 
 .ciTestNoSecrets:
-  image: node:10.14.2
+  image: ${NODE_IMAGE}
   stage: test
   before_script: *preTestWithoutVaultier
   script:
@@ -69,7 +69,7 @@
 #       refs: ["master", "stage", "development"]
       
 .ciTestSecrets:
-  image: node:10.14.2
+  image: ${NODE_IMAGE}
   stage: test
   before_script: *preTestWithVaultier
   script:
@@ -82,7 +82,7 @@
       junit: junit.xml
       
 .ciLint:
-  image: node:10.14.2
+  image: ${NODE_IMAGE}
   stage: test
   variables:
   before_script: *preTestWithoutVaultier
