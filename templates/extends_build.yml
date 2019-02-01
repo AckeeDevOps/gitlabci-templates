@@ -10,6 +10,8 @@
 #    SSH_KEY: base64-encoded RSA private key
 #    IMAGE_NAME: name of the local image
 #    IMAGE_TAG: tag for local and remote images
+#
+# Also configure DOCKER_GCR_IMAGE
 
 .buildDockerBranchDevelopment:
   image: ${DOCKER_GCR_IMAGE}
