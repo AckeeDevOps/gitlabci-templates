@@ -40,7 +40,7 @@
 #   GCLOUD_GKE_NAMESPACE_STAGE
     
 .deployBranchMasterSecrets:
-  image: ackee/helmer-gke:v0.0.9
+  image: ${HELMER_IMAGE}
   stage: deploy
   variables:
     GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}
@@ -57,7 +57,7 @@
   when: manual
     
 .deployBranchDevelopmentSecrets:
-  image: ackee/helmer-gke:v0.0.9
+  image: ${HELMER_IMAGE}
   stage: deploy
   variables:
     GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}
@@ -73,7 +73,7 @@
     name: development
     
 .deployBranchStageSecrets:
-  image: ackee/helmer-gke:v0.0.9
+  image: ${HELMER_IMAGE}
   stage: deploy
   variables:
     GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_STAGE}
