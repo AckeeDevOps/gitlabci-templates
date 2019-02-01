@@ -12,7 +12,7 @@
 #    IMAGE_TAG: tag for local and remote images
 
 .buildDockerBranchDevelopment:
-  image: ackee/docker-gcr:v0.0.5
+  image: ${DOCKER_GCR_IMAGE}
   stage: build
   script: *buildScript
   only:
@@ -21,7 +21,7 @@
       - $CI_PIPELINE_SOURCE == "push"
       
 .buildDockerBranchMaster:
-  image: ackee/docker-gcr:v0.0.5
+  image: ${DOCKER_GCR_IMAGE}
   stage: build
   script: *buildScript
   only:
@@ -30,7 +30,7 @@
       - $CI_PIPELINE_SOURCE == "push"
 
 .buildDockerBranchStage:
-  image: ackee/docker-gcr:v0.0.5
+  image: ${DOCKER_GCR_IMAGE}
   stage: build
   script: *buildScript
   only:
