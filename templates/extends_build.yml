@@ -1,9 +1,3 @@
-.buildScript: &buildScript
-  - gcr-init
-  - docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
-  - docker tag ${IMAGE_NAME}:${IMAGE_TAG} eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
-  - docker push eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
-
 # .buildDockerBranchDevelopment, .buildDockerBranchMaster and .buildDockerBranchStage require following variables:
 #    GCLOUD_PROJECT_ID: 
 #    GCLOUD_SA_KEY: base64-encoded SA key
@@ -12,6 +6,12 @@
 #    IMAGE_TAG: tag for local and remote images
 #
 # Also configure DOCKER_GCR_IMAGE
+
+.buildScript: &buildScript
+  - gcr-init
+  - docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
+  - docker tag ${IMAGE_NAME}:${IMAGE_TAG} eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
+  - docker push eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
 
 .buildDockerBranchDevelopment:
   image: ${DOCKER_GCR_IMAGE}
@@ -39,3 +39,18 @@
     refs: ["stage"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
+      
+# .aglioDocsUpload requires following variables:
+#   GCLOUD_PROJECT_ID:
+#   GCLOUD_SA_KEY:
+#   AGLIO_DOCS_DIRECTORY:
+#   GCS_BUKET:
+#   GCS_PREFIX:
+
+.aglioDocsUpload:
+  stage: build
+  image: ${AGLIO_UPLOADER_IMAGE}
+  script:
+    - mkdir -p ${AGLIO_DOCS_DIRECTORY}
+    - npm run docs
+    - rclone-upload
