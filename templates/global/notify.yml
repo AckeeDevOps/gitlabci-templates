@@ -30,3 +30,14 @@
     #- echo $CI_PIPELINE_URL
     #- echo $GITLAB_USER_LOGIN
   when: on_success
+
+.notifyFailure:
+  image: technosophos/slack-notify
+  stage: notify
+  variables:
+    SLACK_TITLE: "commit ${CI_COMMIT_SHORT_SHA} @ ${CI_COMMIT_REF_NAME} has failed"
+    SLACK_MESSAGE: "${CI_PIPELINE_SOURCE} by ${GITLAB_USER_LOGIN}, see ${CI_PIPELINE_URL}"
+    SLACK_COLOR: "#FF0000"
+  script:
+    - /slack-notify
+  when: on_failure
