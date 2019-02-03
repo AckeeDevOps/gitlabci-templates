@@ -3,7 +3,7 @@
 # set defaults
 [ -z "$HELM_DRY_RUN" ] && { export HELM_DRY_RUN=false; }
 
-echo "script version: v1.0.2"
+echo "script version: v1.1.0"
 echo "upgrading release ${IMAGE_NAME} in namespace ${GCLOUD_GKE_NAMESPACE} ..."
 
 echo "--------------------------------------------------------------"
@@ -17,6 +17,7 @@ echo "CI_PROJECT_URL: ${CI_PROJECT_URL}"
 echo "GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID}"
 echo "GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE}"
 echo "HELM_CHART_PATH: ${HELM_CHART_PATH}"
+echo "HELM_DRY_RUN: ${HELM_DRY_RUN}"
 echo "--------------------------------------------------------------"
 echo "remote image name: eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}"
 echo "--> eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${CI_COMMIT_SHORT_SHA}"
