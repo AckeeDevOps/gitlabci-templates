@@ -12,11 +12,12 @@ echo "CI_COMMIT_REF_NAME: ${CI_COMMIT_REF_NAME}"
 echo "CI_PROJECT_URL: ${CI_PROJECT_URL}"
 echo "GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID}"
 echo "GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE}"
-echo "IMAGE_NAME: ${IMAGE_NAME}"
 echo "HELM_CHART_PATH: ${HELM_CHART_PATH}"
 echo "--------------------------------------------------------------"
 echo "remote image name: eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}"
 echo "--> eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${CI_COMMIT_SHORT_SHA}"
+echo "--------------------------------------------------------------"
+echo "Helm release: ${PROJECT_NAME}-${APP_NAME}-${CI_ENVIRONMENT_NAME}"
 echo "--------------------------------------------------------------"
 
 helm upgrade \
@@ -33,5 +34,5 @@ helm upgrade \
   --set general.meta.repositoryUrl=${CI_PROJECT_URL} \
   --set general.gcpProjectId=${GCLOUD_PROJECT_ID} \
   --namespace=${GCLOUD_GKE_NAMESPACE} \
-  ${IMAGE_NAME} \
+  ${PROJECT_NAME}-${APP_NAME}-${CI_ENVIRONMENT_NAME} \
   ${HELM_CHART_PATH}
