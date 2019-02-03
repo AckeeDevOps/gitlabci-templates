@@ -1,10 +1,3 @@
-.deployScriptSecrets: &deployScriptSecrets
-  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/helm_deploy_secrets.sh -O /usr/local/bin/helm-deploy
-  - chmod +x /usr/local/bin/helm-deploy
-  - gke-init
-  - vaultier
-  - helm-deploy
-  
 # .deployBranchMasterSecrets and .deployBranchDevelopmentSecrets
 # have to be always configured with followin variables:
 # GCP/GKE specific variables:
@@ -13,13 +6,13 @@
 #   GCLOUD_GKE_ZONE:
 #   GCLOUD_GKE_NAMESPACE:
 # Vaultier specific variables:
-#   PLUGIN_VAULT_ADDR:
-#   PLUGIN_VAULT_TOKEN:
-#   PLUGIN_BRANCH:
-#   PLUGIN_SECRET_SPECS_PATH
-#   PLUGIN_RUN_CAUSE: (test or delivery)
-#   PLUGIN_OUTPUT_FORMAT: (helm or dotenv)
-#   PLUGIN_SECRET_OUTPUT_PATH
+#   VAULTIER_VAULT_ADDR:
+#   VAULTIER_VAULT_TOKEN:
+#   VAULTIER_BRANCH:
+#   VAULTIER_SECRET_SPECS_PATH
+#   VAULTIER_RUN_CAUSE: (test or delivery)
+#   VAULTIER_OUTPUT_FORMAT: (helm or dotenv)
+#   VAULTIER_SECRET_OUTPUT_PATH
 
 # if you don't want to specify variables in the yob,
 # you can specify following variables at the top of your .gitlab-ci.yml:
@@ -38,6 +31,13 @@
 #   GCLOUD_GKE_CLUSTER_STAGE
 #   GCLOUD_GKE_ZONE_STAGE
 #   GCLOUD_GKE_NAMESPACE_STAGE
+
+.deployScriptSecrets: &deployScriptSecrets
+  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/helm_deploy_secrets.sh -O /usr/local/bin/helm-deploy
+  - chmod +x /usr/local/bin/helm-deploy
+  - gke-init
+  - vaultier
+  - helm-deploy
     
 .deployBranchMasterSecrets:
   image: ${HELMER_IMAGE}
