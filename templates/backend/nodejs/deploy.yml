@@ -51,6 +51,7 @@
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
   script: *deployScriptSecrets
+  allow_failure: false
   only:
     refs: ["master"]
     variables:
@@ -71,6 +72,7 @@
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
   script: *deployScriptSecrets
+  allow_failure: false
   only:
     refs: ["development"]
     variables:
@@ -90,6 +92,7 @@
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
   script: *deployScriptSecrets
+  allow_failure: false
   only:
     refs: ["stage"]
     variables:
