@@ -1,6 +1,9 @@
 #!/bin/sh
 
-echo "script version: v1.0.1"
+# set defaults
+[ -z "$HELM_DRY_RUN" ] && { export HELM_DRY_RUN=false; }
+
+echo "script version: v1.0.2"
 echo "upgrading release ${IMAGE_NAME} in namespace ${GCLOUD_GKE_NAMESPACE} ..."
 
 echo "--------------------------------------------------------------"
@@ -21,10 +24,10 @@ echo "--------------------------------------------------------------"
 echo "Helm release: ${PROJECT_NAME}-${APP_NAME}-${CI_ENVIRONMENT_NAME}"
 echo "--------------------------------------------------------------"
 
-echo upgrade \
+helm upgrade \
 --install \
 -f ${HELM_BASE_VALUES} \
--f ${PLUGIN_SECRET_OUTPUT_PATH} \
+-f ${VAULTIER_SECRET_OUTPUT_PATH} \
 --set general.appName=${APP_NAME} \
 --set general.projectName=${PROJECT_NAME} \
 --set general.environment=${CI_ENVIRONMENT_NAME} \
@@ -35,6 +38,6 @@ echo upgrade \
 --set general.meta.repositoryUrl=${CI_PROJECT_URL} \
 --set general.gcpProjectId=${GCLOUD_PROJECT_ID} \
 --namespace=${GCLOUD_GKE_NAMESPACE} \
---dry-run=false \
+--dry-run=${HELM_DRY_RUN} \
 ${PROJECT_NAME}-${APP_NAME}-${CI_ENVIRONMENT_NAME} \
 ${HELM_CHART_PATH}
