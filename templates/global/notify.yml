@@ -13,6 +13,8 @@
 #SLACK_COLOR="#efefef"
 # The name of the sender of the message. Does not need to be a "real" username
 #SLACK_USERNAME"
+#
+# Not needed, you can use native Gitlab integration instead
 
 .notifySuccess:
   image: technosophos/slack-notify
