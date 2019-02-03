@@ -1,5 +1,6 @@
 #!/bin/sh
 
+echo "script version: v1.0.0"
 echo "upgrading release ${IMAGE_NAME} in namespace ${GCLOUD_GKE_NAMESPACE} ..."
 
 echo "--------------------------------------------------------------"
