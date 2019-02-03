@@ -35,5 +35,6 @@ helm upgrade \
   --set general.meta.repositoryUrl=${CI_PROJECT_URL} \
   --set general.gcpProjectId=${GCLOUD_PROJECT_ID} \
   --namespace=${GCLOUD_GKE_NAMESPACE} \
+  --dry-run=false \
   ${PROJECT_NAME}-${APP_NAME}-${CI_ENVIRONMENT_NAME} \
   ${HELM_CHART_PATH}
