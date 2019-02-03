@@ -19,7 +19,7 @@
   stage: notify
   variables:
     SLACK_TITLE: "commit ${CI_COMMIT_SHORT_SHA} @ ${CI_COMMIT_REF_NAME} has passed"
-    SLACK_MESSAGE: "${CI_PIPELINE_SOURCE} by ${GITLAB_USER_LOGIN}, see ${CI_PIPELINE_URL}"
+    SLACK_MESSAGE: "${CI_PIPELINE_SOURCE} by ${GITLAB_USER_LOGIN}, see ${CI_PIPELINE_URL}\n```\n${CI_COMMIT_TITLE}\n```"
     SLACK_COLOR: "#00FF00"
   script:
     - /slack-notify
