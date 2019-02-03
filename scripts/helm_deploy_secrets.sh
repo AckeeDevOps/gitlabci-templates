@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "script version: v1.0.0"
+echo "script version: v1.0.1"
 echo "upgrading release ${IMAGE_NAME} in namespace ${GCLOUD_GKE_NAMESPACE} ..."
 
 echo "--------------------------------------------------------------"
@@ -21,7 +21,7 @@ echo "--------------------------------------------------------------"
 echo "Helm release: ${PROJECT_NAME}-${APP_NAME}-${CI_ENVIRONMENT_NAME}"
 echo "--------------------------------------------------------------"
 
-helm upgrade \
+echo upgrade \
 --install \
 -f ${HELM_BASE_VALUES} \
 -f ${PLUGIN_SECRET_OUTPUT_PATH} \
