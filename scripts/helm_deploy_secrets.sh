@@ -25,6 +25,9 @@ echo "--------------------------------------------------------------"
 echo "Helm release: ${PROJECT_NAME}-${APP_NAME}-${CI_ENVIRONMENT_NAME}"
 echo "--------------------------------------------------------------"
 
+# Show executed command
+set -x
+
 helm upgrade \
 --install \
 -f ${HELM_BASE_VALUES} \
