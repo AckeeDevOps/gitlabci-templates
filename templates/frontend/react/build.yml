@@ -1,4 +1,4 @@
-.buildBranch
+.buildBranch:
   image: ${NODE_IMAGE}
   stage: build
   variables:
