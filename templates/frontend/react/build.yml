@@ -4,11 +4,9 @@
   variables:
     # BUILD_COMMAND_CURRENT
     # BUILD_DIRECTORY_CURRENT
-    # ENVIRONMENT_CURRENT
   script:
     - eval ${BUILD_COMMAND_DEVELOPMENT}
   artifacts:
     expire_in: 30m
     paths:
       - ${BUILD_DIRECTORY_DEVELOPMENT}
-  environment: ${ENVIRONMENT_CURRENT}
