@@ -2,6 +2,7 @@
   stage: deploy
   image: google/cloud-sdk:latest
   variables:
+    # specify following variables while extending .deployBranch
     # GCLOUD_PROJECT_ID_CURRENT
     # BUCKET_URL_CURRENT
     # BUILD_DIRECTORY_CURRENT
@@ -16,3 +17,9 @@
     - gsutil -m acl ch -R -u AllUsers:R ${BUCKET_URL_CURRENT}
     - gsutil -m web set -m index.html -e index.html ${BUCKET_URL_CURRENT}
   environment: ${ENVIRONMENT_CURRENT}
+  # also specify
+  # only:
+  #   variables:
+  #     - $CI_PIPELINE_SOURCE == "push"
+  #   refs: ["<branch name>"]
+
