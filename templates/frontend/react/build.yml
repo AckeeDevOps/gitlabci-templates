@@ -10,3 +10,8 @@
     expire_in: 30m
     paths:
       - ${BUILD_DIRECTORY_DEVELOPMENT}
+  # also specify
+  # only:
+  #   variables:
+  #     - $CI_PIPELINE_SOURCE == "push"
+  #   refs: ["<branch name>"]
