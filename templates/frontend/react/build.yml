@@ -1,1 +1,14 @@
-# tbd
+.buildBranchDevelopment
+  image: ${NODE_IMAGE}
+  stage: build
+  script:
+    - eval ${BUILD_COMMAND_DEVELOPMENT}
+  artifacts:
+    expire_in: 30m
+    paths:
+      - ${BUILD_DIRECTORY}
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+    refs: ["development"]
+  environment: development
