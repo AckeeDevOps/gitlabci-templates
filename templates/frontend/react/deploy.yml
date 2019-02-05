@@ -1,0 +1,24 @@
+.deployBranch:
+  stage: deploy
+  image: google/cloud-sdk:latest
+  variables:
+    # GCLOUD_PROJECT_ID_CURRENT
+    # BUCKET_URL_CURRENT
+    # BUILD_DIRECTORY_CURRENT
+    # ENVIRONMENT_CURRENT
+    # BRANCH_CURRENT
+  before_script:
+    - echo $GCLOUD_SA_KEY | base64 -d > /tmp/key.json
+    - gcloud auth activate-service-account --key-file=/tmp/key.json
+  script:
+    - ls
+    - gsutil mb -c regional -l europe-west3 -p ${GCLOUD_PROJECT_ID_CURRENT} ${BUCKET_URL_CURRENT} || true
+    - gsutil -m rsync -R ${BUILD_DIRECTORY_CURRENT} ${BUCKET_URL_CURRENT}
+    - gsutil -m acl ch -R -u AllUsers:R ${BUCKET_URL_CURRENT}
+    - gsutil -m web set -m index.html -e index.html ${BUCKET_URL_CURRENT}
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+    refs:
+      - ${BRANCH_CURRENT}
+  environment: ${ENVIRONMENT_CURRENT}
