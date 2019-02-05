@@ -1,6 +1,11 @@
 .buildBranchDevelopment
   image: ${NODE_IMAGE}
   stage: build
+  variables:
+    # BUILD_COMMAND_CURRENT
+    # BUILD_DIRECTORY_CURRENT
+    # ENVIRONMENT_CURRENT
+    # BRANCH_CURRENT
   script:
     - eval ${BUILD_COMMAND_DEVELOPMENT}
   artifacts:
@@ -10,5 +15,6 @@
   only:
     variables:
       - $CI_PIPELINE_SOURCE == "push"
-    refs: ["development"]
-  environment: development
+    refs:
+      - ${BRANCH_CURRENT}
+  environment: ${ENVIRONMENT_CURRENT}
