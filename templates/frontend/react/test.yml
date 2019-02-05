@@ -1,0 +1,20 @@
+.ciTest:
+  image: ${NODE_IMAGE}
+  stage: test
+  before_script:
+    - mkdir ~/.ssh/
+    - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+    - chmod 0400 ~/.ssh/id_rsa
+    - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  script:
+    - npm install
+    - npm run test
+  allow_failure: true
+  # Also specify
+  # only:
+  #   variables:
+  #     - $CI_PIPELINE_SOURCE == "push"
+  #  refs: ["development", "stage", "master"]
+  #
+  # or
+  # only: ["merge_requests"]
