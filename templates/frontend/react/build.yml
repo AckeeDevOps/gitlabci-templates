@@ -2,6 +2,7 @@
   image: ${NODE_IMAGE}
   stage: build
   variables:
+    # specify following variables while extending .buildBranch
     # BUILD_COMMAND_CURRENT
     # BUILD_DIRECTORY_CURRENT
   script:
