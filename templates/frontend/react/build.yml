@@ -6,11 +6,11 @@
     # BUILD_COMMAND_CURRENT
     # BUILD_DIRECTORY_CURRENT
   script:
-    - eval ${BUILD_COMMAND_DEVELOPMENT}
+    - eval ${BUILD_COMMAND_CURRENT}
   artifacts:
     expire_in: 30m
     paths:
-      - ${BUILD_DIRECTORY_DEVELOPMENT}
+      - ${BUILD_DIRECTORY_CURRENT}
   # also specify
   # only:
   #   variables:
