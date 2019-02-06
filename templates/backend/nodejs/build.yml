@@ -60,16 +60,7 @@
 
 .aglioDocsUpload:
   stage: build
-  image: ${NODE_IMAGE}
-  before_script:
-    - wget https://github.com/ncw/rclone/releases/download/v1.45/rclone-v1.45-linux-386.zip -O rclone.zip > /dev/null 2>&1
-    - apt-get update -y > /dev/null 2>&1
-    - apt-get install unzip -y > /dev/null 2>&1
-    - mkdir -p rclone && unzip -j -d rclone rclone.zip > /dev/null 2>&1
-    - mv rclone/rclone /usr/local/bin
-    - rm -rf rclone rclone.zip
-    - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/rclone_upload.sh -O /usr/local/bin/rclone-upload > /dev/null 2>&1
-    - chmod +x /usr/local/bin/rclone-upload
+  image: ${AGLIO_UPLOADER_IMAGE}
   script:
     - mkdir -p ${AGLIO_DOCS_DIRECTORY}
     - npm run docs
