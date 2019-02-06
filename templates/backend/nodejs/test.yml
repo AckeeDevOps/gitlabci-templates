@@ -9,8 +9,9 @@
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
   - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier
   - chmod +x /usr/local/bin/vaultier
-  - vaultier
   - npm set unsafe-perm true
+  - export CFG_JSON_PATH=${PLUGIN_SECRET_OUTPUT_PATH}
+  - vaultier
   
 .BeforeScriptTestWithoutVaultier: &preTestWithoutVaultier
   - mkdir ~/.ssh/
@@ -77,8 +78,6 @@
     VAULTIER_OUTPUT_FORMAT: dotenv
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
   script:
-    - export CFG_JSON_PATH=${PLUGIN_SECRET_OUTPUT_PATH}
-    - vaultier
     - npm install
     - npm run ci-test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
