@@ -17,24 +17,6 @@ stages:
 cache:
   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
 
-# Gitlab-ci templates contains prefabs with pre-configured jobs:
-# https://github.com/AckeeDevOps/gitlabci-t
-include:
-  - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/backend/nodejs/fetch.yml
-  - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/backend/nodejs/test.yml
-  - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/backend/nodejs/build.yml
-  - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/backend/nodejs/deploy.yml
-
-# list of stages
-stages:
-  - fetch
-  - test
-  - build
-  - deploy
-
-cache:
-  key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
-
 variables:
   ### GLOBAL STUFF
   APP_NAME: api
