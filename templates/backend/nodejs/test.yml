@@ -77,9 +77,6 @@
   artifacts:
     reports:
       junit: junit.xml
-  cache:
-    policy: pull
-    untracked: true
       
 .ciTestSecrets:
   image: ${NODE_IMAGE}
@@ -95,9 +92,6 @@
   artifacts:
     reports:
       junit: junit.xml
-  cache:
-    policy: pull
-    untracked: true
       
 .ciLint:
   image: ${NODE_IMAGE}
@@ -110,6 +104,3 @@
   artifacts:
     reports:
       junit: lint.xml
-  cache:
-    policy: pull
-    untracked: true
