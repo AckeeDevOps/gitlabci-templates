@@ -1,3 +1,7 @@
+# This prefab only downloads packages specified in package.json
+# Please specify following variables:
+#   SSH_KEY: base64 encoded private RSA key
+
 .fetchNodeJsModules:
   stage: fetch
   image: ${NODE_IMAGE}
