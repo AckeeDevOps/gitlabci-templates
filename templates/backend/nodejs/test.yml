@@ -27,6 +27,7 @@
   script:
     - npm install
     - npm run ci-test
+  # coverage report for Jest output (--coverage flag)
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     reports:
