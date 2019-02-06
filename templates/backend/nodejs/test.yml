@@ -12,6 +12,7 @@
   - chmod +x /usr/local/bin/vaultier
   - npm set unsafe-perm true
   - npm set progress=false
+  - npm set loglevel=error
   - export JOBS=max
   - export CFG_JSON_PATH=${PLUGIN_SECRET_OUTPUT_PATH}
   - vaultier
@@ -24,6 +25,7 @@
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   - npm set unsafe-perm true
   - npm set progress=false
+  - npm set loglevel=error
   - export JOBS=max
 
 # .ciTestSecrets requires following variables
