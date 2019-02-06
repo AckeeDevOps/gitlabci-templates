@@ -16,7 +16,7 @@
   - chmod 0400 ~/.ssh/id_rsa
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
-  - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier
+  - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier > /dev/null 2>&1
   - chmod +x /usr/local/bin/vaultier
   - npm set unsafe-perm true
   - export CFG_JSON_PATH=${PLUGIN_SECRET_OUTPUT_PATH}
