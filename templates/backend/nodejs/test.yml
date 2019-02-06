@@ -33,13 +33,13 @@
 
 # .ciTestSecrets requires following variables
 # Vaultier specific variables:
-#   PLUGIN_VAULT_ADDR: https://vault.co.uk
-#   PLUGIN_VAULT_TOKEN: sgsdfgdfghfsggdsfg
-#   PLUGIN_BRANCH: ${CI_COMMIT_REF_NAME}
-#   PLUGIN_SECRET_SPECS_PATH: secrets.yaml
-#   PLUGIN_RUN_CAUSE: test
-#   PLUGIN_OUTPUT_FORMAT: dotenv
-#   PLUGIN_SECRET_OUTPUT_PATH: .env
+#   VAULTIER_VAULT_ADDR: https://vault.co.uk
+#   VAULTIER_VAULT_TOKEN: sgsdfgdfghfsggdsfg
+#   VAULTIER_BRANCH: ${CI_COMMIT_REF_NAME}
+#   VAULTIER_SECRET_SPECS_PATH: secrets.yaml
+#   VAULTIER_RUN_CAUSE: test
+#   VAULTIER_OUTPUT_FORMAT: dotenv
+#   VAULTIER_SECRET_OUTPUT_PATH: .env
 # before_script specific varialbes:
 #   VAULTIER_RELEASE_LINK: https://github.com/vranystepan/vaultier/releases/download/v0.0.4/vaultier-v0.0.4
 
@@ -72,7 +72,12 @@
   image: ${NODE_IMAGE}
   stage: test
   before_script: *preTestWithVaultier
+  variables:
+    VAULTIER_RUN_CAUSE: test
+    VAULTIER_OUTPUT_FORMAT: dotenv
+    VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
   script:
+    - export CFG_JSON_PATH=${PLUGIN_SECRET_OUTPUT_PATH}
     - vaultier
     - npm install
     - npm run ci-test
