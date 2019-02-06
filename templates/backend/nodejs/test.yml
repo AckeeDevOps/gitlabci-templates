@@ -11,6 +11,7 @@
   - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier > /dev/null 2>&1
   - chmod +x /usr/local/bin/vaultier
   - npm set unsafe-perm true
+  - npm set progress=false
   - export CFG_JSON_PATH=${PLUGIN_SECRET_OUTPUT_PATH}
   - vaultier
   
@@ -21,6 +22,7 @@
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   - npm set unsafe-perm true
+  - npm set progress=false
 
 # .ciTestSecrets requires following variables
 # Vaultier specific variables:
