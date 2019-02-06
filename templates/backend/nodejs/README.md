@@ -2,21 +2,15 @@
 
 ```yaml
 include:
-  - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/backend/nodejs/fetch.yml
   - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/backend/nodejs/test.yml
   - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/backend/nodejs/build.yml
   - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/backend/nodejs/deploy.yml
 
 # list of stages
 stages:
-  - fetch
   - test
   - build
   - deploy
-
-cache:
-  key: "${CI_JOB_NAME}-${CI_COMMIT_REF_SLUG}"
-  untracked: true
 
 variables:
   ### GLOBAL STUFF
@@ -71,10 +65,6 @@ variables:
   # HELM_DRY_RUN to "true"
 
 ### MERGE REQUEST pipeline
-fetch:mr:
-  extends: .fetchNodeJsModules
-  only: ["merge_requests"]
-
 test:mr:
   extends: .ciTestSecrets
   only: ["merge_requests"]
@@ -90,13 +80,6 @@ documentation:mr:
   only: ["merge_requests"]
 
 ### DELIVERY / DEPLOYMENT pipeline
-fetch:delivery:
-  extends: .fetchNodeJsModules
-  only:
-    variables:
-      - $CI_PIPELINE_SOURCE == "push"
-    refs: ["master", "stage", "development"]
-
 test:delivery:
   extends: .ciTestSecrets
   only:
