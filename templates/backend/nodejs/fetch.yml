@@ -12,5 +12,4 @@
     - npm install
   cache:
     policy: push
-    paths:
-      - node_modules/
+    untracked: true
