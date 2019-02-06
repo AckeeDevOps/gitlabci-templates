@@ -7,6 +7,7 @@
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
   - chmod 0400 ~/.ssh/id_rsa
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier
   - chmod +x /usr/local/bin/vaultier
   - npm set unsafe-perm true
@@ -18,6 +19,7 @@
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
   - chmod 0400 ~/.ssh/id_rsa
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   - npm set unsafe-perm true
 
 .ciTestNoSecrets:
