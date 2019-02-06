@@ -15,7 +15,8 @@ stages:
   - deploy
 
 cache:
-  key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+  key: "${CI_JOB_NAME}-${CI_COMMIT_REF_SLUG}"
+  untracked: true
 
 variables:
   ### GLOBAL STUFF
