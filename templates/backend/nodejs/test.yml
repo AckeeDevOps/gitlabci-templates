@@ -105,7 +105,6 @@
   variables:
   before_script: *preTestWithoutVaultier
   script:
-    - npm install
     - npm run ci-lint
   allow_failure: true
   artifacts:
