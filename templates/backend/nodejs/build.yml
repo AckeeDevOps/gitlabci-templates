@@ -74,6 +74,3 @@
     - mkdir -p ${AGLIO_DOCS_DIRECTORY}
     - npm run docs
     - rclone-upload
-  cache:
-    policy: pull
-    untracked: true
