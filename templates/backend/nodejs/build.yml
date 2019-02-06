@@ -21,6 +21,7 @@
     refs: ["development"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
+  cache: {}
       
 .buildDockerBranchMaster:
   image: ${DOCKER_GCR_IMAGE}
@@ -30,6 +31,7 @@
     refs: ["master"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
+  cache: {}
 
 .buildDockerBranchStage:
   image: ${DOCKER_GCR_IMAGE}
@@ -39,6 +41,7 @@
     refs: ["stage"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
+  cache: {}
       
 # .aglioDocsUpload requires following variables:
 #   GCLOUD_PROJECT_ID:
@@ -47,10 +50,30 @@
 #   GCS_BUKET:
 #   GCS_PREFIX:
 
+# Please note these jobs requires "fetch" to be run before as it they use
+# pre-downloaded NPM packages
+# https://github.com/AckeeDevOps/gitlabci-templates/blob/master/templates/backend/nodejs/fetch.yml
+
+# Your .gitlab-ci.yml should also have:
+# cache:
+#   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+
 .aglioDocsUpload:
   stage: build
-  image: ${AGLIO_UPLOADER_IMAGE}
+  image: ${NODE_IMAGE}
+  before_script:
+    - wget https://github.com/ncw/rclone/releases/download/v1.45/rclone-v1.45-linux-386.zip -O rclone.zip > /dev/null 2>&1
+    - apt-get update -y > /dev/null 2>&1
+    - apt-get install unzip -y > /dev/null 2>&1
+    - mkdir -p rclone && unzip -j -d rclone rclone.zip > /dev/null 2>&1
+    - mv rclone/rclone /usr/local/bin
+    - rm -rf rclone rclone.zip
+    - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/rclone_upload.sh -O /usr/local/bin/rclone-upload > /dev/null 2>&1
+    - chmod +x /usr/local/bin/rclone-upload
   script:
     - mkdir -p ${AGLIO_DOCS_DIRECTORY}
     - npm run docs
     - rclone-upload
+  cache:
+    policy: pull
+    untracked: true
