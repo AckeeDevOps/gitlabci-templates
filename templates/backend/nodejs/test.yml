@@ -1,11 +1,3 @@
-# Please note these jobs requires "fetch" to be run before as it they use
-# pre-downloaded NPM packages
-# https://github.com/AckeeDevOps/gitlabci-templates/blob/master/templates/backend/nodejs/fetch.yml
-
-# Your .gitlab-ci.yml should also have:
-# cache:
-#   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
-
 # both before_script sections require following variables
 # NPM specific variables:
 #   SSH_KEY: base64-encoded private RSA key
