@@ -87,6 +87,7 @@
     VAULTIER_OUTPUT_FORMAT: dotenv
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
   script:
+    - npm ci
     - npm run ci-test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
@@ -99,6 +100,7 @@
   variables:
   before_script: *preTestWithoutVaultier
   script:
+    - npm ci
     - npm run ci-lint
   allow_failure: true
   artifacts:
