@@ -50,14 +50,6 @@
 #   GCS_BUKET:
 #   GCS_PREFIX:
 
-# Please note these jobs requires "fetch" to be run before as it they use
-# pre-downloaded NPM packages
-# https://github.com/AckeeDevOps/gitlabci-templates/blob/master/templates/backend/nodejs/fetch.yml
-
-# Your .gitlab-ci.yml should also have:
-# cache:
-#   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
-
 .aglioDocsUpload:
   stage: build
   image: ${AGLIO_UPLOADER_IMAGE}
