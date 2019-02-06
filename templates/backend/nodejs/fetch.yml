@@ -1,0 +1,16 @@
+.fetchNodeJsModules:
+  stage: fetch
+  image: ${NODE_IMAGE}
+  before_script:
+    - mkdir ~/.ssh/
+    - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+    - chmod 0400 ~/.ssh/id_rsa
+    - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+    - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
+    - npm set unsafe-perm true
+  script:
+    - npm install
+  cache:
+    policy: push
+    paths:
+      - node_modules/
