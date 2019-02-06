@@ -22,19 +22,6 @@
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   - npm set unsafe-perm true
 
-.ciTestNoSecrets:
-  image: ${NODE_IMAGE}
-  stage: test
-  before_script: *preTestWithoutVaultier
-  script:
-    - npm install
-    - npm run ci-test
-  # coverage report for Jest output (--coverage flag)
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-  artifacts:
-    reports:
-      junit: junit.xml
-
 # .ciTestSecrets requires following variables
 # Vaultier specific variables:
 #   VAULTIER_VAULT_ADDR: https://vault.co.uk
@@ -71,6 +58,18 @@
 #       variables:
 #         - $CI_PIPELINE_SOURCE == "push"
 #       refs: ["master", "stage", "development"]
+.ciTestNoSecrets:
+  image: ${NODE_IMAGE}
+  stage: test
+  before_script: *preTestWithoutVaultier
+  script:
+    - npm install
+    - npm run ci-test
+  # coverage report for Jest output (--coverage flag)
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    reports:
+      junit: junit.xml
       
 .ciTestSecrets:
   image: ${NODE_IMAGE}
