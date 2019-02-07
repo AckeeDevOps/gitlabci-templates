@@ -192,15 +192,15 @@ variables:
   NODE_IMAGE: node:8
 
 ### MERGE REQUESTS pipeline
-test:delivery:
+test:mr:                          # stage: test
   extends: .ciTestSecrets
   only: ["merge_requests"]
 
-lint:delivery:
+lint:mr:                          # stage: test
   extends: .ciLint
   only: ["merge_requests"]
 
-documentation:delivery:
+documentation:mr:                 # stage: cocumentation
   extends: .aglioDocsUpload
   variables:
     GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}
