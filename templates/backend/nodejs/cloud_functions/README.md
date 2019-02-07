@@ -17,9 +17,10 @@ directory structure:
 │   │   └── index.ts
 │   ├── tsconfig.json
 │   └── tslint.json
-├── Jenkinsfile
 ├── README.md
-└── secrets.yaml
+├── secrets.yaml
+├── .gitlab-ci.yml
+├── .firebaserc
 ```
 
 ## Implemented prefabs
