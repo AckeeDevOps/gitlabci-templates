@@ -23,6 +23,10 @@ directory structure:
 ├── .firebaserc
 ```
 
+## General requirements
+- `deploy` and `test` prefabs require base64 encoded RSA private key 
+in the variable `SSH_KEY`
+
 ## Implemented prefabs
 
 > please note all `npm` commands are executed in the `functions` 
