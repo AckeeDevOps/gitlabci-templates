@@ -1,0 +1,20 @@
+# This file belongs to Ackee CICD suite for Firebase Cloud functions
+
+# required variables:
+#   GCLOUD_SA_KEY:
+#   GCLOUD_PROJECT_ID:
+#   AGLIO_DOCS_DIRECTORY:
+#   GCS_BUKET:
+#   GCS_PREFIX:
+#
+# Please see:
+#   https://github.com/AckeeDevOps/aglio-uploader
+
+.aglioDocsUpload:
+  stage: documentation
+  image: ${AGLIO_UPLOADER_IMAGE}
+  script:
+    - cd functions
+    - mkdir -p ${AGLIO_DOCS_DIRECTORY}
+    - npm run docs
+    - rclone-upload

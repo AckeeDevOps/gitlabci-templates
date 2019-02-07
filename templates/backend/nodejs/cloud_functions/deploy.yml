@@ -1,0 +1,72 @@
+# This file belongs to Ackee CICD suite for Firebase Cloud functions
+
+.beforeScriptDeployWithVaultier: &preDeployWithVaultier
+  - mkdir ~/.ssh/
+  - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+  - chmod 0400 ~/.ssh/id_rsa
+  - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
+  - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier > /dev/null 2>&1
+  - chmod +x /usr/local/bin/vaultier
+  - vaultier
+  - cd functions
+  - npm set unsafe-perm true
+  - npm set progress=false
+  - npm set loglevel=error
+  - export JOBS=max
+  - npm install -g firebase-tools > /dev/null 2>&1
+
+.deployBranchMasterSecrets:
+  image: ${NODE_IMAGE}
+  stage: deploy
+  variables:
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}
+    VAULTIER_RUN_CAUSE: delivery
+    VAULTIER_OUTPUT_FORMAT: dotenv
+    VAULTIER_SECRET_OUTPUT_PATH: ${CI_PROJECT_DIR}/functions/secrets.json
+    # Please also specify in the main file:
+    #   FIREBASE_TOKEN:
+    #   VAULTIER_VAULT_TOKEN:
+    #   VAULTIER_VAULT_ADDR:
+    #   VAULTIER_BRANCH:
+    # and:
+    #   SSH_KEY:
+  before_script: *preDeployWithVaultier
+  script:
+    - npm install
+    - npm run deploy-production
+  allow_failure: false # important for manual jobs
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: production
+  when: manual
+
+.deployBranchDevelopmentSecrets:
+  image: ${NODE_IMAGE}
+  stage: deploy
+  variables:
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}
+    VAULTIER_RUN_CAUSE: delivery
+    VAULTIER_OUTPUT_FORMAT: dotenv
+    VAULTIER_SECRET_OUTPUT_PATH: ${CI_PROJECT_DIR}/functions/secrets.json
+    # Please also specify in the main file:
+    #   FIREBASE_TOKEN:
+    #   VAULTIER_VAULT_TOKEN:
+    #   VAULTIER_VAULT_ADDR:
+    #   VAULTIER_BRANCH:
+    # and:
+    #   SSH_KEY:
+  before_script: *preDeployWithVaultier
+  script:
+    - npm install
+    - npm run deploy-dev
+  allow_failure: false # important for manual jobs
+  only:
+    refs: ["development"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: development
