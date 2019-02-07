@@ -16,7 +16,7 @@
   - export JOBS=max
   - export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}
   - vaultier
-  
+
 .BeforeScriptTestWithoutVaultier: &preTestWithoutVaultier
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
@@ -64,6 +64,7 @@
 #       variables:
 #         - $CI_PIPELINE_SOURCE == "push"
 #       refs: ["master", "stage", "development"]
+
 .ciTestNoSecrets:
   image: ${NODE_IMAGE}
   stage: test
