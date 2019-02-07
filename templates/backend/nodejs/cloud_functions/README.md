@@ -192,22 +192,22 @@ variables:
   NODE_IMAGE: node:8
 
 ### MERGE REQUESTS pipeline
-test:mr:                          # stage: test
+test:mr:                                      # stage: test
   extends: .ciTestSecrets
   only: ["merge_requests"]
 
-lint:mr:                          # stage: test
+lint:mr:                                      # stage: test
   extends: .ciLint
   only: ["merge_requests"]
 
-documentation:mr:                 # stage: cocumentation
+documentation:mr:                             # stage: documentation
   extends: .aglioDocsUpload
   variables:
     GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}
   only: ["merge_requests"]
 
 ### DELIVERY pipeline
-test:delivery:
+test:delivery:                                # stage: test
   extends: .ciTestSecrets
   only:
     variables:
@@ -215,14 +215,14 @@ test:delivery:
     refs: ["master", "stage", "development"]
 
 lint:delivery:
-  extends: .ciLint
+  extends: .ciLint                            # stage: test
   only:
     variables:
       - $CI_PIPELINE_SOURCE == "push"
     refs: ["master", "stage", "development"]
 
 documentation:delivery:
-  extends: .aglioDocsUpload
+  extends: .aglioDocsUpload                   # stage: documentation
   variables:
     GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}
   only:
@@ -231,9 +231,9 @@ documentation:delivery:
     refs: ["master", "stage", "development"]
 
 deploy:development:
-  extends: .deployBranchDevelopmentSecrets
+  extends: .deployBranchDevelopmentSecrets    # stage deploy
 
 deploy:production:
-  extends: .deployBranchMasterSecrets
+  extends: .deployBranchMasterSecrets         # stage deploy
 ```
 
