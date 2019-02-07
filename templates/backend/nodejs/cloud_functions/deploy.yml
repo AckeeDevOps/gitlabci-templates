@@ -89,7 +89,7 @@
   before_script: *preDeployWithVaultier
   script:
     - npm install
-    - npm run deploy-dev
+    - npm run deploy-stage
   allow_failure: false # important for manual jobs
   only:
     refs: ["stage"]

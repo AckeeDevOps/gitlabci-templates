@@ -91,6 +91,29 @@
   artifacts:
     reports:
       junit: junit.xml
+
+.ciTest:
+  image: ${NODE_IMAGE}
+  stage: test
+  before_script: *preTestWithoutVaultier
+  variables:
+    VAULTIER_RUN_CAUSE: test
+    VAULTIER_OUTPUT_FORMAT: dotenv
+    VAULTIER_SECRET_OUTPUT_PATH: ${CI_PROJECT_DIR}/functions/secrets.json
+    # Please also specify in the main file:
+    #   FIREBASE_TOKEN:
+    #   VAULTIER_VAULT_TOKEN:
+    #   VAULTIER_VAULT_ADDR:
+    #   VAULTIER_BRANCH:
+    # and:
+    #   SSH_KEY:
+  script:
+    - npm install
+    - npm run ci-test
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/ # Jest
+  artifacts:
+    reports:
+      junit: junit.xml
       
 .ciLint:
   image: ${NODE_IMAGE}

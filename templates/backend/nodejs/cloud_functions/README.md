@@ -23,14 +23,21 @@ directory structure:
 ```
 
 ## Implemented prefabs
+
+> please note all `npm` commands are executed in the `functions` 
+> directory. 
+
 **`.deployBranchMasterSecrets`** deploys Firebase function with secrets injected on push to `master` branch, this prefab can be 
-used directly without specifying `only` directive.
+used directly without specifying `only` directive. Npm script 
+`deploy-production` has to be specified.
 
 **`.deployBranchDevelopmentSecrets`** deploys Firebase function with secrets injected on push to `development` branch, this prefab can be 
-used directly without specifying `only` directive.
+used directly without specifying `only` directive. Npm script 
+`deploy-dev` has to be specified.
 
 **`.deployBranchStageSecrets`** deploys Firebase function with secrets injected on push to `stage` branch, this prefab can be 
-used directly without specifying `only` directive.
+used directly without specifying `only` directive. Npm script 
+`deploy-stage` has to be specified.
 
 **`aglioDocsUpload`** uploads generated documentation to the 
 GCS bucket, `only` directive has to be specified in the main 
@@ -41,6 +48,9 @@ injected, `only` directive has to be specified in the main
 pipeline file.
 
 **`.ciLint`** performs `npm run ci-lint` with, `only` 
+directive has to be specified in the main pipeline file.
+
+**`.ciTest`** performs `npm run ci-test` with, `only` 
 directive has to be specified in the main pipeline file.
 
 ## Example pipelines
