@@ -14,7 +14,7 @@
   - npm set progress=false
   - npm set loglevel=error
   - export JOBS=max
-  - export CFG_JSON_PATH=${PLUGIN_SECRET_OUTPUT_PATH}
+  - export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}
   - vaultier
   
 .BeforeScriptTestWithoutVaultier: &preTestWithoutVaultier
