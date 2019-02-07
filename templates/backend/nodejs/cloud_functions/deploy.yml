@@ -70,3 +70,30 @@
       - $CI_PIPELINE_SOURCE == "push"
   environment:
     name: development
+
+.deployBranchStageSecrets:
+  image: ${NODE_IMAGE}
+  stage: deploy
+  variables:
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}
+    VAULTIER_RUN_CAUSE: delivery
+    VAULTIER_OUTPUT_FORMAT: dotenv
+    VAULTIER_SECRET_OUTPUT_PATH: ${CI_PROJECT_DIR}/functions/secrets.json
+    # Please also specify in the main file:
+    #   FIREBASE_TOKEN:
+    #   VAULTIER_VAULT_TOKEN:
+    #   VAULTIER_VAULT_ADDR:
+    #   VAULTIER_BRANCH:
+    # and:
+    #   SSH_KEY:
+  before_script: *preDeployWithVaultier
+  script:
+    - npm install
+    - npm run deploy-dev
+  allow_failure: false # important for manual jobs
+  only:
+    refs: ["stage"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: stage
