@@ -127,6 +127,10 @@ testConfig:
 
 **`.ciLint`** performs `npm run ci-lint` with, `only` directive has to be specified in the main pipeline file.
 
+**`.deployBranchDevelopmentSecrets`** deploys application (from `development` branch) to GKE using Helm. 
+This job is built around [Ackee/helmer-gke](https://github.com/AckeeDevOps/helmer-gke) which contains Helm 
+binary and also simplifies GKE authentication. 
+
 ## Example pipelines
 
 ### Pipeline for Deployment and Merge Requests
