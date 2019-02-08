@@ -10,6 +10,44 @@ in the variable `SSH_KEY`
 
 ## Implemented prefabs
 
+**`.buildDockerBranchDevelopment`** builds and uploads Docker images from the Development branch. This job 
+is built around [Ackee/docker-gcr](https://github.com/AckeeDevOps/docker-gcr) Docker image. It requires a few 
+configuration parameters (specify them in `variables` section): 
+
+- `GCLOUD_SA_KEY`: base64 encoded Service Account key - this property is strictly required by Ackee/docker-gcr
+- `SSH_KEY`: base64 encoded RSA private key, it's mainly used for private git repositories
+- `IMAGE_NAME`: name of the *local* Docker image, this property will be assigned to `-t` flag during `docker build` phase
+- `IMAGE_TAG`: tag for the *local* Docker image (see above), this property will be assigned to `-t` flag during `docker build` phase
+- `BUILD_IMAGE`: base image for your Docker build e.g. `node:10.14.2`
+- `PROJECT_NAME`: project friendly name e.g. name of the customer
+- `APP_NAME`: name of the current micro service e.g. `api`
+
+Sample Dockerfile might look as follows:
+
+```dockerfile
+ARG SSH_KEY=""
+ARG BUILD_IMAGE="node:10.14.0"
+
+FROM ${BUILD_IMAGE} as builder
+ENV JOBS="max"
+WORKDIR /usr/src/app
+COPY . .
+RUN mkdir ~/.ssh/
+RUN echo $SSH_KEY | base64 -d > ~/.ssh/id_rsa
+RUN chmod 0400 ~/.ssh/id_rsa
+RUN eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+RUN echo 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
+RUN npm set unsafe-perm=true
+RUN npm set progress=false
+RUN npm set loglevel=error
+RUN npm ci
+
+FROM ${BUILD_IMAGE}
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app /usr/src/app
+CMD ["npm", "start"]
+```
+
 ## Example pipelines
 
 ### Pipeline for Deployment and Merge Requests
