@@ -9,7 +9,7 @@
 
 .buildScript: &buildScript
   - gcr-init
-  - docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
+  - docker build --build-arg SSH_KEY --build-arg BUILD_IMAGE -t ${IMAGE_NAME}:${IMAGE_TAG} .
   - docker tag ${IMAGE_NAME}:${IMAGE_TAG} eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
   - docker push eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
 
