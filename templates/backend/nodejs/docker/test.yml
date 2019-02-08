@@ -82,6 +82,11 @@
   stage: test
   before_script: *preTestWithVaultier
   variables:
+    SSH_KEY: ${SSH_KEY}
+    VAULTIER_VAULT_ADDR: ${VAULTIER_VAULT_ADDR}
+    VAULTIER_VAULT_TOKEN: ${VAULTIER_VAULT_TOKEN}
+    VAULTIER_RELEASE_LINK: ${VAULTIER_RELEASE_LINK}
+    VAULTIER_SECRET_SPECS_PATH: secrets.yaml
     VAULTIER_RUN_CAUSE: test
     VAULTIER_OUTPUT_FORMAT: dotenv
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
