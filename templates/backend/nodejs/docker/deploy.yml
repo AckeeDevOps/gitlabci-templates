@@ -1,3 +1,5 @@
+# Helmer always needs GCLOUD_SA_KEY: base64 encoded Service Account key
+
 # .deployBranchMasterSecrets and .deployBranchDevelopmentSecrets
 # have to be always configured with following variables:
 # GCP/GKE specific variables:
@@ -41,13 +43,17 @@
   - helm-deploy
     
 .deployBranchMasterSecrets:
-  image: ${HELMER_IMAGE}
+  image: ${HELMER_IMAGE}                                          # <- specify on the top of your .gitlab-ci.yml file
   stage: deploy
   variables:
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}
-    GCLOUD_GKE_CLUSTER_NAME: ${GCLOUD_GKE_CLUSTER_PRODUCTION}
-    GCLOUD_GKE_ZONE: ${GCLOUD_GKE_ZONE_PRODUCTION}
-    GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE_PRODUCTION}
+    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}                               # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}            # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_CLUSTER_NAME: ${GCLOUD_GKE_CLUSTER_PRODUCTION}     # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_ZONE: ${GCLOUD_GKE_ZONE_PRODUCTION}                # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE_PRODUCTION}      # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_BRANCH: ${VAULTIER_BRANCH}                           # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_VAULT_ADDR: ${VAULTIER_VAULT_ADDR}                   # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_VAULT_TOKEN: ${VAULTIER_VAULT_TOKEN}                 # <- specify on the top of your .gitlab-ci.yml file
     VAULTIER_RUN_CAUSE: delivery
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
@@ -62,13 +68,17 @@
   when: manual
     
 .deployBranchDevelopmentSecrets:
-  image: ${HELMER_IMAGE}
+  image: ${HELMER_IMAGE}                                          # <- specify on the top of your .gitlab-ci.yml file
   stage: deploy
   variables:
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}
-    GCLOUD_GKE_CLUSTER_NAME: ${GCLOUD_GKE_CLUSTER_DEVELOPMENT}
-    GCLOUD_GKE_ZONE: ${GCLOUD_GKE_ZONE_DEVELOPMENT}
-    GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE_DEVELOPMENT}
+    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}           # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_CLUSTER_NAME: ${GCLOUD_GKE_CLUSTER_DEVELOPMENT}    # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_ZONE: ${GCLOUD_GKE_ZONE_DEVELOPMENT}               # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE_DEVELOPMENT}     # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_BRANCH: ${VAULTIER_BRANCH}                           # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_VAULT_ADDR: ${VAULTIER_VAULT_ADDR}                   # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_VAULT_TOKEN: ${VAULTIER_VAULT_TOKEN}                 # <- specify on the top of your .gitlab-ci.yml file
     VAULTIER_RUN_CAUSE: delivery
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
@@ -82,13 +92,17 @@
     name: development
     
 .deployBranchStageSecrets:
-  image: ${HELMER_IMAGE}
+  image: ${HELMER_IMAGE}                                          # <- specify on the top of your .gitlab-ci.yml file
   stage: deploy
   variables:
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_STAGE}
-    GCLOUD_GKE_CLUSTER_NAME: ${GCLOUD_GKE_CLUSTER_STAGE}
-    GCLOUD_GKE_ZONE: ${GCLOUD_GKE_ZONE_STAGE}
-    GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE_STAGE}
+    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}                               # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_STAGE}                 # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_CLUSTER_NAME: ${GCLOUD_GKE_CLUSTER_STAGE}          # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_ZONE: ${GCLOUD_GKE_ZONE_STAGE}                     # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE_STAGE}           # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_BRANCH: ${VAULTIER_BRANCH}                           # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_VAULT_ADDR: ${VAULTIER_VAULT_ADDR}                   # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_VAULT_TOKEN: ${VAULTIER_VAULT_TOKEN}                 # <- specify on the top of your .gitlab-ci.yml file
     VAULTIER_RUN_CAUSE: delivery
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
