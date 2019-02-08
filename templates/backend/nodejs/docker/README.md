@@ -10,7 +10,7 @@ in the variable `SSH_KEY`
 
 ## Implemented prefabs
 
-**`.buildDockerBranchDevelopment`** builds and uploads Docker images from the Development branch. This job 
+**`.buildDockerBranchDevelopment`** builds and uploads Docker images from the `development` branch. This job 
 is built around [Ackee/docker-gcr](https://github.com/AckeeDevOps/docker-gcr) Docker image. It requires a few 
 configuration parameters (specify them in `variables` section): 
 
@@ -47,6 +47,10 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app /usr/src/app
 CMD ["npm", "start"]
 ```
+
+**`.buildDockerBranchStage`** same as `.buildDockerBranchDevelopment` but it builds `stage` branch.
+
+**`.buildDockerBranchMaster`** same as `.buildDockerBranchDevelopment` but it builds `master` branch.
 
 ## Example pipelines
 
