@@ -21,6 +21,7 @@ configuration parameters (specify them in `variables` section):
 - `BUILD_IMAGE`: base image for your Docker build e.g. `node:10.14.2`
 - `PROJECT_NAME`: project friendly name e.g. name of the customer
 - `APP_NAME`: name of the current micro service e.g. `api`
+- `GCLOUD_PROJECT_ID`: GCP project id where you Docker image will be uploaded to
 
 Sample Dockerfile might look as follows:
 
@@ -51,6 +52,26 @@ CMD ["npm", "start"]
 **`.buildDockerBranchStage`** same as `.buildDockerBranchDevelopment` but it builds `stage` branch.
 
 **`.buildDockerBranchMaster`** same as `.buildDockerBranchDevelopment` but it builds `master` branch.
+
+**`.aglioDocsUpload`** is job built around [Ackee/aglio-uploader](https://github.com/AckeeDevOps/aglio-uploader) 
+Docker image. It contains a few third-party tools, namely: `aglio`, `apib2swagger`, `swagger-gen`, `html-inline` 
+and `rclone`. This step basically executes `npm run docs` command and uploads rendered bits to the GCS bucket. 
+It requires a few configuration parameters (specify them in `variables` section): 
+
+- `GCLOUD_PROJECT_ID`: GCP project id where your GCS bucket lives
+- `GCLOUD_SA_KEY`: base64 encoded Service Account key - this property is strictly required by Ackee/docker-gcr
+- `AGLIO_DOCS_DIRECTORY`: output directory with rendered html files, you can use relative or absolute paths.
+- `GCS_BUKET`: name of the GCS bucket
+- `GCS_PREFIX`: use this property to create directory structure, it's useful when you're using single GCS bucket for 
+multiple projects
+
+Sample NPM script might look as follows:
+
+```json
+...
+"docs": "aglio -i ./docs/api/api.apib -c -o ./docs/api/all.apib && apib2swagger --prefer-reference --bearer-apikey -i ./docs/api/all.apib -o ./docs/api/swagger.json && swagger-gen -d docs-temp ./docs/api/swagger.json && html-inline -i ./docs-temp/index.html -o ./docs-output/index.html -b ./docs-temp",
+...
+```
 
 ## Example pipelines
 
