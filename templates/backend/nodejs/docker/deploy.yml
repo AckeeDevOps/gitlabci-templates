@@ -20,6 +20,7 @@
     VAULTIER_RUN_CAUSE: delivery
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
+    HELM_BASE_VALUES: helm/values/production.yaml
   script: *deployScriptSecrets
   allow_failure: false # important for manual jobs
   only:
@@ -45,6 +46,7 @@
     VAULTIER_RUN_CAUSE: delivery
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
+    HELM_BASE_VALUES: helm/values/development.yaml
   script: *deployScriptSecrets
   allow_failure: false # important for manual jobs
   only:
@@ -69,6 +71,7 @@
     VAULTIER_RUN_CAUSE: delivery
     VAULTIER_OUTPUT_FORMAT: helm
     VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
+    HELM_BASE_VALUES: helm/values/stage.yaml
   script: *deployScriptSecrets
   allow_failure: false # important for manual jobs
   only:
