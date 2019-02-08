@@ -69,6 +69,8 @@
   image: ${NODE_IMAGE}
   stage: test
   before_script: *preTestWithoutVaultier
+  variables:
+    SSH_KEY: ${SSH_KEY}
   script:
     - npm run ci-test
   # coverage report for Jest output (--coverage flag)
@@ -102,6 +104,7 @@
   image: ${NODE_IMAGE}
   stage: test
   variables:
+    SSH_KEY: ${SSH_KEY}
   before_script: *preTestWithoutVaultier
   script:
     - npm ci
