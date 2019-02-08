@@ -3,7 +3,6 @@
   - chmod +x /usr/local/bin/helm-deploy
   - gke-init
   - vaultier
-  # see helm-deploy: https://github.com/AckeeDevOps/gitlabci-templates/blob/master/scripts/helm_deploy_secrets.sh
   - helm-deploy
     
 .deployBranchMasterSecrets:
