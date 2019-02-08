@@ -1,12 +1,3 @@
-# .buildDockerBranchDevelopment, .buildDockerBranchMaster and .buildDockerBranchStage require following variables:
-#    GCLOUD_PROJECT_ID: 
-#    GCLOUD_SA_KEY: base64-encoded SA key
-#    SSH_KEY: base64-encoded RSA private key
-#    IMAGE_NAME: name of the local image
-#    IMAGE_TAG: tag for local and remote images
-#
-# Also configure DOCKER_GCR_IMAGE
-
 .buildScript: &buildScript
   - gcr-init
   - docker build --build-arg SSH_KEY --build-arg BUILD_IMAGE -t ${IMAGE_NAME}:${IMAGE_TAG} .
@@ -14,8 +5,14 @@
   - docker push eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}:${IMAGE_TAG}
 
 .buildDockerBranchDevelopment:
-  image: ${DOCKER_GCR_IMAGE}
+  image: ${DOCKER_GCR_IMAGE}                                           # <- specify on the top of your .gitlab-ci.yml file
   stage: build
+  variables:
+    SSH_KEY: ${SSH_KEY}                                                # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}                                    # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}                # <- specify on the top of your .gitlab-ci.yml file 
+    IMAGE_NAME: ${IMAGE_NAME}                                          # <- specify on the top of your .gitlab-ci.yml file
+    IMAGE_TAG: {IMAGE_TAG}                                             # <- specify on the top of your .gitlab-ci.yml file
   script: *buildScript
   only:
     refs: ["development"]
@@ -24,8 +21,14 @@
   cache: {}
       
 .buildDockerBranchMaster:
-  image: ${DOCKER_GCR_IMAGE}
+  image: ${DOCKER_GCR_IMAGE}                                           # <- specify on the top of your .gitlab-ci.yml file
   stage: build
+  variables:
+    SSH_KEY: ${SSH_KEY}                                                # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}                                    # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}                 # <- specify on the top of your .gitlab-ci.yml file 
+    IMAGE_NAME: ${IMAGE_NAME}                                          # <- specify on the top of your .gitlab-ci.yml file
+    IMAGE_TAG: {IMAGE_TAG}                                             # <- specify on the top of your .gitlab-ci.yml file
   script: *buildScript
   only:
     refs: ["master"]
@@ -34,8 +37,14 @@
   cache: {}
 
 .buildDockerBranchStage:
-  image: ${DOCKER_GCR_IMAGE}
+  image: ${DOCKER_GCR_IMAGE}                                           # <- specify on the top of your .gitlab-ci.yml file
   stage: build
+  variables:
+    SSH_KEY: ${SSH_KEY}                                                # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}                                    # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_STAGE}                      # <- specify on the top of your .gitlab-ci.yml file 
+    IMAGE_NAME: ${IMAGE_NAME}                                          # <- specify on the top of your .gitlab-ci.yml file
+    IMAGE_TAG: {IMAGE_TAG}                                             # <- specify on the top of your .gitlab-ci.yml file
   script: *buildScript
   only:
     refs: ["stage"]
@@ -52,7 +61,13 @@
 
 .aglioDocsUpload:
   stage: build
-  image: ${AGLIO_UPLOADER_IMAGE}
+  image: ${AGLIO_UPLOADER_IMAGE}                                       # <- specify on the top of your .gitlab-ci.yml file
+  variables:
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DOCUMENTATION}              # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}                                    # <- specify on the top of your .gitlab-ci.yml file
+    AGLIO_DOCS_DIRECTORY: ${AGLIO_DOCS_DIRECTORY}                      # <- specify on the top of your .gitlab-ci.yml file
+    GCS_BUKET: ${GCS_BUKET}                                            # <- specify on the top of your .gitlab-ci.yml file
+    GCS_PREFIX: ${GCS_PREFIX}                                          # <- specify on the top of your .gitlab-ci.yml file
   script:
     - mkdir -p ${AGLIO_DOCS_DIRECTORY}
     - npm run docs
