@@ -71,7 +71,7 @@
   stage: test
   before_script: *preTestWithVaultier
   variables:
-    SSH_KEY: ${CFG_SSH_KEY}                                              # <- specify on the top of your .gitlab-ci.yml file
+    SSH_KEY: $CFG_SSH_KEY                                              # <- specify on the top of your .gitlab-ci.yml file
     VAULTIER_VAULT_ADDR: ${CFG_VAULTIER_VAULT_ADDR}                       # <- specify on the top of your .gitlab-ci.yml file
     VAULTIER_VAULT_TOKEN: ${CFG_VAULTIER_VAULT_TOKEN}                     # <- specify on the top of your .gitlab-ci.yml file
     VAULTIER_RELEASE_LINK: ${CFG_VAULTIER_RELEASE_LINK}                   # <- specify on the top of your .gitlab-ci.yml file
