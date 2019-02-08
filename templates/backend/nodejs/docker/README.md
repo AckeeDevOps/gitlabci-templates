@@ -1,4 +1,8 @@
-# Example pipeline
+# Prefabs for container-based (Docker) backend apps
+
+## Example pipelines
+
+### Pipeline for Deployment and Merge Requests
 
 ```yaml
 include:
