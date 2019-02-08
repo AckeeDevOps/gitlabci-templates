@@ -8,11 +8,11 @@
   image: ${DOCKER_GCR_IMAGE}                                           # <- specify on the top of your .gitlab-ci.yml file
   stage: build
   variables:
-    SSH_KEY: ${SSH_KEY}                                                # <- specify on the top of your .gitlab-ci.yml file
-    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}                                    # <- specify on the top of your .gitlab-ci.yml file
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}                # <- specify on the top of your .gitlab-ci.yml file 
-    IMAGE_NAME: ${IMAGE_NAME}                                          # <- specify on the top of your .gitlab-ci.yml file
-    IMAGE_TAG: {IMAGE_TAG}                                             # <- specify on the top of your .gitlab-ci.yml file
+    SSH_KEY: "${SSH_KEY}"                                                # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_SA_KEY: "${GCLOUD_SA_KEY}"                                    # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_PROJECT_ID: "${GCLOUD_PROJECT_ID_DEVELOPMENT}"                # <- specify on the top of your .gitlab-ci.yml file 
+    IMAGE_NAME: "${IMAGE_NAME}"                                          # <- specify on the top of your .gitlab-ci.yml file
+    IMAGE_TAG: "{IMAGE_TAG}"                                             # <- specify on the top of your .gitlab-ci.yml file
   script: *buildScript
   only:
     refs: ["development"]
@@ -24,11 +24,11 @@
   image: ${DOCKER_GCR_IMAGE}                                           # <- specify on the top of your .gitlab-ci.yml file
   stage: build
   variables:
-    SSH_KEY: ${SSH_KEY}                                                # <- specify on the top of your .gitlab-ci.yml file
-    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY}                                    # <- specify on the top of your .gitlab-ci.yml file
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}                 # <- specify on the top of your .gitlab-ci.yml file 
-    IMAGE_NAME: ${IMAGE_NAME}                                          # <- specify on the top of your .gitlab-ci.yml file
-    IMAGE_TAG: {IMAGE_TAG}                                             # <- specify on the top of your .gitlab-ci.yml file
+    SSH_KEY: "${SSH_KEY}"                                                # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_SA_KEY: "${GCLOUD_SA_KEY}"                                    # <- specify on the top of your .gitlab-ci.yml file
+    GCLOUD_PROJECT_ID: "${GCLOUD_PROJECT_ID_PRODUCTION}"                 # <- specify on the top of your .gitlab-ci.yml file 
+    IMAGE_NAME: "${IMAGE_NAME}"                                          # <- specify on the top of your .gitlab-ci.yml file
+    IMAGE_TAG: "{IMAGE_TAG}"                                             # <- specify on the top of your .gitlab-ci.yml file
   script: *buildScript
   only:
     refs: ["master"]
