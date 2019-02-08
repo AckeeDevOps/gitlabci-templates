@@ -73,6 +73,60 @@ Sample NPM script might look as follows:
 ...
 ```
 
+**`.ciTestSecrets`** performs `npm run ci-test` with secrets injected, `only` directive has to be specified in 
+the main pipeline file. Secrets injection is handled via [Vaultier](https://github.com/AckeeDevOps/vaultier) tool, 
+this tool requires secrets specification and set of configuration properties:
+
+- `VAULTIER_VAULT_ADDR`: full url of your vault instance e.g. `https://vault.co.uk`
+- `VAULTIER_VAULT_TOKEN`: Vault token in plain text
+- `VAULTIER_BRANCH`: name of the current branch, Vaultier use this property to filter the input file
+- `VAULTIER_SECRET_SPECS_PATH`: path of the specification file, Vaultier use `secrets.yaml` if not specified
+- `VAULTIER_RUN_CAUSE`: Vaultier use this property to filter the input file, it can be `test` or `delivery`
+- `VAULTIER_OUTPUT_FORMAT`: `dotenv` or `helm`, see [Vaultier](https://github.com/AckeeDevOps/vaultier) documentation 
+for further details
+- `VAULTIER_SECRET_OUTPUT_PATH`: output path
+
+The job itself also requires following property:
+
+- `VAULTIER_RELEASE_LINK`: full link to the current Vaultier release e.g. `https://github.com/vranystepan/vaultier/releases/download/v0.0.4/vaultier-v0.0.5`
+
+Sample secrets specification:
+
+```yaml
+---
+branches:
+  - name: master
+    secrets:
+      - path: secret/data/path/to/production/document
+        keyMap:
+          - vaultKey: SQL_HOST
+            localKey: SQL_HOST
+  - name: stage
+    secrets:
+      - path: secret/data/path/to/stage/document
+        keyMap:
+          - vaultKey: SQL_HOST
+            localKey: SQL_HOST
+  - name: development
+    secrets:
+      - path: secret/data/path/to/development/document
+        keyMap:
+          - vaultKey: SQL_HOST
+            localKey: SQL_HOST
+
+testConfig:
+  secrets:
+    - path: secret/data/path/to/test/document
+      keyMap:
+        - vaultKey: SQL_HOST
+          localKey: SQL_HOST
+
+```
+
+**`.ciTestNoSecrets`** performs `npm run ci-test` with, `only` directive has to be specified in the main pipeline file.
+
+**`.ciLint`** performs `npm run ci-lint` with, `only` directive has to be specified in the main pipeline file.
+
 ## Example pipelines
 
 ### Pipeline for Deployment and Merge Requests
