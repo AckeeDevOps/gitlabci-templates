@@ -1,7 +1,29 @@
-# both before_script sections require following variables
-# NPM specific variables:
-#   SSH_KEY: base64-encoded private RSA key
+# make sure you have specified 'only' conditions
+# Examples for MR:
+#   test:mr:
+#     extends: .ciTestNoSecrets
+#     only: merge_requests
+#
+#   lint:mr:
+#     extends: .ciLint
+#     only: merge_requests
+#
+# Examples for delivery:
+#   test:delivery:
+#     extends: .ciTestNoSecrets
+#     only:
+#       variables:
+#         - $CI_PIPELINE_SOURCE == "push"
+#       refs: ["master", "stage", "development"]
 
+#   lint:delivery:
+#     extends: .ciLint
+#       only:
+#       variables:
+#         - $CI_PIPELINE_SOURCE == "push"
+#       refs: ["master", "stage", "development"]
+
+#  before_script anchors
 .beforeScriptTestWithVaultier: &preTestWithVaultier
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
@@ -27,50 +49,14 @@
   - npm set progress=false
   - npm set loglevel=error
   - export JOBS=max
-
-# .ciTestSecrets requires following variables
-# Vaultier specific variables:
-#   VAULTIER_VAULT_ADDR: https://vault.co.uk
-#   VAULTIER_VAULT_TOKEN: sgsdfgdfghfsggdsfg
-#   VAULTIER_BRANCH: ${CI_COMMIT_REF_NAME}
-#   VAULTIER_SECRET_SPECS_PATH: secrets.yaml
-#   VAULTIER_RUN_CAUSE: test
-#   VAULTIER_OUTPUT_FORMAT: dotenv
-#   VAULTIER_SECRET_OUTPUT_PATH: .env
-# before_script specific varialbes:
-#   VAULTIER_RELEASE_LINK: https://github.com/vranystepan/vaultier/releases/download/v0.0.4/vaultier-v0.0.4
-
-# also make sure you have specified 'only' conditions
-# Examples for MR:
-#   test:mr:
-#     extends: .ciTestNoSecrets
-#     only: merge_requests
-#
-#   lint:mr:
-#     extends: .ciLint
-#     only: merge_requests
-#
-# Examples for delivery:
-#   test:delivery:
-#     extends: .ciTestNoSecrets
-#     only:
-#       variables:
-#         - $CI_PIPELINE_SOURCE == "push"
-#       refs: ["master", "stage", "development"]
-
-#   lint:delivery:
-#     extends: .ciLint
-#       only:
-#       variables:
-#         - $CI_PIPELINE_SOURCE == "push"
-#       refs: ["master", "stage", "development"]
+# /before_script anchors
 
 .ciTestNoSecrets:
-  image: ${NODE_IMAGE}
+  image: ${NODE_IMAGE}                                                # <- specify on the top of your .gitlab-ci.yml file
   stage: test
   before_script: *preTestWithoutVaultier
   variables:
-    SSH_KEY: ${SSH_KEY}
+    SSH_KEY: ${SSH_KEY}                                               # <- specify on the top of your .gitlab-ci.yml file
   script:
     - npm run ci-test
   # coverage report for Jest output (--coverage flag)
@@ -84,10 +70,10 @@
   stage: test
   before_script: *preTestWithVaultier
   variables:
-    SSH_KEY: ${SSH_KEY}
-    VAULTIER_VAULT_ADDR: ${VAULTIER_VAULT_ADDR}
-    VAULTIER_VAULT_TOKEN: ${VAULTIER_VAULT_TOKEN}
-    VAULTIER_RELEASE_LINK: ${VAULTIER_RELEASE_LINK}
+    SSH_KEY: ${SSH_KEY}                                               # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_VAULT_ADDR: ${VAULTIER_VAULT_ADDR}                       # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_VAULT_TOKEN: ${VAULTIER_VAULT_TOKEN}                     # <- specify on the top of your .gitlab-ci.yml file
+    VAULTIER_RELEASE_LINK: ${VAULTIER_RELEASE_LINK}                   # <- specify on the top of your .gitlab-ci.yml file
     VAULTIER_SECRET_SPECS_PATH: secrets.yaml
     VAULTIER_RUN_CAUSE: test
     VAULTIER_OUTPUT_FORMAT: dotenv
@@ -101,10 +87,10 @@
       junit: junit.xml
       
 .ciLint:
-  image: ${NODE_IMAGE}
+  image: ${NODE_IMAGE}                                                # <- specify on the top of your .gitlab-ci.yml file
   stage: test
   variables:
-    SSH_KEY: ${SSH_KEY}
+    SSH_KEY: ${SSH_KEY}                                               # <- specify on the top of your .gitlab-ci.yml file
   before_script: *preTestWithoutVaultier
   script:
     - npm ci
