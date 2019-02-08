@@ -1,5 +1,15 @@
 # Prefabs for container-based (Docker) backend apps
 
+These prefabs are meant to be used during with Dockerized workloads hosted on top of Google GKE. 
+Hence we use Google Container Registry and other products from GCP portfolio. These bits most likely 
+won't fit your needs precisely but you can fork this repo and adjust them by your needs.
+
+## General requirements
+- `deploy` and `test` prefabs require base64 encoded RSA private key 
+in the variable `SSH_KEY`
+
+## Implemented prefabs
+
 ## Example pipelines
 
 ### Pipeline for Deployment and Merge Requests
