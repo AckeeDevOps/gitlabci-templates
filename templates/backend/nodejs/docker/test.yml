@@ -1,31 +1,13 @@
-# make sure you have specified 'only' conditions
-# Examples for MR:
-#   test:mr:
-#     extends: .ciTestNoSecrets
-#     only: merge_requests
-#
-#   lint:mr:
-#     extends: .ciLint
-#     only: merge_requests
-#
-# Examples for delivery:
-#   test:delivery:
-#     extends: .ciTestNoSecrets
-#     only:
-#       variables:
-#         - $CI_PIPELINE_SOURCE == "push"
-#       refs: ["master", "stage", "development"]
-
-#   lint:delivery:
-#     extends: .ciLint
-#       only:
-#       variables:
-#         - $CI_PIPELINE_SOURCE == "push"
-#       refs: ["master", "stage", "development"]
-
 #  before_script anchors
 .beforeScriptTestWithVaultier: &preTestWithVaultier
-  - export
+  #  fixed values for test
+  - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
+  - export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}
+  - export VAULTIER_SECRET_SPECS_PATH=secrets.yaml
+  - export VAULTIER_RUN_CAUSE=test
+  - export VAULTIER_OUTPUT_FORMAT=dotenv
+  - export VAULTIER_SECRET_OUTPUT_PATH=/tmp/secrets.json
+  # /fixed values for test
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
   - chmod 0400 ~/.ssh/id_rsa
@@ -37,7 +19,6 @@
   - npm set progress=false
   - npm set loglevel=error
   - export JOBS=max
-  - export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}
   - vaultier
 
 .BeforeScriptTestWithoutVaultier: &preTestWithoutVaultier
@@ -52,46 +33,44 @@
   - export JOBS=max
 # /before_script anchors
 
-.ciTestNoSecrets:
-  image: ${NODE_IMAGE}                                                # <- specify on the top of your .gitlab-ci.yml file
+.ciTest:
+  image: ${NODE_IMAGE}
   stage: test
-  before_script: *preTestWithoutVaultier
   variables:
-    SSH_KEY: ${CFG_SSH_KEY}                                               # <- specify on the top of your .gitlab-ci.yml file
+    # SSH_KEY: must be specified globally 
   script:
+    - npm ci
     - npm run ci-test
   # coverage report for Jest output (--coverage flag)
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     reports:
       junit: junit.xml
-      
+
+.ciTestNoSecrets:
+  extends: .ciTest
+  before_script: *preTestWithoutVaultier
+
 .ciTestSecrets:
-  image: ${NODE_IMAGE}
-  stage: test
+  extends: .ciTest
   before_script: *preTestWithVaultier
-  variables:
-    SSH_KEY: $CFG_SSH_KEY                                              # <- specify on the top of your .gitlab-ci.yml file
-    VAULTIER_VAULT_ADDR: ${CFG_VAULTIER_VAULT_ADDR}                       # <- specify on the top of your .gitlab-ci.yml file
-    VAULTIER_VAULT_TOKEN: ${CFG_VAULTIER_VAULT_TOKEN}                     # <- specify on the top of your .gitlab-ci.yml file
-    VAULTIER_RELEASE_LINK: ${CFG_VAULTIER_RELEASE_LINK}                   # <- specify on the top of your .gitlab-ci.yml file
-    VAULTIER_SECRET_SPECS_PATH: secrets.yaml
-    VAULTIER_RUN_CAUSE: test
-    VAULTIER_OUTPUT_FORMAT: dotenv
-    VAULTIER_SECRET_OUTPUT_PATH: /tmp/secrets.json
-  script:
-    - npm ci
-    - npm run ci-test
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-  artifacts:
-    reports:
-      junit: junit.xml
+
+.ciTestSecretsDelivery:
+  extends: .ciTestSecrets
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+    refs: ["master", "stage", "development"]
+
+.ciTestSecretsMergeRequest:
+  extends: .ciTestSecrets
+  only: ["merge_requests"]
       
 .ciLint:
-  image: ${NODE_IMAGE}                                                # <- specify on the top of your .gitlab-ci.yml file
+  image: ${NODE_IMAGE}
   stage: test
   variables:
-    SSH_KEY: ${CFG_SSH_KEY}                                               # <- specify on the top of your .gitlab-ci.yml file
+    #SSH_KEY: must be specified globally
   before_script: *preTestWithoutVaultier
   script:
     - npm ci
@@ -100,3 +79,14 @@
   artifacts:
     reports:
       junit: lint.xml
+
+.ciLintDelivery:
+  extends: .ciLint
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+    refs: ["master", "stage", "development"]
+
+.ciLintMergeRequest:
+  extends: .ciLint
+  only: ["merge_requests"]
