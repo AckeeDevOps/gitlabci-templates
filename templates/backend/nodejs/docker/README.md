@@ -11,17 +11,7 @@ in the variable `SSH_KEY`
 ## Implemented prefabs
 
 **`.buildDockerBranchDevelopment`** builds and uploads Docker images from the `development` branch. This job 
-is built around [Ackee/docker-gcr](https://github.com/AckeeDevOps/docker-gcr) Docker image. It requires a few 
-configuration parameters (specify them in `variables` section): 
-
-- `GCLOUD_SA_KEY`: base64 encoded Service Account key - this property is strictly required by Ackee/docker-gcr
-- `SSH_KEY`: base64 encoded RSA private key, it's mainly used for private git repositories
-- `IMAGE_NAME`: name of the *local* Docker image, this property will be assigned to `-t` flag during `docker build` phase
-- `IMAGE_TAG`: tag for the *local* Docker image (see above), this property will be assigned to `-t` flag during `docker build` phase
-- `BUILD_IMAGE`: base image for your Docker build e.g. `node:10.14.2`
-- `PROJECT_NAME`: project friendly name e.g. name of the customer
-- `APP_NAME`: name of the current micro service e.g. `api`
-- `GCLOUD_PROJECT_ID`: GCP project id where you Docker image will be uploaded to
+is built around [Ackee/docker-gcr](https://github.com/AckeeDevOps/docker-gcr) Docker image.
 
 Sample Dockerfile might look as follows:
 
@@ -56,14 +46,6 @@ CMD ["npm", "start"]
 **`.aglioDocsUpload`** is job built around [Ackee/aglio-uploader](https://github.com/AckeeDevOps/aglio-uploader) 
 Docker image. It contains a few third-party tools, namely: `aglio`, `apib2swagger`, `swagger-gen`, `html-inline` 
 and `rclone`. This step basically executes `npm run docs` command and uploads rendered bits to the GCS bucket. 
-It requires a few configuration parameters (specify them in `variables` section): 
-
-- `GCLOUD_PROJECT_ID`: GCP project id where your GCS bucket lives
-- `GCLOUD_SA_KEY`: base64 encoded Service Account key - this property is strictly required by Ackee/docker-gcr
-- `AGLIO_DOCS_DIRECTORY`: output directory with rendered html files, you can use relative or absolute paths.
-- `GCS_BUKET`: name of the GCS bucket
-- `GCS_PREFIX`: use this property to create directory structure, it's useful when you're using single GCS bucket for 
-multiple projects
 
 Sample NPM script might look as follows:
 
@@ -74,21 +56,7 @@ Sample NPM script might look as follows:
 ```
 
 **`.ciTestSecrets`** performs `npm run ci-test` with secrets injected, `only` directive has to be specified in 
-the main pipeline file. Secrets injection is handled via [Vaultier](https://github.com/AckeeDevOps/vaultier) tool, 
-this tool requires secrets specification and set of configuration properties:
-
-- `VAULTIER_VAULT_ADDR`: full url of your vault instance e.g. `https://vault.co.uk`
-- `VAULTIER_VAULT_TOKEN`: Vault token in plain text
-- `VAULTIER_BRANCH`: name of the current branch, Vaultier use this property to filter the input file
-- `VAULTIER_SECRET_SPECS_PATH`: path of the specification file, Vaultier use `secrets.yaml` if not specified
-- `VAULTIER_RUN_CAUSE`: Vaultier use this property to filter the input file, it can be `test` or `delivery`
-- `VAULTIER_OUTPUT_FORMAT`: `dotenv` or `helm`, see [Vaultier](https://github.com/AckeeDevOps/vaultier) documentation 
-for further details
-- `VAULTIER_SECRET_OUTPUT_PATH`: output path
-
-The job itself also requires following property:
-
-- `VAULTIER_RELEASE_LINK`: full link to the current Vaultier release e.g. `https://github.com/vranystepan/vaultier/releases/download/v0.0.4/vaultier-v0.0.5`
+the main pipeline file. Secrets injection is handled via [Vaultier](https://github.com/AckeeDevOps/vaultier) tool
 
 Sample secrets specification:
 
@@ -127,9 +95,10 @@ testConfig:
 
 **`.ciLint`** performs `npm run ci-lint` with, `only` directive has to be specified in the main pipeline file.
 
-**`.deployBranchDevelopmentSecrets`** deploys application (from `development` branch) to GKE using Helm. 
+**`.deployBranchSecretsMaster`** deploys application (from `master` branch) to production GKE environment using Helm. 
 This job is built around [Ackee/helmer-gke](https://github.com/AckeeDevOps/helmer-gke) which contains Helm 
-binary and also simplifies GKE authentication. 
+binary and also simplifies GKE authentication. Please note 
+this is manual task so it has to be confirmed from Gitlab interface.
 
 ## Example pipelines
 
