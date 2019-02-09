@@ -183,51 +183,29 @@ variables:
   NODE_IMAGE: node:10.14.0 # Please also change in Dockerfile
 
 ### MERGE REQUEST pipeline
-test:mr:                                        # stage: test, comes from included test.yml
-  extends: .ciTestSecrets
-  only: ["merge_requests"]
+test:mr:                                        # stage: test
+  extends: .ciTestSecretsMergeRequest
 
-lint:mr:                                        # stage: test, comes from included test.yml
-  extends: .ciLint
-  only: ["merge_requests"]
+lint:mr:                                        # stage: test
+  extends: .ciLintMergeRequest
 
-documentation:mr:                               # stage: build, comes from included build.yml
-  extends: .aglioDocsUpload
-  variables:
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}
-  only: ["merge_requests"]
+documentation:mr:                               # stage: build
+  extends: .aglioDocsUploadMergeRequest
+  
 
 ### DELIVERY / DEPLOYMENT pipeline
-test:delivery:                                  # stage: test, comes from included test.yml
-  extends: .ciTestSecrets
-  only:
-    variables:
-      - $CI_PIPELINE_SOURCE == "push"
-    refs: ["master", "stage", "development"]
+test:delivery:                                  # stage: test
+  extends: .ciTestSecretsDelivery
 
-lint:delivery:                                  # stage: test, comes from included test.yml
-  extends: .ciLint
-  only:
-    variables:
-      - $CI_PIPELINE_SOURCE == "push"
-    refs: ["master", "stage", "development"]
+lint:delivery:                                  # stage: test
+  extends: .ciLintDelivery
 
-build:production:                               # stage: build, comes from included build.yml
+build:production:                               # stage: build
   extends: .buildDockerBranchMaster
-  variables:
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}
 
-documentation:delivery:                         # stage: build, comes from included build.yml
-  extends: .aglioDocsUpload
-  variables:
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DEVELOPMENT}
-  only:
-    variables:
-      - $CI_PIPELINE_SOURCE == "push"
-    refs: ["master", "stage", "development"]
+documentation:delivery:                         # stage: build
+  extends: .aglioDocsUploadDelivery
 
-deploy:production:                              # deploy: build, comes from included deploy.yml
-  extends: .deployBranchMasterSecrets
-  variables:
-    HELM_BASE_VALUES: helm/values/production.yaml
+deploy:production:                              # stage: deploy
+  extends: .deployBranchSecretsMaster
 ```
