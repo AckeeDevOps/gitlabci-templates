@@ -95,10 +95,20 @@ testConfig:
 
 **`.ciLint`** performs `npm run ci-lint` with, `only` directive has to be specified in the main pipeline file.
 
-**`.deployBranchSecretsMaster`** deploys application (from `master` branch) to production GKE environment using Helm. 
+**`.deployBranchSecretsMaster`** deploys application (from `master` branch) to the production GKE environment using Helm. 
 This job is built around [Ackee/helmer-gke](https://github.com/AckeeDevOps/helmer-gke) which contains Helm 
 binary and also simplifies GKE authentication. Please note 
 this is manual task so it has to be confirmed from Gitlab interface.
+
+**`.deployBranchSecretsStage`** deploys application (from `stage` branch) to the stage GKE environment using Helm. 
+This job is built around [Ackee/helmer-gke](https://github.com/AckeeDevOps/helmer-gke) which contains Helm 
+binary and also simplifies GKE authentication. Please note 
+this is manual task so it has to be confirmed from Gitlab interface.
+
+**`.deployBranchSecretsDevelopment`** deploys application (from `development` branch) to the stage GKE environment using Helm. 
+This job is built around [Ackee/helmer-gke](https://github.com/AckeeDevOps/helmer-gke) which contains Helm 
+binary and also simplifies GKE authentication. Deployment is done 
+automatically. 
 
 ## Example pipelines
 
