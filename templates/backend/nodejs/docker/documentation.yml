@@ -1,0 +1,24 @@
+.aglioDocsUpload:
+  stage: documentation
+  image: ${AGLIO_UPLOADER_IMAGE}
+  variables:
+    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_DOCUMENTATION}
+    #GCLOUD_SA_KEY: must be specified globally
+    #AGLIO_DOCS_DIRECTORY: must be specified globally
+    #GCS_BUKET: must be specified globally
+    #GCS_PREFIX: must be specified globally
+  script:
+    - mkdir -p ${AGLIO_DOCS_DIRECTORY}
+    - npm run docs
+    - rclone-upload
+
+.aglioDocsUploadDelivery:
+  extends: .aglioDocsUpload
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+    refs: ["master", "stage", "development"]
+
+.aglioDocsUploadMergeRequest:
+  extends: .aglioDocsUpload
+  only: ["merge_requests"]
