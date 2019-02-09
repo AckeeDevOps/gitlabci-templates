@@ -43,9 +43,14 @@ CMD ["npm", "start"]
 
 **`.buildDockerBranchMaster`** same as `.buildDockerBranchDevelopment` but it builds `master` branch.
 
-**`.aglioDocsUpload`** is job built around [Ackee/aglio-uploader](https://github.com/AckeeDevOps/aglio-uploader) 
+**`.aglioDocsUploadDelivery`** is job built around [Ackee/aglio-uploader](https://github.com/AckeeDevOps/aglio-uploader) 
 Docker image. It contains a few third-party tools, namely: `aglio`, `apib2swagger`, `swagger-gen`, `html-inline` 
-and `rclone`. This step basically executes `npm run docs` command and uploads rendered bits to the GCS bucket. 
+and `rclone`. This step basically executes `npm run docs` command and uploads rendered bits to the GCS bucket. This particular job is 
+triggered after push to the `development`, `stage` and `master` 
+branches.
+
+**`.aglioDocsUploadMergeRequest`** same as `.aglioDocsUploadDelivery` 
+but for Merge Request events.
 
 Sample NPM script might look as follows:
 
