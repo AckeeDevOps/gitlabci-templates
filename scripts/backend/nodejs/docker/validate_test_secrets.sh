@@ -3,6 +3,9 @@
 echo "Running validation sequence for CI test with secrets ..."
 
 if [ "$DEBUG_MODE" = true ]; then
+  token_short=$(echo $VAULTIER_VAULT_TOKEN | head -c 10)
+  ssh_key_short=$(echo $SSH_KEY | head -c 10)
+
   echo "content of variables for debugging:"
   echo "VAULTIER_BRANCH: ${VAULTIER_BRANCH}"
   echo "VAULTIER_SECRET_SPECS_PATH: ${VAULTIER_SECRET_SPECS_PATH}"
@@ -10,8 +13,8 @@ if [ "$DEBUG_MODE" = true ]; then
   echo "VAULTIER_OUTPUT_FORMAT: ${VAULTIER_OUTPUT_FORMAT}"
   echo "VAULTIER_SECRET_OUTPUT_PATH: ${VAULTIER_SECRET_OUTPUT_PATH}"
   echo "VAULTIER_VAULT_ADDR ${VAULTIER_VAULT_ADDR}"
-  echo "VAULTIER_VAULT_TOKEN: ${VAULTIER_VAULT_TOKEN:0:10}..."
-  echo "SSH_KEY: ${SSH_KEY:0:10}..."
+  echo "VAULTIER_VAULT_TOKEN: ${token_short}..."
+  echo "SSH_KEY: ${ssh_key_short}..."
 fi
 
 # Check if variables exist
