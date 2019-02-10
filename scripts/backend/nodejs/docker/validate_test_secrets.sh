@@ -2,6 +2,18 @@
 
 echo "Running validation sequence for CI test with secrets ..."
 
+if [ "$DEBUG_MODE" = true ]; then
+  echo "content of variables for debugging:"
+  echo "VAULTIER_BRANCH: ${VAULTIER_BRANCH}"
+  echo "VAULTIER_SECRET_SPECS_PATH: ${VAULTIER_SECRET_SPECS_PATH}"
+  echo "VAULTIER_RUN_CAUSE: ${VAULTIER_RUN_CAUSE}"
+  echo "VAULTIER_OUTPUT_FORMAT: ${VAULTIER_OUTPUT_FORMAT}"
+  echo "VAULTIER_SECRET_OUTPUT_PATH: ${VAULTIER_SECRET_OUTPUT_PATH}"
+  echo "VAULTIER_VAULT_ADDR ${VAULTIER_VAULT_ADDR}"
+  echo "VAULTIER_VAULT_TOKEN: ${VAULTIER_VAULT_TOKEN:0:10}..."
+  echo "SSH_KEY: ${SSH_KEY:0:10}..."
+fi
+
 # Check if variables exist
 [ -z "$VAULTIER_BRANCH" ] && { echo "VAULTIER_BRANCH is required"; exit 1; }
 [ -z "$VAULTIER_SECRET_SPECS_PATH" ] && { echo "VAULTIER_SECRET_SPECS_PATH is required"; exit 1; }
