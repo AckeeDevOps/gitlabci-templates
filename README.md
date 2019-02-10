@@ -10,33 +10,15 @@ unpredictable in older version.
 
 ## Contents
 
-### Testing prefabs
+### Backend > Nodejs > Docker prefabs
 
-### Build prefabs
+Set of prefabs for Nodejs backend apps. [See details](https://github.com/AckeeDevOps/gitlabci-templates/tree/master/templates/backend/nodejs/docker).
 
-### Documentation prefabs
+- testing
+- linting
+- building of Docker images
+- deployment to GKE
 
-### Deployment prefabs
+Check the
 
-## Examples (Backend > Nodejs > Docker)
-
-### Testing
-
-```yaml
-include:
-  - remote: https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/templates/extends_tests.yml
-
-stages:
-  - test  
-
-test:delivery:
-  extends: .ciTestNoSecretsDelivery
-
-test:mr:
-  extends: .ciTestNoSecretsMergeRequest
-
-```
-
-### Deployment
-
-
+### Backend > Nodejs > Cloud Functions prefabs
