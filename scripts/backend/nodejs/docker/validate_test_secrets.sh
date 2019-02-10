@@ -6,6 +6,7 @@ if [ "$DEBUG_MODE" = true ]; then
   token_short=$(echo $VAULTIER_VAULT_TOKEN | head -c 10)
   ssh_key_short=$(echo $SSH_KEY | head -c 10)
 
+  echo "-----------------------------------"
   echo "content of variables for debugging:"
   echo "VAULTIER_BRANCH: ${VAULTIER_BRANCH}"
   echo "VAULTIER_SECRET_SPECS_PATH: ${VAULTIER_SECRET_SPECS_PATH}"
@@ -15,6 +16,7 @@ if [ "$DEBUG_MODE" = true ]; then
   echo "VAULTIER_VAULT_ADDR ${VAULTIER_VAULT_ADDR}"
   echo "VAULTIER_VAULT_TOKEN: ${token_short}..."
   echo "SSH_KEY: ${ssh_key_short}..."
+  echo "-----------------------------------"
 fi
 
 # Check if variables exist
