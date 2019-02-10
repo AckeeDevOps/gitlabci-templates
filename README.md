@@ -17,6 +17,7 @@ Set of prefabs for Nodejs backend apps. [See details](https://github.com/AckeeDe
 - testing
 - linting
 - building of Docker images
+- rendering of API blueprints
 - deployment to GKE
 
 ### Backend > Nodejs > Cloud Functions prefabs
