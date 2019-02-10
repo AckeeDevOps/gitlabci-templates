@@ -1,9 +1,5 @@
 # This file belongs to Ackee CICD suite for Firebase Cloud functions
 
-# both before_script sections require following variables
-# NPM specific variables:
-#   SSH_KEY: base64-encoded private RSA key
-
 .beforeScriptTestWithVaultier: &preTestWithVaultier
   #  fixed values for test
   - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
