@@ -5,7 +5,7 @@
   - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
 
 .deployScriptSecrets: &deployScriptSecrets
-  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/helm_deploy_secrets.sh -O /usr/local/bin/helm-deploy
+  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/helm_deploy_secrets.sh -O /usr/local/bin/helm-deploy
   - chmod +x /usr/local/bin/helm-deploy
   - gke-init
   - vaultier
