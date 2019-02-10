@@ -19,6 +19,4 @@ Set of prefabs for Nodejs backend apps. [See details](https://github.com/AckeeDe
 - building of Docker images
 - deployment to GKE
 
-Check the
-
 ### Backend > Nodejs > Cloud Functions prefabs
