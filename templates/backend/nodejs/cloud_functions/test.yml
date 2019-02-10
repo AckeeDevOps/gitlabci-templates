@@ -13,7 +13,6 @@
   - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier > /dev/null 2>&1
   - chmod +x /usr/local/bin/vaultier
   - vaultier
-  - cd functions
   - npm set unsafe-perm true
   - npm set progress=false
   - npm set loglevel=error
@@ -26,7 +25,6 @@
   - chmod 0400 ~/.ssh/id_rsa
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
-  - cd functions
   - npm set unsafe-perm true
   - npm set progress=false
   - npm set loglevel=error
@@ -85,6 +83,7 @@
     # and:
     #   SSH_KEY:
   script:
+    - cd functions
     - npm install
     - npm run ci-test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/ # Jest
@@ -108,6 +107,7 @@
     # and:
     #   SSH_KEY:
   script:
+    - cd functions
     - npm install
     - npm run ci-test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/ # Jest
@@ -121,6 +121,7 @@
   variables:
   before_script: *preTestWithoutVaultier
   script:
+    - cd functions
     - npm install
     - npm run ci-lint
   allow_failure: true
