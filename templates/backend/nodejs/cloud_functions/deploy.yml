@@ -1,6 +1,13 @@
 # This file belongs to Ackee CICD suite for Firebase Cloud functions
 
 .beforeScriptDeployWithVaultier: &preDeployWithVaultier
+  #  fixed values for deploy
+  - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
+  - export VAULTIER_SECRET_SPECS_PATH=secrets.yaml
+  - export VAULTIER_RUN_CAUSE=delivery
+  - export VAULTIER_OUTPUT_FORMAT=dotenv
+  - export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/secrets.json
+  # /fixed values for deploy
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
   - chmod 0400 ~/.ssh/id_rsa
@@ -8,29 +15,19 @@
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier > /dev/null 2>&1
   - chmod +x /usr/local/bin/vaultier
-  - vaultier
   - cd functions
   - npm set unsafe-perm true
   - npm set progress=false
   - npm set loglevel=error
   - export JOBS=max
   - npm install -g firebase-tools > /dev/null 2>&1
+  - vaultier
 
 .deployBranchMasterSecrets:
   image: ${NODE_IMAGE}
   stage: deploy
   variables:
-    GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID_PRODUCTION}
-    VAULTIER_RUN_CAUSE: delivery
-    VAULTIER_OUTPUT_FORMAT: dotenv
-    VAULTIER_SECRET_OUTPUT_PATH: ${CI_PROJECT_DIR}/functions/secrets.json
-    # Please also specify in the main file:
-    #   FIREBASE_TOKEN:
-    #   VAULTIER_VAULT_TOKEN:
-    #   VAULTIER_VAULT_ADDR:
-    #   VAULTIER_BRANCH:
-    # and:
-    #   SSH_KEY:
+    #SSH_KEY: must be specified globally
   before_script: *preDeployWithVaultier
   script:
     - npm install
