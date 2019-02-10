@@ -96,6 +96,10 @@ testConfig:
 
 ```
 
+**`.ciTestSecretsDelivery`** performs `npm run ci-test` for pushes in `master`, `stage` and `development` branches.
+
+**`.ciTestSecretsMergeRequest`** performs `npm run ci-test` for Merge Request events.
+
 **`.ciTestNoSecrets`** performs `npm run ci-test` with, `only` directive has to be specified in the main pipeline file.
 
 **`.ciLint`** performs `npm run ci-lint` with, `only` directive has to be specified in the main pipeline file.
