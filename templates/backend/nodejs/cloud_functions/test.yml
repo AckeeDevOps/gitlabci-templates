@@ -53,6 +53,17 @@
   artifacts:
     reports:
       junit: junit.xml
+      
+.ciTestSecretsDelivery:
+  extends: .ciTestSecrets
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+    refs: ["master", "stage", "development"]
+
+.ciTestSecretsMergeRequest:
+  extends: .ciTestSecrets
+  only: ["merge_requests"]
 
 .ciTest:
   image: ${NODE_IMAGE}
@@ -68,6 +79,17 @@
   artifacts:
     reports:
       junit: junit.xml
+
+.ciTestDelivery:
+  extends: .ciTest
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+    refs: ["master", "stage", "development"]
+
+.ciTestMergeRequest:
+  extends: .ciTest
+  only: ["merge_requests"]
       
 .ciLint:
   image: ${NODE_IMAGE}
@@ -82,3 +104,14 @@
   artifacts:
     reports:
       junit: lint.xml
+
+.ciLintDelivery:
+  extends: .ciLint
+  only:
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+    refs: ["master", "stage", "development"]
+
+.ciLintMergeRequest:
+  extends: .ciLint
+  only: ["merge_requests"]
