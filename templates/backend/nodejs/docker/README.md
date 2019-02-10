@@ -100,6 +100,10 @@ testConfig:
 
 **`.ciLint`** performs `npm run ci-lint` with, `only` directive has to be specified in the main pipeline file.
 
+**`.ciLintDelivery`** performs `npm run ci-lint` for pushes in `master`, `stage` and `development` branches.
+
+**`.ciLintMergeRequest`** performs `npm run ci-lint` for Merge Request events.
+
 **`.deployBranchSecretsMaster`** deploys application (from `master` branch) to the production GKE environment using Helm. 
 This job is built around [Ackee/helmer-gke](https://github.com/AckeeDevOps/helmer-gke) which contains Helm 
 binary and also simplifies GKE authentication. Please note 
