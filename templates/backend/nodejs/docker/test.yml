@@ -9,7 +9,7 @@
   - export VAULTIER_SECRET_OUTPUT_PATH=/tmp/secrets.json
   # /fixed values for test
   #  validate input
-  - wget -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/validate_test_secrets.sh | sh
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/validate_test_secrets.sh | sh
   # /validate input
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
