@@ -4,7 +4,7 @@
   - export VAULTIER_SECRET_OUTPUT_PATH=/tmp/secrets.json
   - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
 
-.deployScriptSecrets: &deployScriptSecrets
+.deployScriptSecrets: &deploySecrets
   - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/helm_deploy_secrets.sh -O /usr/local/bin/helm-deploy
   - chmod +x /usr/local/bin/helm-deploy
   - gke-init
@@ -15,7 +15,7 @@
   image: ${HELMER_IMAGE}
   stage: deploy
   before_script: *preDeploySecrets
-  script: *deployScriptSecrets
+  script: *deploySecrets
   variables:
     #GCLOUD_SA_KEY: must be specified globally
     #VAULTIER_VAULT_ADDR: must be specified globally
