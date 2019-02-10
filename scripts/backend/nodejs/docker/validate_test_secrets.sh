@@ -1,5 +1,9 @@
 #!/bin/sh
 
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
 echo "Running validation sequence for CI test with secrets ..."
 
 # Check if variables exist
@@ -16,3 +20,5 @@ if [ $? -ne 0 ]; then
   echo "SSH_KEY is broken. Make sure it's base64 encoded RSA private key"
   exit 1
 fi
+
+echo "${green}Everything is silky smooth, well done!${reset}"
