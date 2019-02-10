@@ -20,12 +20,11 @@
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier > /dev/null 2>&1
   - chmod +x /usr/local/bin/vaultier
-  - vaultier
   - npm set unsafe-perm true
   - npm set progress=false
   - npm set loglevel=error
   - export JOBS=max
-  - export CFG_JSON_PATH=${PLUGIN_SECRET_OUTPUT_PATH}
+  - vaultier
 
 .beforeScriptTestWithoutVaultier: &preTestWithoutVaultier
   - mkdir ~/.ssh/
@@ -38,6 +37,7 @@
   - npm set loglevel=error
   - export JOBS=max
 
+# Base test prefab with secrets, 'only' directive required
 .ciTestSecrets:
   image: ${NODE_IMAGE}
   stage: test
@@ -53,7 +53,8 @@
   artifacts:
     reports:
       junit: junit.xml
-      
+
+# Test prefab with secrets for pushes
 .ciTestSecretsDelivery:
   extends: .ciTestSecrets
   only:
@@ -61,10 +62,12 @@
       - $CI_PIPELINE_SOURCE == "push"
     refs: ["master", "stage", "development"]
 
+# Test prefab with serets for merge requests
 .ciTestSecretsMergeRequest:
   extends: .ciTestSecrets
   only: ["merge_requests"]
 
+# Base test prefab without secrets, 'only' directive required
 .ciTest:
   image: ${NODE_IMAGE}
   stage: test
@@ -80,6 +83,7 @@
     reports:
       junit: junit.xml
 
+# Test prefab without secrets for pushes
 .ciTestDelivery:
   extends: .ciTest
   only:
@@ -87,10 +91,12 @@
       - $CI_PIPELINE_SOURCE == "push"
     refs: ["master", "stage", "development"]
 
+# Test prefab without serets for merge requests
 .ciTestMergeRequest:
   extends: .ciTest
   only: ["merge_requests"]
-      
+
+# Base lint prefab, 'only' directive required
 .ciLint:
   image: ${NODE_IMAGE}
   stage: test
@@ -105,6 +111,7 @@
     reports:
       junit: lint.xml
 
+# Lint prefab for pushes
 .ciLintDelivery:
   extends: .ciLint
   only:
@@ -112,6 +119,7 @@
       - $CI_PIPELINE_SOURCE == "push"
     refs: ["master", "stage", "development"]
 
+# Lint prefab for merge requests
 .ciLintMergeRequest:
   extends: .ciLint
   only: ["merge_requests"]
