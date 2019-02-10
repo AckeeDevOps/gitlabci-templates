@@ -5,6 +5,14 @@
 #   SSH_KEY: base64-encoded private RSA key
 
 .beforeScriptTestWithVaultier: &preTestWithVaultier
+  #  fixed values for test
+  - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
+  - export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}
+  - export VAULTIER_SECRET_SPECS_PATH=secrets.yaml
+  - export VAULTIER_RUN_CAUSE=test
+  - export VAULTIER_OUTPUT_FORMAT=dotenv
+  - export VAULTIER_SECRET_OUTPUT_PATH=/tmp/secrets.json
+  # /fixed values for test
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
   - chmod 0400 ~/.ssh/id_rsa
@@ -30,58 +38,13 @@
   - npm set loglevel=error
   - export JOBS=max
 
-# .ciTestSecrets requires following variables
-# Vaultier specific variables:
-#   VAULTIER_VAULT_ADDR: https://vault.co.uk
-#   VAULTIER_VAULT_TOKEN: sgsdfgdfghfsggdsfg
-#   VAULTIER_BRANCH: ${CI_COMMIT_REF_NAME}
-#   VAULTIER_SECRET_SPECS_PATH: secrets.yaml
-#   VAULTIER_RUN_CAUSE: test
-#   VAULTIER_OUTPUT_FORMAT: dotenv
-#   VAULTIER_SECRET_OUTPUT_PATH: .env
-# before_script specific varialbes:
-#   VAULTIER_RELEASE_LINK: https://github.com/vranystepan/vaultier/releases/download/v0.0.4/vaultier-v0.0.4
-
-# also make sure you have specified 'only' conditions
-# Examples for MR:
-#   test:mr:
-#     extends: .ciTestNoSecrets
-#     only: merge_requests
-#
-#   lint:mr:
-#     extends: .ciLint
-#     only: merge_requests
-#
-# Examples for delivery:
-#   test:delivery:
-#     extends: .ciTestNoSecrets
-#     only:
-#       variables:
-#         - $CI_PIPELINE_SOURCE == "push"
-#       refs: ["master", "stage", "development"]
-
-#   lint:delivery:
-#     extends: .ciLint
-#       only:
-#       variables:
-#         - $CI_PIPELINE_SOURCE == "push"
-#       refs: ["master", "stage", "development"]
-
 .ciTestSecrets:
   image: ${NODE_IMAGE}
   stage: test
   before_script: *preTestWithVaultier
   variables:
-    VAULTIER_RUN_CAUSE: test
-    VAULTIER_OUTPUT_FORMAT: dotenv
-    VAULTIER_SECRET_OUTPUT_PATH: ${CI_PROJECT_DIR}/functions/secrets.json
-    # Please also specify in the main file:
-    #   FIREBASE_TOKEN:
-    #   VAULTIER_VAULT_TOKEN:
-    #   VAULTIER_VAULT_ADDR:
-    #   VAULTIER_BRANCH:
-    # and:
-    #   SSH_KEY:
+    # SSH_KEY: must be specified globally
+    # VAULTIER_TOKEN: must be specified globally
   script:
     - cd functions
     - npm install
@@ -96,16 +59,7 @@
   stage: test
   before_script: *preTestWithoutVaultier
   variables:
-    VAULTIER_RUN_CAUSE: test
-    VAULTIER_OUTPUT_FORMAT: dotenv
-    VAULTIER_SECRET_OUTPUT_PATH: ${CI_PROJECT_DIR}/functions/secrets.json
-    # Please also specify in the main file:
-    #   FIREBASE_TOKEN:
-    #   VAULTIER_VAULT_TOKEN:
-    #   VAULTIER_VAULT_ADDR:
-    #   VAULTIER_BRANCH:
-    # and:
-    #   SSH_KEY:
+    # SSH_KEY: must be specified globally
   script:
     - cd functions
     - npm install
