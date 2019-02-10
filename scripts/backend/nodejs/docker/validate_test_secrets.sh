@@ -17,4 +17,4 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "\033[32mEverything is silky smooth, well done!"
+echo "Everything is silky smooth, well done!"
