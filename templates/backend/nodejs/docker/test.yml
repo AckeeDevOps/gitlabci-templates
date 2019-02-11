@@ -3,7 +3,7 @@
   #  fixed values for test
   - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
   - export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}
-  - export VAULTIER_SECRET_SPECS_PATH=secrets.yaml
+  - export VAULTIER_SECRET_SPECS_PATH=${CI_PROJECT_DIR}/secrets.yaml
   - export VAULTIER_RUN_CAUSE=test
   - export VAULTIER_OUTPUT_FORMAT=dotenv
   - export VAULTIER_SECRET_OUTPUT_PATH=/tmp/secrets.json
