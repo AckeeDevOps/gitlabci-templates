@@ -2,6 +2,21 @@
 
 echo "Running validation sequence for Build of Docker image ..."
 
+if [ "$DEBUG_MODE" = true ]; then
+  ssh_key_short=$(echo $SSH_KEY | head -c 10)
+
+  echo "-----------------------------------"
+  echo "content of variables for debugging:"
+  echo "GCLOUD_PROJECT_ID: ${GCLOUD_PROJECT_ID}"
+  echo "PROJECT_NAME: ${PROJECT_NAME}"
+  echo "APP_NAME: ${APP_NAME}"
+  echo "IMAGE_NAME: ${IMAGE_NAME}"
+  echo "IMAGE_TAG: ${IMAGE_TAG}"
+  echo "NODE_IMAGE ${NODE_IMAGE}"
+  echo "SSH_KEY: ${ssh_key_short}..."
+  echo "-----------------------------------"
+fi
+
 [ -z "$GCLOUD_PROJECT_ID" ] && { echo "GCLOUD_PROJECT_ID is required"; exit 1; }
 [ -z "$PROJECT_NAME" ] && { echo "PROJECT_NAME is required"; exit 1; }
 [ -z "$APP_NAME" ] && { echo "APP_NAME is required"; exit 1; }
