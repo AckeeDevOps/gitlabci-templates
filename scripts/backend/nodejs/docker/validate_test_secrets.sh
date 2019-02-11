@@ -28,6 +28,7 @@ fi
 [ -z "$VAULTIER_VAULT_ADDR" ] && { echo "VAULTIER_VAULT_ADDR is required"; exit 1; }
 [ -z "$VAULTIER_VAULT_TOKEN" ] && { echo "VAULTIER_VAULT_TOKEN is required"; exit 1; }
 [ -z "$SSH_KEY" ] && { echo "SSH_KEY is required"; exit 1; }
+[ -z "$NODE_IMAGE" ] && { echo "NODE_IMAGE is required"; exit 1; }
 
 # Perform more sophisticated tests
 # Check valid RSA key

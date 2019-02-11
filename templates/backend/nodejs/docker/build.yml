@@ -1,3 +1,8 @@
+.beforeBuild: &preBuild
+  #  validate input
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/validate_build_docker.sh | sh
+  # /validate input
+
 .buildScript: &buildScript
   - gcr-init
   - docker build --build-arg SSH_KEY --build-arg BUILD_IMAGE=${NODE_IMAGE} -t ${IMAGE_NAME}:${IMAGE_TAG} .
@@ -7,6 +12,7 @@
 .buildDockerBranch:
   image: ${DOCKER_GCR_IMAGE}
   stage: build
+  before_script: *preBuild
   script: *buildScript
   variables:
     #SSH_KEY: must be specified globally
