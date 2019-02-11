@@ -23,6 +23,7 @@ fi
 [ -z "$IMAGE_TAG" ] && { echo "IMAGE_TAG is required"; exit 1; }
 [ -z "$IMAGE_NAME" ] && { echo "IMAGE_NAME is required"; exit 1; }
 [ -z "$SSH_KEY" ] && { echo "SSH_KEY is required"; exit 1; }
+[ -z "$GCLOUD_SA_KEY" ] && { echo "GCLOUD_SA_KEY is required"; exit 1; }
 [ -z "$NODE_IMAGE" ] && { echo "NODE_IMAGE is required"; exit 1; }
 
 # Perform more sophisticated tests
