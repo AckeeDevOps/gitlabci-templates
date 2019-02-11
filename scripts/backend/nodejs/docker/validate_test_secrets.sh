@@ -30,16 +30,19 @@ fi
 [ -z "$SSH_KEY" ] && { echo "SSH_KEY is required"; exit 1; }
 
 # Perform more sophisticated tests
+# Check valid RSA key
 echo ${SSH_KEY} | base64 -d | openssl rsa -noout > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo "SSH_KEY is broken. Make sure it's base64 encoded RSA private key"
   exit 1
 fi
 
+# Check valid Vault token
 token_size=$(echo ${VAULTIER_VAULT_TOKEN} | wc -c)
 if [ $token_size -ne 27 ]; then
   echo "VAULTIER_VAULT_TOKEN should have exactly 27 characters"
   exit 1
 fi
 
+# Notify about success
 echo "Everything is silky smooth, well done!"
