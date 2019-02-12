@@ -27,7 +27,7 @@ fi
 [ -z "$NODE_IMAGE" ] && { echo "NODE_IMAGE is required"; exit 1; }
 
 # Perform more sophisticated tests
-# Check valid RSA key
+# Check valid RSA key, in alpine images make sure you have 'openssl' installed
 echo ${SSH_KEY} | base64 -d | openssl rsa -noout > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo "SSH_KEY is broken. Make sure it's base64 encoded RSA private key"
