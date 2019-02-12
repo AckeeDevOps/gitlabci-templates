@@ -16,10 +16,9 @@ is built around [Ackee/docker-gcr](https://github.com/AckeeDevOps/docker-gcr) Do
 Sample Dockerfile might look as follows:
 
 ```dockerfile
-ARG SSH_KEY=""
-ARG BUILD_IMAGE="node:10.14.0"
+FROM node:10.14.2 as builder
 
-FROM ${BUILD_IMAGE} as builder
+ARG SSH_KEY=""
 ENV JOBS="max"
 WORKDIR /usr/src/app
 COPY . .
@@ -33,10 +32,11 @@ RUN npm set progress=false
 RUN npm set loglevel=error
 RUN npm ci
 
-FROM ${BUILD_IMAGE}
+FROM node:10.14.2
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app /usr/src/app
 CMD ["npm", "start"]
+
 ```
 
 **`.buildDockerBranchStage`** same as `.buildDockerBranchDevelopment` but it builds `stage` branch.
