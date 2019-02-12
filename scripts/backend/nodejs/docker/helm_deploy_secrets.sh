@@ -35,7 +35,7 @@ helm upgrade \
 --set general.appName=${APP_NAME} \
 --set general.projectName=${PROJECT_NAME} \
 --set general.environment=${CI_ENVIRONMENT_NAME} \
---set general.imageName=eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME} \
+--set general.imageName=eu.gcr.io/${GCLOUD_PROJECT_ID}/${PROJECT_NAME}/${APP_NAME}-${CI_COMMIT_REF_NAME} \
 --set general.imageTag=${IMAGE_TAG} \
 --set general.meta.buildHash=${CI_COMMIT_SHORT_SHA} \
 --set general.meta.branch=${CI_COMMIT_REF_NAME} \
