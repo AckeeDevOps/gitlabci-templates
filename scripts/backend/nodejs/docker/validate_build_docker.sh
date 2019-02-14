@@ -30,7 +30,7 @@ fi
 
 # Perform more sophisticated tests
 # Check valid RSA key, in alpine images make sure you have 'openssl' installed
-if echo "${SSH_KEY}" | base64 -d | openssl rsa -noout > /dev/null 2>&1
+if ! echo "${SSH_KEY}" | base64 -d | openssl rsa -noout > /dev/null 2>&1
 then
   echo "SSH_KEY is broken. Make sure it's base64 encoded RSA private key"
   exit 1
