@@ -3,7 +3,7 @@
 echo "Running validation sequence for Documentation ..."
 
 if [ "$DEBUG_MODE" = true ]; then
-  gcloud_sa_key_short=$(echo $GCLOUD_SA_KEY | head -c 10)
+  gcloud_sa_key_short=$(echo "$GCLOUD_SA_KEY" | head -c 10)
 
   echo "-----------------------------------"
   echo "content of variables for debugging:"

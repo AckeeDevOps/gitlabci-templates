@@ -3,8 +3,8 @@
 echo "Running validation sequence for CI test with secrets ..."
 
 if [ "$DEBUG_MODE" = true ]; then
-  token_short=$(echo $VAULTIER_VAULT_TOKEN | head -c 10)
-  ssh_key_short=$(echo $SSH_KEY | head -c 10)
+  token_short=$(echo "$VAULTIER_VAULT_TOKEN" | head -c 10)
+  ssh_key_short=$(echo "$SSH_KEY" | head -c 10)
 
   echo "-----------------------------------"
   echo "content of variables for debugging:"
@@ -32,15 +32,14 @@ fi
 
 # Perform more sophisticated tests
 # Check valid RSA key, in alpine images make sure you have 'openssl' installed
-echo ${SSH_KEY} | base64 -d | openssl rsa -noout > /dev/null 2>&1
-if [ $? -ne 0 ]; then
+if echo "${SSH_KEY}" | base64 -d | openssl rsa -noout > /dev/null 2>&1
+then
   echo "SSH_KEY is broken. Make sure it's base64 encoded RSA private key"
   exit 1
 fi
 
 # Check valid Vault token
-token_size=$(echo ${VAULTIER_VAULT_TOKEN} | wc -c)
-if [ $token_size -ne 27 ]; then
+if [ "${#VAULTIER_VAULT_TOKEN}" -ne 27 ]; then
   echo "VAULTIER_VAULT_TOKEN should have exactly 27 characters"
   exit 1
 fi
