@@ -39,8 +39,8 @@ then
 fi
 
 # Check valid Vault token
-if [ "${#VAULTIER_VAULT_TOKEN}" -ne 27 ]; then
-  echo "VAULTIER_VAULT_TOKEN should have exactly 27 characters"
+if [ "${#VAULTIER_VAULT_TOKEN}" -ne 26 ]; then
+  echo "VAULTIER_VAULT_TOKEN should have exactly 26 characters"
   exit 1
 fi
 
