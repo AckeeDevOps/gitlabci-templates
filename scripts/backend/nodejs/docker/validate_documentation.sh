@@ -7,7 +7,7 @@ if [ "$DEBUG_MODE" = true ]; then
 
   echo "-----------------------------------"
   echo "content of variables for debugging:"
-  echo "GCLOUD_SA_KEY: ${gcloud_sa_key_short}"
+  echo "GCLOUD_SA_KEY: ${gcloud_sa_key_short}..."
   echo "AGLIO_DOCS_DIRECTORY: ${AGLIO_DOCS_DIRECTORY}"
   echo "GCS_BUKET: ${GCS_BUKET}"
   echo "GCS_PREFIX: ${GCS_PREFIX}"
