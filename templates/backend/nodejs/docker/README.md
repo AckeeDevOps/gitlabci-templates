@@ -178,6 +178,7 @@ variables:
   VAULTIER_VAULT_ADDR: https://vault.co.uk
   VAULTIER_VAULT_TOKEN: ${SECRET_VAULT_TOKEN}   # comes from ci/cd settings
   VAULTIER_BRANCH: ${CI_COMMIT_REF_NAME}
+  VAULTIER_SECRET_SPECS_PATH: ${CI_PROJECT_DIR}/secrets.yaml
 
   ### AGLIO UPLOADER settings
   AGLIO_DOCS_DIRECTORY: ./docs-output/.
