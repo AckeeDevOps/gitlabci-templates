@@ -144,8 +144,10 @@ variables:
   ### GLOBAL STUFF
   APP_NAME: api
   PROJECT_NAME: node-template
+  
   GIT_STRATEGY: clone
-  TZ: Europe/Prague
+  DEBUG_MODE: 'true'
+  
   IMAGE_NAME: ${PROJECT_NAME}-${APP_NAME}-${CI_COMMIT_REF_NAME}
   IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
   HELM_CHART_PATH: helm/charts/default
