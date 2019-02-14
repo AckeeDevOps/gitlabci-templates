@@ -1,3 +1,8 @@
+.beforeDocumentation: &preDocumentation
+  #  validate input
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/validate_documentation.sh | sh
+  # /validate input
+
 .aglioDocsUpload:
   stage: documentation
   image: ${AGLIO_UPLOADER_IMAGE}
@@ -7,6 +12,7 @@
     #AGLIO_DOCS_DIRECTORY: must be specified globally
     #GCS_BUKET: must be specified globally
     #GCS_PREFIX: must be specified globally
+  before_script: *preDocumentation
   script:
     - mkdir -p ${AGLIO_DOCS_DIRECTORY}
     - npm run docs
