@@ -4,6 +4,7 @@ echo "Running validation sequence for Build of Docker image ..."
 
 if [ "$DEBUG_MODE" = true ]; then
   ssh_key_short=$(echo $SSH_KEY | head -c 10)
+  gcloud_sa_key_short=$(echo $GCLOUD_SA_KEY | head -c 10)
 
   echo "-----------------------------------"
   echo "content of variables for debugging:"
@@ -14,6 +15,7 @@ if [ "$DEBUG_MODE" = true ]; then
   echo "IMAGE_TAG: ${IMAGE_TAG}"
   echo "NODE_IMAGE ${NODE_IMAGE}"
   echo "SSH_KEY: ${ssh_key_short}..."
+  echo "GCLOUD_SA_KEY: ${gcloud_sa_key_short}..."
   echo "-----------------------------------"
 fi
 
