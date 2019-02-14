@@ -14,19 +14,23 @@ if [ "$DEBUG_MODE" = true ]; then
   echo "GCLOUD_SA_KEY: ${gcloud_sa_key_short}..."
   echo "GCLOUD_GKE_NAMESPACE: ${GCLOUD_GKE_NAMESPACE}"
   
+  echo "-----------------------------------"
   echo "APP_NAME: ${APP_NAME}"
   echo "PROJECT_NAME: ${PROJECT_NAME}"
   echo "CI_ENVIRONMENT_NAME: ${CI_ENVIRONMENT_NAME}"
   echo "IMAGE_TAG: ${IMAGE_TAG}"
   
+  echo "-----------------------------------"
   echo "CI_COMMIT_SHORT_SHA: ${CI_COMMIT_SHORT_SHA}"
   echo "CI_COMMIT_REF_NAME: ${CI_COMMIT_REF_NAME}"
   echo "CI_PROJECT_URL: ${CI_PROJECT_URL}"
   
+  echo "-----------------------------------"
   echo "HELM_CHART_PATH: ${HELM_CHART_PATH}"
   echo "HELM_DRY_RUN: ${HELM_DRY_RUN}"
   echo "HELM_BASE_VALUES: ${HELM_BASE_VALUES}"
   
+  echo "-----------------------------------"
   echo "VAULTIER_BRANCH: ${VAULTIER_BRANCH}"
   echo "VAULTIER_SECRET_SPECS_PATH: ${VAULTIER_SECRET_SPECS_PATH}"
   echo "VAULTIER_RUN_CAUSE: ${VAULTIER_RUN_CAUSE}"
