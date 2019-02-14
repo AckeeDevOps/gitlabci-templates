@@ -3,6 +3,9 @@
   - export VAULTIER_OUTPUT_FORMAT=helm
   - export VAULTIER_SECRET_OUTPUT_PATH=/tmp/secrets.json
   - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
+  #  validate input
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/validate_deploy_secrets.sh | sh
+  # /validate input
 
 .deployScriptSecrets: &deploySecrets
   - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/helm_deploy_secrets.sh -O /usr/local/bin/helm-deploy
