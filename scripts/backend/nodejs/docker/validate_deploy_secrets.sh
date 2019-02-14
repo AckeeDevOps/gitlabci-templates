@@ -2,6 +2,8 @@
 
 echo "Running validation sequence for Deploy Helm chart with secrets ..."
 
+[ -z "$HELM_DRY_RUN" ] && { export HELM_DRY_RUN=false; }
+
 if [ "$DEBUG_MODE" = true ]; then
   gcloud_sa_key_short=$(echo $GCLOUD_SA_KEY | head -c 10)
   token_short=$(echo $VAULTIER_VAULT_TOKEN | head -c 10)
