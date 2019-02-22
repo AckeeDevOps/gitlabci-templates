@@ -6,7 +6,7 @@
   - export VAULTIER_SECRET_SPECS_PATH=secrets.yaml
   - export VAULTIER_RUN_CAUSE=delivery
   - export VAULTIER_OUTPUT_FORMAT=dotenv
-  - [ -z "$VAULTIER_SECRET_OUTPUT_PATH" ] \&& { export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; }
+  - if [ -z "$VAULTIER_SECRET_OUTPUT_PATH" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
   # /fixed values for deploy
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
