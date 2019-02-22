@@ -12,10 +12,17 @@
 
 .beforeScriptDocumentation: &preDocumentation
   - export GCLOUD_PROJECT_ID=${GCLOUD_PROJECT_ID_DOCUMENTATION}
+  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/common/rclone-upload.sh -O /usr/local/bin/rclone-upload
+  - chmod +x /usr/local/bin/rclone-upload
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/validate_deploy_secrets.sh | sh
+  - npm set unsafe-perm true
+  - npm set progress=false
+  - npm set loglevel=error
+  - export JOBS=max
 
 .aglioDocsUpload:
   stage: documentation
-  image: ${AGLIO_UPLOADER_IMAGE}
+  image: ${NODE_IMAGE}
   before_script: *preDocumentation
   variables:
     #AGLIO_DOCS_DIRECTORY: must be specified globally 
@@ -25,6 +32,7 @@
   script:
     - cd functions
     - mkdir -p ${AGLIO_DOCS_DIRECTORY}
+    - npm install
     - npm run docs
     - rclone-upload
     
