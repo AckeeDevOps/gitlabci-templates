@@ -7,6 +7,7 @@
 echo "checking if unzip is installed ..."
 if ! command -v unzip > /dev/null 2>&1
 then
+  echo "installing unzip ..."
   case "${ID}" in
     "alpine")
       apk add unzip > /dev/null 2>&1
