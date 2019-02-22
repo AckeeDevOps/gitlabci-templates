@@ -14,6 +14,10 @@ then
       apt-get update -y > /dev/null 2>&1
       apt-get install unzip -y > /dev/null 2>&1
       ;;
+    *)
+      echo "I don't know this distribution ..."
+      exit 1
+      ;;
   esac
 fi
 
