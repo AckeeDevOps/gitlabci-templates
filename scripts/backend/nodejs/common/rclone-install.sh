@@ -4,6 +4,7 @@
 # shellcheck disable=SC1091
 . /etc/os-release
 
+echo "checking if unzip is installed ..."
 if ! command -v unzip
 then
   case "${ID}" in
