@@ -13,7 +13,7 @@
 .beforeScriptDocumentation: &preDocumentation
   - export GCLOUD_PROJECT_ID=${GCLOUD_PROJECT_ID_DOCUMENTATION}
   # install uploader script
-  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/common/rclone-upload.sh -O /usr/local/bin/rclone-upload
+  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/common/rclone-upload.sh -O /usr/local/bin/rclone-upload > /dev/null 2>&1
   - chmod +x /usr/local/bin/rclone-upload
   # install rclone
   - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/common/rclone-install.sh | sh
