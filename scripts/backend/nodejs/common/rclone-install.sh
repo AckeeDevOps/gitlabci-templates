@@ -5,7 +5,7 @@
 . /etc/os-release
 
 echo "checking if unzip is installed ..."
-if ! command -v unzip
+if ! command -v unzip > /dev/null 2>&1
 then
   case "${ID}" in
     "alpine")
