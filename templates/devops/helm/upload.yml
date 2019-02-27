@@ -1,0 +1,17 @@
+# HELM_REPOSITORY_URL
+# HELM_REPOSITORY_NAME
+# HELM_REPOSITORY_USERNAME
+# HELM_REPOSITORY_PASSWORD
+# HELM_BINARIES_URL
+
+.beforeScriptHelmUpload: &beforeScriptHelmUpload
+  - apk add jq > /dev/null 2>&1
+  - wget ${HELM_BINARIES_URL} -O helm.tar.gz > /dev/null 2>&1
+  - tar -xvf helm.tar.gz > /dev/null 2>&1
+  - mv linux-amd64/helm /usr/local/bin
+  - rm -rf linux-amd64 helm.tar.gz
+  - helm init --client-only
+  - helm plugin install https://github.com/chartmuseum/helm-push > /dev/null 2>&1
+  - helm repo add --username ${HELM_REPOSITORY_USERNAME} --password ${HELM_REPOSITORY_PASSWORD} ${HELM_REPOSITORY_NAME} ${HELM_REPOSITORY_PASSWORD}
+  
+ # tbd
