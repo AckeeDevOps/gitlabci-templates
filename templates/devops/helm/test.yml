@@ -7,7 +7,7 @@
   # /install and configure Helm
   
 .scriptHelmTest: &scriptHelmTest
-  - find tests/ -name '*_test.sh' -exec sh -c '{}' \;
+  - find tests/ -name '*_test.sh' -exec sh -c 'chmod +x {} && {}' \;
    
 .helmTest:
   stage: test
