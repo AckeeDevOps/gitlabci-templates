@@ -7,7 +7,7 @@
   # /install and configure Helm
   
 .scriptHelmTest: &scriptHelmTest
-  - helm lint --strict chart/
+  - helm unittest ./chart
    
 .helmTest:
   stage: test
