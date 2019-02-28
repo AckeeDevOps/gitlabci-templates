@@ -25,5 +25,9 @@ helm plugin install https://github.com/chartmuseum/helm-push > /dev/null 2>&1
 helm plugin install https://github.com/lrills/helm-unittest > /dev/null 2>&1
 
 # Add remote repository
-helm repo add --username ${HELM_REPOSITORY_USERNAME} --password ${HELM_REPOSITORY_PASSWORD} ${HELM_REPOSITORY_NAME} ${HELM_REPOSITORY_URL} > /dev/null 2>&1
+helm repo add \
+  --username "${HELM_REPOSITORY_USERNAME}" \
+  --password "${HELM_REPOSITORY_PASSWORD}" \
+  "${HELM_REPOSITORY_NAME}" \
+  "${HELM_REPOSITORY_URL}" > /dev/null 2>&1
 
