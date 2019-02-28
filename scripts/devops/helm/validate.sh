@@ -6,7 +6,7 @@
 # HELM_REPOSITORY_PASSWORD
 # HELM_BINARIES_URL
 
-echo "Running validation sequence for Upload Helm chart to repository ..."
+echo "Running validation sequence for Helm pipeline ..."
 
 if [ "$DEBUG_MODE" = true ]; then
   password_masked=$(echo "${HELM_REPOSITORY_PASSWORD}" | sed 's/./*/g')
