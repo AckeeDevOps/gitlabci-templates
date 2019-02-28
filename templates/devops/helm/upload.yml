@@ -19,3 +19,12 @@
   
  .scriptHelmUpload: &scriptHelmUpload:
    - echo tbd
+   
+ .helmUploadTag:
+   stage: upload
+   image: alpine
+   before_script: *beforeScriptHelmUpload
+   script: *scriptHelmUpload
+   only:
+    variables:
+      - $CI_COMMIT_TAG
