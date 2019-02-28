@@ -2,6 +2,9 @@
 
 echo "Now installing helm ..."
 
+# Add required packages
+apk add ca-certificates git > /dev/null 2>&1
+
 # Download Helm binaries
 wget "${HELM_BINARIES_URL}" -O helm.tar.gz > /dev/null 2>&1
 
