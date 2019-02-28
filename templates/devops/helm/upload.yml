@@ -8,7 +8,6 @@
   #  validate input
   - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/validate_upload.sh | sh
   # /validate input
-  - apk add jq > /dev/null 2>&1
   - wget ${HELM_BINARIES_URL} -O helm.tar.gz > /dev/null 2>&1
   - tar -xvf helm.tar.gz > /dev/null 2>&1
   - mv linux-amd64/helm /usr/local/bin
