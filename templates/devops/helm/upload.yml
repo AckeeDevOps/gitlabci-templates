@@ -16,7 +16,7 @@
   - helm plugin install https://github.com/chartmuseum/helm-push > /dev/null 2>&1
   - helm repo add --username ${HELM_REPOSITORY_USERNAME} --password ${HELM_REPOSITORY_PASSWORD} ${HELM_REPOSITORY_NAME} ${HELM_REPOSITORY_PASSWORD}
   
-.scriptHelmUpload: &scriptHelmUpload:
+.scriptHelmUpload: &scriptHelmUpload
   - echo tbd
    
 .helmUploadTag:
