@@ -2,14 +2,9 @@
   #  validate input
   - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/validate_upload.sh | sh
   # /validate input
-  - apk add ca-certificates git > /dev/null 2>&1
-  - wget ${HELM_BINARIES_URL} -O helm.tar.gz > /dev/null 2>&1
-  - tar -xvf helm.tar.gz > /dev/null 2>&1
-  - mv linux-amd64/helm /usr/local/bin
-  - rm -rf linux-amd64 helm.tar.gz
-  - helm init --client-only > /dev/null 2>&1
-  - helm plugin install https://github.com/chartmuseum/helm-push > /dev/null 2>&1
-  - helm repo add --username ${HELM_REPOSITORY_USERNAME} --password ${HELM_REPOSITORY_PASSWORD} ${HELM_REPOSITORY_NAME} ${HELM_REPOSITORY_URL} > /dev/null 2>&1
+  #  install and configure Helm
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/install_helm_alpine.sh | sh
+  # /install and configure Helm
   
 .scriptHelmUpload: &scriptHelmUpload
   # replace version in Chart.yaml
