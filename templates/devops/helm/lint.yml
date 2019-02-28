@@ -7,7 +7,7 @@
   # /install and configure Helm
   
 .scriptHelmLint: &scriptHelmLint
-  - helm lint chart/
+  - helm lint --strict chart/
    
 .helmLint:
   stage: lint
