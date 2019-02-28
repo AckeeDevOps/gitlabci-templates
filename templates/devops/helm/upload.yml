@@ -16,14 +16,14 @@
   - helm plugin install https://github.com/chartmuseum/helm-push > /dev/null 2>&1
   - helm repo add --username ${HELM_REPOSITORY_USERNAME} --password ${HELM_REPOSITORY_PASSWORD} ${HELM_REPOSITORY_NAME} ${HELM_REPOSITORY_PASSWORD}
   
- .scriptHelmUpload: &scriptHelmUpload:
-   - echo tbd
+.scriptHelmUpload: &scriptHelmUpload:
+  - echo tbd
    
- .helmUploadTag:
-   stage: upload
-   image: alpine
-   before_script: *beforeScriptHelmUpload
-   script: *scriptHelmUpload
-   only:
+.helmUploadTag:
+  stage: upload
+  image: alpine
+  before_script: *beforeScriptHelmUpload
+  script: *scriptHelmUpload
+  only:
     variables:
       - $CI_COMMIT_TAG
