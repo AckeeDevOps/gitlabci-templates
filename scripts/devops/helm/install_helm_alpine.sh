@@ -22,7 +22,6 @@ helm init --client-only > /dev/null 2>&1
 
 # Install Helm plugins
 helm plugin install https://github.com/chartmuseum/helm-push > /dev/null 2>&1
-helm plugin install https://github.com/lrills/helm-unittest > /dev/null 2>&1
 
 # Add remote repository
 helm repo add \
