@@ -1,0 +1,16 @@
+.beforeScriptHelmTest: &beforeScriptHelmTest
+  #  validate input
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/validate.sh | sh
+  # /validate input
+  #  install and configure Helm
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/install_helm_alpine.sh | sh
+  # /install and configure Helm
+  
+.scriptHelmTest: &scriptHelmTest
+  - helm lint --strict chart/
+   
+.helmTest:
+  stage: test
+  image: alpine
+  before_script: *beforeScriptHelmTest
+  script: *scriptHelmTest
