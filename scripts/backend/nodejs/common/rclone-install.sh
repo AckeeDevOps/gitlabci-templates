@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# set constants here
+RCLONE_RELEASE_URL="https://github.com/ncw/rclone/releases/download/v1.45/rclone-v1.45-linux-386.zip"
+
 # check if unzip exist
 # shellcheck disable=SC1091
 . /etc/os-release
@@ -24,7 +27,7 @@ then
 fi
 
 # Download rclone
-wget https://github.com/ncw/rclone/releases/download/v1.45/rclone-v1.45-linux-386.zip -O rclone.zip > /dev/null 2>&1
+wget "${RCLONE_RELEASE_URL}" -O rclone.zip > /dev/null 2>&1
 
 # extract rclone to 'rclone' directory
 mkdir -p rclone
