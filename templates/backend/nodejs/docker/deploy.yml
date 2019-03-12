@@ -1,4 +1,4 @@
-.beforeScriptDeploy: &preDeploySecrets
+.beforeScriptDeploySecrets: &preDeploySecrets
   - export VAULTIER_RUN_CAUSE=delivery
   - export VAULTIER_OUTPUT_FORMAT=helm
   - export VAULTIER_SECRET_OUTPUT_PATH=/tmp/secrets.json
@@ -6,12 +6,23 @@
   #  validate input
   - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/validate_deploy_secrets.sh | sh
   # /validate input
+  
+.beforeScriptDeploy: &preDeploy
+  #  validate input
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/validate_deploy.sh | sh
+  # /validate input
 
 .deployScriptSecrets: &deploySecrets
   - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/helm_deploy_secrets.sh -O /usr/local/bin/helm-deploy
   - chmod +x /usr/local/bin/helm-deploy
   - gke-init
   - vaultier
+  - helm-deploy
+  
+.deployScript: &deploy
+  - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/docker/helm_deploy.sh -O /usr/local/bin/helm-deploy
+  - chmod +x /usr/local/bin/helm-deploy
+  - gke-init
   - helm-deploy
 
 .deployBranchSecrets:
