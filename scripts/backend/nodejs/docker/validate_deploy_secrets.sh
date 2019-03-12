@@ -21,6 +21,7 @@ if [ "$DEBUG_MODE" = true ]; then
   echo "PROJECT_NAME: ${PROJECT_NAME}"
   echo "CI_ENVIRONMENT_NAME: ${CI_ENVIRONMENT_NAME}"
   echo "IMAGE_TAG: ${IMAGE_TAG}"
+  echo "IMAGE_NAME: ${IMAGE_NAME}"
   
   echo "-----------------------------------"
   echo "CI_COMMIT_SHORT_SHA: ${CI_COMMIT_SHORT_SHA}"
@@ -55,6 +56,7 @@ fi
 [ -z "$PROJECT_NAME" ] && { echo "PROJECT_NAME is required"; exit 1; }
 [ -z "$APP_NAME" ] && { echo "APP_NAME is required"; exit 1; }
 [ -z "$IMAGE_TAG" ] && { echo "IMAGE_TAG is required"; exit 1; }
+[ -z "$IMAGE_NAME" ] && { echo "IMAGE_NAME is required"; exit 1; }
 
 [ -z "$VAULTIER_BRANCH" ] && { echo "VAULTIER_BRANCH is required"; exit 1; }
 [ -z "$VAULTIER_SECRET_SPECS_PATH" ] && { echo "VAULTIER_SECRET_SPECS_PATH is required"; exit 1; }
