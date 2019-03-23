@@ -11,3 +11,46 @@
   - npm set loglevel=error
   - npm install -g serverless
   - export JOBS=max
+  
+.deployBranchSecrets:
+  image: node:8
+  stage: deploy
+  before_script: *preDeploySecrets
+  allow_failure: false
+  variables:
+  
+.deployBranchSecretsDevelopment:
+  extends: .deployBranchSecrets
+  script:
+    - npm i
+    - serverless deploy
+  only:
+    refs: ["development"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: development
+    
+.deployBranchSecretsStage:
+  extends: .deployBranchSecrets
+  script:
+    - npm i
+    - serverless deploy
+  only:
+    refs: ["stage"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: stage
+    
+.deployBranchSecretsMaster:
+  extends: .deployBranchSecrets
+  script:
+    - npm i
+    - serverless deploy
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: production
