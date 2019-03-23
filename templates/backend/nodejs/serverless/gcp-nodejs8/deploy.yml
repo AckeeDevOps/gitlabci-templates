@@ -30,7 +30,7 @@
   extends: .deployBranchSecrets
   script:
     - npm i
-    - serverless deploy --stage=development
+    - serverless deploy --stage=development --gcpProject="${GCLOUD_PROJECT_ID_DEVELOPMENT}"
   only:
     refs: ["development"]
     variables:
@@ -42,7 +42,7 @@
   extends: .deployBranchSecrets
   script:
     - npm i
-    - serverless deploy --stage=stage
+    - serverless deploy --stage=stage --gcpProject="${GCLOUD_PROJECT_ID_STAGE}"
   only:
     refs: ["stage"]
     variables:
@@ -54,7 +54,7 @@
   extends: .deployBranchSecrets
   script:
     - npm i
-    - serverless deploy --stage=production
+    - serverless deploy --stage=production --gcpProject="${GCLOUD_PROJECT_ID_PRODUCTION}"
   only:
     refs: ["master"]
     variables:
