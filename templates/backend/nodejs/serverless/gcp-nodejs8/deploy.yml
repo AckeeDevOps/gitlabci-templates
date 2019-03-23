@@ -1,0 +1,13 @@
+.beforeScriptDeploySecrets: &preDeploySecrets
+  #  Prepare ssh/git
+  - mkdir ~/.ssh/
+  - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+  - chmod 0400 ~/.ssh/id_rsa
+  - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
+  # /Prepare ssh/git
+  - npm set unsafe-perm true
+  - npm set progress=false
+  - npm set loglevel=error
+  - npm install -g serverless
+  - export JOBS=max
