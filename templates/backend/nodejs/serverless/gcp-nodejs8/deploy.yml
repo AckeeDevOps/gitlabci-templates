@@ -1,4 +1,30 @@
-.beforeScriptDeploySecrets: &preDeploySecrets
+.initSSH: &initSSH |
+  mkdir ~/.ssh/
+  echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+  chmod 0400 ~/.ssh/id_rsa
+  eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  
+.initNPM: &initNPM |
+  npm set unsafe-perm true
+  npm set progress=false
+  npm set loglevel=error
+  npm install -g serverless
+  export JOBS=max
+
+.beforeScriptDeploySecretsDevelopment: &preDeploySecretsDevelopment
+  #  Validate variables
+  - echo validation TBD
+  # /Validate variables
+  #  Prepare ssh/git
+  - *initSSH
+  # /Prepare ssh/git
+  #  Prepare Google auth
+  - echo "${GCLOUD_SA_KEY_DEVELOPMENT}" | base64 -d > /tmp/key.json
+  - export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
+  # /Prepare Google auth
+  - *initNPM
+  
+.beforeScriptDeploySecretsStage: &preDeploySecretsStage
   #  Validate variables
   - echo validation TBD
   # /Validate variables
@@ -10,7 +36,28 @@
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   # /Prepare ssh/git
   #  Prepare Google auth
-  - echo "${GCLOUD_SA_KEY}" | base64 -d > /tmp/key.json
+  - echo "${GCLOUD_SA_KEY_STAGE}" | base64 -d > /tmp/key.json
+  - export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
+  # /Prepare Google auth
+  - npm set unsafe-perm true
+  - npm set progress=false
+  - npm set loglevel=error
+  - npm install -g serverless
+  - export JOBS=max
+  
+.beforeScriptDeploySecretsMaster: &preDeploySecretsMaster
+  #  Validate variables
+  - echo validation TBD
+  # /Validate variables
+  #  Prepare ssh/git
+  - mkdir ~/.ssh/
+  - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+  - chmod 0400 ~/.ssh/id_rsa
+  - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+  - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
+  # /Prepare ssh/git
+  #  Prepare Google auth
+  - echo "${GCLOUD_SA_KEY_PRODUCTION}" | base64 -d > /tmp/key.json
   - export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
   # /Prepare Google auth
   - npm set unsafe-perm true
@@ -22,14 +69,12 @@
 .deployBranchSecrets:
   image: node:8
   stage: deploy
-  before_script: *preDeploySecrets
   allow_failure: false
   variables:
   
 .deployBranchSecretsDevelopment:
   extends: .deployBranchSecrets
-  variables:
-    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY_DEVELOPMENT}
+  before_script: *preDeploySecretsDevelopment
   script:
     - npm i
     - serverless deploy --stage=development --gcpProject="${GCLOUD_PROJECT_ID_DEVELOPMENT}"
@@ -42,8 +87,7 @@
     
 .deployBranchSecretsStage:
   extends: .deployBranchSecrets
-  variables:
-    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY_STAGE}
+  before_script: *preDeploySecretsStage
   script:
     - npm i
     - serverless deploy --stage=stage --gcpProject="${GCLOUD_PROJECT_ID_STAGE}"
@@ -56,8 +100,7 @@
     
 .deployBranchSecretsMaster:
   extends: .deployBranchSecrets
-  variables:
-    GCLOUD_SA_KEY: ${GCLOUD_SA_KEY_PRODUCTION}
+  before_script: *preDeploySecretsMaster
   script:
     - npm i
     - serverless deploy --stage=production --gcpProject="${GCLOUD_PROJECT_ID_PRODUCTION}"
