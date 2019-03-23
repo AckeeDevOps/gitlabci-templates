@@ -1,4 +1,7 @@
 .beforeScriptDeploySecrets: &preDeploySecrets
+  #  Validate variables
+  - echo validation TBD
+  # /Validate variables
   #  Prepare ssh/git
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
@@ -6,6 +9,10 @@
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
   # /Prepare ssh/git
+  #  Prepare Google auth
+  - echo "${GCLOUD_SA_KEY}" | base64 -d > /tmp/key.json
+  - export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
+  # /Prepare Google auth
   - npm set unsafe-perm true
   - npm set progress=false
   - npm set loglevel=error
