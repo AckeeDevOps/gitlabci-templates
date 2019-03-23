@@ -23,7 +23,7 @@
   extends: .deployBranchSecrets
   script:
     - npm i
-    - serverless deploy
+    - serverless deploy --stage=development
   only:
     refs: ["development"]
     variables:
@@ -35,7 +35,7 @@
   extends: .deployBranchSecrets
   script:
     - npm i
-    - serverless deploy
+    - serverless deploy --stage=stage
   only:
     refs: ["stage"]
     variables:
@@ -47,7 +47,7 @@
   extends: .deployBranchSecrets
   script:
     - npm i
-    - serverless deploy
+    - serverless deploy --stage=production
   only:
     refs: ["master"]
     variables:
