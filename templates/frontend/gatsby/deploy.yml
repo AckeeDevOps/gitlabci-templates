@@ -1,0 +1,54 @@
+.initGcloud: &initGcloud |
+  echo "Initializing gcloud SDK ..."
+  echo "${GCLOUD_SA_KEY_CURRENT}" | base64 -d > /tmp/key.json
+  export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
+  gcloud auth activate-service-account --key-file=/tmp/key.json
+
+.gatsbyDeploy:
+  stage: deploy
+  image: google/cloud-sdk
+  script:
+    - gsutil mb -p "${GCLOUD_PROJECT_ID_CURRENT}" -c regional -l "${GCS_BUCKET_REGION_CURRENT}" "gs://${GCS_BUCKET_NAME_CURRENT}" || true
+    - gsutil -m rsync -R public "gs://${GCS_BUCKET_NAME_CURRENT}"
+    - gsutil -m acl ch -R -u AllUsers:R "gs://${GCS_BUCKET_NAME_CURRENT}"
+    - gsutil -m web set -m index.html -e index.html "gs://${GCS_BUCKET_NAME_CURRENT}"
+    
+.gatsbyDeployDevelopment:
+  extends: .gatsbyDeploy
+  before_script:
+    - export GCLOUD_SA_KEY_CURRENT=${GCLOUD_SA_KEY_DEVELOPMENT}
+    - export GCLOUD_PROJECT_ID_CURRENT=${GCLOUD_PROJECT_ID_DEVELOPMENT}
+    - export GCS_BUCKET_NAME_CURRENT=${GCS_BUCKET_NAME_DEVELOPMENT}
+    - export GCS_BUCKET_REGION_CURRENT=${GCS_BUCKET_REGION_DEVELOPMENT}
+    - *initGcloud
+  only:
+    refs: ["development"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+      
+.gatsbyDeployStage:
+  extends: .gatsbyDeploy
+  before_script:
+    - export GCLOUD_SA_KEY_CURRENT=${GCLOUD_SA_KEY_STAGE}
+    - export GCLOUD_PROJECT_ID_CURRENT=${GCLOUD_PROJECT_ID_STAGE}
+    - export GCS_BUCKET_NAME_CURRENT=${GCS_BUCKET_NAME_STAGE}
+    - export GCS_BUCKET_REGION_CURRENT=${GCS_BUCKET_REGION_STAGE}
+    - *initGcloud
+  only:
+    refs: ["stage"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+      
+.gatsbyDeployMaster:
+  extends: .gatsbyDeploy
+  before_script:
+    - export GCLOUD_SA_KEY_CURRENT=${GCLOUD_SA_KEY_PRODUCTION}
+    - export GCLOUD_PROJECT_ID_CURRENT=${GCLOUD_PROJECT_ID_PRODUCTION}
+    - export GCS_BUCKET_NAME_CURRENT=${GCS_BUCKET_NAME_PRODUCTION}
+    - export GCS_BUCKET_REGION_CURRENT=${GCS_BUCKET_REGION_PRODUCTION}
+    - *initGcloud
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  
