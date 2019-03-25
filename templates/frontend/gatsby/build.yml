@@ -27,21 +27,21 @@
     paths:
       - public/
       
-.gatsbyBuildDevelopment
+.gatsbyBuildDevelopment:
   extends: .gatsbyBuild
   only:
     refs: ["development"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
       
-.gatsbyBuildStage
+.gatsbyBuildStage:
   extends: .gatsbyBuild
   only:
     refs: ["stage"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
       
-.gatsbyBuildMaster
+.gatsbyBuildMaster:
   extends: .gatsbyBuild
   only:
     refs: ["master"]
