@@ -1,0 +1,50 @@
+.initNPM: &initNPM |
+  echo "Initializing NPM ..."
+  npm set unsafe-perm true
+  npm set progress=false
+  npm set loglevel=error
+  npm install -g serverless
+  export JOBS=max
+
+.initSSH: &initSSH |
+  echo "Initializing SSH/GIT ..."
+  mkdir ~/.ssh/
+  echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+  chmod 0400 ~/.ssh/id_rsa
+  eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+
+.gatsbyBuild:
+  stage: build
+  image: node:8
+  before_script:
+    - *initSSH
+    - *initNPM
+  script:
+    - npm i
+    - npm run build
+  artifacts:
+    expire_in: 10 minutes
+    paths:
+      - public/
+      
+.gatsbyBuildDevelopment
+  extends: .gatsbyBuild
+  only:
+    refs: ["development"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+      
+.gatsbyBuildStage
+  extends: .gatsbyBuild
+  only:
+    refs: ["stage"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+      
+.gatsbyBuildMaster
+  extends: .gatsbyBuild
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+
