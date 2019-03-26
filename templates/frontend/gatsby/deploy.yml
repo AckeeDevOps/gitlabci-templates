@@ -11,7 +11,7 @@
     - gsutil mb -p "${GCLOUD_PROJECT_ID_CURRENT}" -c regional -l "${GCS_BUCKET_REGION_CURRENT}" "gs://${GCS_BUCKET_NAME_CURRENT}" || true
     - gsutil -m rsync -R public "gs://${GCS_BUCKET_NAME_CURRENT}"
     - gsutil -m acl ch -R -u AllUsers:R "gs://${GCS_BUCKET_NAME_CURRENT}"
-    - gsutil -m web set -m index.html -e index.html "gs://${GCS_BUCKET_NAME_CURRENT}"
+    - gsutil -m web set -m "${GCS_INDEX_FILE}" -e "${GCS_E404_FILE}" "gs://${GCS_BUCKET_NAME_CURRENT}"
     
 .gatsbyDeployDevelopment:
   extends: .gatsbyDeploy
