@@ -9,15 +9,4 @@ Please note these prefabs were tested with Gitlab 11.7.0, it might behave
 unpredictable in older version.
 
 ## Contents
-
-### Backend > Nodejs > Docker prefabs
-
-Set of prefabs for Nodejs backend apps. [See details](https://github.com/AckeeDevOps/gitlabci-templates/tree/master/templates/backend/nodejs/docker).
-
-- testing
-- linting
-- building of Docker images
-- rendering of API blueprints
-- deployment to GKE
-
-### Backend > Nodejs > Cloud Functions prefabs
+tbd
