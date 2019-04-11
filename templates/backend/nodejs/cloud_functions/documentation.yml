@@ -2,13 +2,12 @@
 
 # required variables:
 #   GCLOUD_SA_KEY:
-#   GCLOUD_PROJECT_ID:
+#   DOCS_GCLOUD_PROJECT_ID:
 #   DOCS_OUTPUT_DIRECTORY:
 #   DOCS_GCS_BUCKET:
 #   DOCS_GCS_PREFIX:
 
 .beforeScriptDocumentation: &preDocumentation
-  - export GCLOUD_PROJECT_ID=${GCLOUD_PROJECT_ID_DOCUMENTATION}
   # install uploader script
   - wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/backend/nodejs/common/rclone-upload.sh -O /usr/local/bin/rclone-upload > /dev/null 2>&1
   - chmod +x /usr/local/bin/rclone-upload
