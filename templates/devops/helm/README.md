@@ -42,7 +42,19 @@ upload:
 ## Configuration of prefabs
 
 ### helmLint
-TBD
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| HELM_BINARIES_URL | url of tar.gz archive with Helm binaries | `https://storage.googleapis.com/kubernetes-helm/helm-v2.13.0-linux-amd64.tar.gz` | `true` |
+| DEBUG_MODE | configures verbose output from validation | `'true'` | `false` |
 
 ### helmUploadTag
-TBD
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| HELM_BINARIES_URL | url of tar.gz archive with Helm binaries | `https://storage.googleapis.com/kubernetes-helm/helm-v2.13.0-linux-amd64.tar.gz` | `true` |
+| DEBUG_MODE | configures verbose output from validation | `'true'` | `false` |
+| HELM_CHART_NAME | chart display name | `ackee-nodejs` | `true` |
+| HELM_REPOSITORY_URL | URL of your Chartmuseum | `https://repo.co.uk/` | `true` |
+| HELM_REPOSITORY_NAME | display name of configured repository | `ackee` | `true` |
+| HELM_REPOSITORY_USERNAME | login to chartmuseum | `helm` | `true` |
+| HELM_REPOSITORY_PASSWORD | password to chartmuseum | `password` | `true` |
+
