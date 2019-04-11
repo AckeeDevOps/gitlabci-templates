@@ -100,3 +100,8 @@ deploy:production: # stage: deploy
 | SSH_KEY | Base64 encoded RSA private key, it's handy when downloading private NPM packages | | true |
 | VAULTIER_VAULT_ADDR | URL of your Vault | `https://vault.vault.co.uk` | `true` |
 | VAULTIER_VAULT_TOKEN | Vault token in plain text | | `true` |
+| VAULTIER_BRANCH | branch name you want to retrieve secrets for | `master` | `false` |
+| VAULTIER_SECRET_OUTPUT_PATH | path where you want to store unencrypted secrets | `/tmp/secrets.json` | `false` |
+| VAULTIER_SECRET_SPECS_PATH | path to the Vaultier specification file | `${CI_PROJECT_DIR}/secrets.yaml` | `false` |
+| VAULTIER_RUN_CAUSE | Reason of Vaultier execution, can be `delivery` or `test` | `test` | `false` |
+| VAULTIER_OUTPUT_FORMAT | Vaultier output format, can be `helm` or `dotenv` | `dotenv` | `false` |
