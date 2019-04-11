@@ -1,3 +1,6 @@
+# Required:
+#   SSH_KEY: Base64 encoded RSA private key
+
 .initNPM: &initNPM |
   echo "Initializing NPM ..."
   npm set unsafe-perm true
@@ -15,7 +18,7 @@
 
 .gatsbyBuild:
   stage: build
-  image: ${NODE_IMAGE}
+  image: node:latest
   before_script:
     - *initSSH
     - *initNPM
