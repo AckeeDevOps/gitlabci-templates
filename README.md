@@ -9,4 +9,5 @@ Please note these prefabs were tested with Gitlab 11.7.0, it might behave
 unpredictable in older version.
 
 ## Contents
-tbd
+- [Firebase Cloud Functions with secrets injection from Vault](https://github.com/AckeeDevOps/gitlabci-templates/tree/master/templates/backend/nodejs/cloud_functions)
+- [Helm charts with Chartmuseum](https://github.com/AckeeDevOps/gitlabci-templates/tree/master/templates/devops/helm)
