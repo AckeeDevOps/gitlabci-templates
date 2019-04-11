@@ -26,7 +26,7 @@ export RCLONE_GCS_SERVICE_ACCOUNT_FILE=/tmp/key.json
 rclone config create remote gcs > /dev/null 2>&1
 
 # upload files to GCS
-rclone sync "${DOCS_OUTPUT_DIRECTORY}" remote:"${DOCS_GCS_BUKET}${DOCS_GCS_PREFIX}" > /dev/null 2>&1
+rclone sync "${DOCS_OUTPUT_DIRECTORY}" remote:"${DOCS_GCS_BUCKET}${DOCS_GCS_PREFIX}" > /dev/null 2>&1
 
 # list files for logging purposes
 echo "Uploaded files:"
