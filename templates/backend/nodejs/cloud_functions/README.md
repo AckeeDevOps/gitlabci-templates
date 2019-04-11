@@ -144,3 +144,23 @@ deploy:production: # stage: deploy
 
 Please note that both prefabs use external [[1](https://github.com/AckeeDevOps/gitlabci-templates/blob/master/scripts/backend/nodejs/common/rclone-install.sh), [2](https://github.com/AckeeDevOps/gitlabci-templates/blob/master/scripts/backend/nodejs/common/rclone-upload.sh)] Shell scripts from this repository. There's a goal to write all these scripts in POSIX Shell due to portability (for instance, Alpine-based Docker images don't contain Bash by default)
 
+### deployBranchSecretsMater, deployBranchSecretsStage, deployBranchSecretsDevelopment
+
+**`deployBranchSecretsMater`** deploys Firebase Function with `npm run deploy-production` and it is invoked only after push to `master`
+
+**`deployBranchSecretsStage`** deploys Firebase Function with `npm run deploy-stage` and it is invoked only after push to `stage`
+
+**`deployBranchSecretsDevelopment`** deploys Firebase Function with `npm run deploy-dev` and it is invoked only after push to `development`
+
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| VAULTIER_RELEASE_LINK | url of Vaultier release, should be binary file | `https://github.com/AckeeDevOps/vaultier/releases/download/v1.0.2/vaultier-v1.0.2` | `true` |
+| SSH_KEY | Base64 encoded RSA private key, it's handy when downloading private NPM packages | | true |
+| FIREBASE_TOKEN | Firebase API token in plain text | | `true` | 
+| VAULTIER_VAULT_ADDR | URL of your Vault | `https://vault.vault.co.uk` | `true` |
+| VAULTIER_VAULT_TOKEN | Vault token in plain text | | `true` |
+| VAULTIER_BRANCH | branch name you want to retrieve secrets for | `master` | `false` |
+| VAULTIER_SECRET_OUTPUT_PATH | path where you want to store unencrypted secrets | `/tmp/secrets.json` | `false` |
+| VAULTIER_SECRET_SPECS_PATH | path to the Vaultier specification file | `${CI_PROJECT_DIR}/secrets.yaml` | `false` |
+| VAULTIER_RUN_CAUSE | Reason of Vaultier execution, can be `delivery` or `test` | `test` | `false` |
+| VAULTIER_OUTPUT_FORMAT | Vaultier output format, can be `helm` or `dotenv` | `dotenv` | `false` |
