@@ -94,9 +94,8 @@ deploy:production: # stage: deploy
 
 ### ciTestSecretsDelivery, ciTestSecretsMergeRequest
 
-**`ciTestSecretsDelivery`** is invoked only after push to `master`, `stage` and `development`
-
-**`ciTestSecretsMergeRequest`** is invoked only after `merge_request` events
+- **`ciTestSecretsDelivery`** is invoked only after push to `master`, `stage` and `development`
+- **`ciTestSecretsMergeRequest`** is invoked only after `merge_request` events
 
 | variable | description | example | required |
 | -------- | ----------- | ------- | -------- |
@@ -112,9 +111,8 @@ deploy:production: # stage: deploy
 
 ### ciTestDelivery, ciTestMergeRequest
 
-**`ciTestDelivery`** is invoked only after push to `master`, `stage` and `development`
-
-**`ciTestMergeRequest`** is invoked only after `merge_request` events
+- **`ciTestDelivery`** is invoked only after push to `master`, `stage` and `development`
+- **`ciTestMergeRequest`** is invoked only after `merge_request` events
 
 | variable | description | example | required |
 | -------- | ----------- | ------- | -------- |
@@ -122,15 +120,13 @@ deploy:production: # stage: deploy
 
 ### ciLintDelivery, ciLintMergeRequest
 
-**`ciLintDelivery`** is invoked only after push to `master`, `stage` and `development`
-
-**`ciLintMergeRequest`** is invoked only after `merge_request` events
+- **`ciLintDelivery`** is invoked only after push to `master`, `stage` and `development`
+- **`ciLintMergeRequest`** is invoked only after `merge_request` events
 
 ### docsUploadDeployment, docsUploadMergeRequest
 
-**`docsUploadDeployment`** is invoked only after push to `master`, `stage` and `development`
-
-**`docsUploadMergeRequest`** is invoked only after `merge_request` events
+- **`docsUploadDeployment`** is invoked only after push to `master`, `stage` and `development`
+- **`docsUploadMergeRequest`** is invoked only after `merge_request` events
 
 | variable | description | example | required |
 | -------- | ----------- | ------- | -------- |
@@ -146,11 +142,9 @@ Please note that both prefabs use external [[1](https://github.com/AckeeDevOps/g
 
 ### deployBranchSecretsMater, deployBranchSecretsStage, deployBranchSecretsDevelopment
 
-**`deployBranchSecretsMater`** deploys Firebase Function with `npm run deploy-production` and it is invoked only after push to `master`
-
-**`deployBranchSecretsStage`** deploys Firebase Function with `npm run deploy-stage` and it is invoked only after push to `stage`
-
-**`deployBranchSecretsDevelopment`** deploys Firebase Function with `npm run deploy-dev` and it is invoked only after push to `development`
+- **`deployBranchSecretsMater`** deploys Firebase Function with `npm run deploy-production` and it is invoked only after push to `master`
+- **`deployBranchSecretsStage`** deploys Firebase Function with `npm run deploy-stage` and it is invoked only after push to `stage`
+- **`deployBranchSecretsDevelopment`** deploys Firebase Function with `npm run deploy-dev` and it is invoked only after push to `development`
 
 | variable | description | example | required |
 | -------- | ----------- | ------- | -------- |
