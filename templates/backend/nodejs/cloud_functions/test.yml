@@ -1,13 +1,27 @@
 # This file belongs to Ackee CICD suite for Firebase Cloud functions
 
+# Required Variables
+#   VAULTIER_RELEASE_LINK
+#   SSH_KEY
+#   VAULTIER_VAULT_ADDR
+#   VAULTIER_VAULT_TOKEN
+# Optional Variables
+#   VAULTIER_BRANCH
+#   VAULTIER_SECRET_OUTPUT_PATH
+#   VAULTIER_SECRET_SPECS_PATH
+#   VAULTIER_RUN_CAUSE
+#   VAULTIER_OUTPUT_FORMAT
+#   CFG_JSON_PATH
+
 .beforeScriptTestWithVaultier: &preTestWithVaultier
   #  fixed values for test
   # if not set - use default path ${CI_PROJECT_DIR}/functions/credentials.json
-  - if [ -z "$VAULTIER_SECRET_OUTPUT_PATH" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
-  - export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}
-  - export VAULTIER_SECRET_SPECS_PATH=${CI_PROJECT_DIR}/secrets.yaml
-  - export VAULTIER_RUN_CAUSE=test
-  - export VAULTIER_OUTPUT_FORMAT=dotenv
+  - if [ -z "${VAULTIER_BRANCH}" ]; then export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}; fi
+  - if [ -z "${VAULTIER_SECRET_OUTPUT_PATH}" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
+  - if [ -z "${CFG_JSON_PATH}" ]; then export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}; fi
+  - if [ -z "${VAULTIER_SECRET_SPECS_PATH}" ]; then export export VAULTIER_SECRET_SPECS_PATH=${CI_PROJECT_DIR}/secrets.yaml; fi
+  - if [ -z "${VAULTIER_RUN_CAUSE}" ]; then export VAULTIER_RUN_CAUSE=test; fi
+  - if [ -z "${VAULTIER_OUTPUT_FORMAT}" ]; then export VAULTIER_OUTPUT_FORMAT=dotenv; fi
   # /fixed values for test
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
@@ -35,7 +49,7 @@
 
 # Base test prefab with secrets, 'only' directive required
 .ciTestSecrets:
-  image: ${NODE_IMAGE}
+  image: node:latest
   stage: test
   before_script: *preTestWithVaultier
   variables:
@@ -65,7 +79,7 @@
 
 # Base test prefab without secrets, 'only' directive required
 .ciTest:
-  image: ${NODE_IMAGE}
+  image: node:latest
   stage: test
   before_script: *preTestWithoutVaultier
   variables:
