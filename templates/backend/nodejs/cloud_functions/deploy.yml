@@ -30,7 +30,7 @@
   - vaultier
 
 .deployBranchSecrets:
-  image: ${NODE_IMAGE}
+  image: node:latest
   stage: deploy
   before_script: *preDeployWithVaultier
   allow_failure: false
