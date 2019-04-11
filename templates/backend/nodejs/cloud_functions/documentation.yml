@@ -3,12 +3,9 @@
 # required variables:
 #   GCLOUD_SA_KEY:
 #   GCLOUD_PROJECT_ID:
-#   AGLIO_DOCS_DIRECTORY:
+#   DOCS_OUTPUT_DIRECTORY:
 #   GCS_BUKET:
 #   GCS_PREFIX:
-#
-# Please see:
-#   https://github.com/AckeeDevOps/aglio-uploader
 
 .beforeScriptDocumentation: &preDocumentation
   - export GCLOUD_PROJECT_ID=${GCLOUD_PROJECT_ID_DOCUMENTATION}
@@ -21,30 +18,32 @@
   - npm set progress=false
   - npm set loglevel=error
   - export JOBS=max
-
-.aglioDocsUpload:
+  
+# DOCS_GENERATOR_IMAGE
+.docsUpload:
   stage: documentation
-  image: ${NODE_IMAGE}
+  image: ${DOCS_GENERATOR_IMAGE}
   before_script: *preDocumentation
   variables:
-    #AGLIO_DOCS_DIRECTORY: must be specified globally 
+    #DOCS_OUTPUT_DIRECTORY: must be specified globally 
     #GCS_BUKET: must be specified globally 
     #GCS_PREFIX: must be specified globally 
     #GCLOUD_PROJECT_ID_DOCUMENTATION: must be specified globally 
   script:
     - cd functions
-    - mkdir -p ${AGLIO_DOCS_DIRECTORY}
+    - mkdir -p ${DOCS_OUTPUT_DIRECTORY}
     - npm install
     - npm run docs
     - rclone-upload
     
-.aglioDocsUploadDelivery:
-  extends: .aglioDocsUpload
+.docsUploadDeployment:
+  extends: .docsUpload
   only:
     variables:
       - $CI_PIPELINE_SOURCE == "push"
     refs: ["master", "stage", "development"]
 
-.aglioDocsUploadMergeRequest:
-  extends: .aglioDocsUpload
+.docsUploadMergeRequest:
+  extends: .docsUpload
   only: ["merge_requests"]
+
