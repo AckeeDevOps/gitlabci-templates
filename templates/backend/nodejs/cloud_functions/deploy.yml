@@ -1,11 +1,17 @@
 # This file belongs to Ackee CICD suite for Firebase Cloud functions
 
 # Required Variables
-#   APP_NAME
-#   PROJECT_NAME
 #   VAULTIER_RELEASE_LINK
 #   SSH_KEY
 #   FIREBASE_TOKEN <- required directly by firebase-cli tools
+#   VAULTIER_VAULT_ADDR
+#   VAULTIER_VAULT_TOKEN
+# Optional Variables
+#   VAULTIER_BRANCH
+#   VAULTIER_SECRET_OUTPUT_PATH
+#   VAULTIER_SECRET_SPECS_PATH
+#   VAULTIER_RUN_CAUSE
+#   VAULTIER_OUTPUT_FORMAT
 
 .beforeScriptDeployWithVaultier: &preDeployWithVaultier
   #  set default values for deployment if needed
