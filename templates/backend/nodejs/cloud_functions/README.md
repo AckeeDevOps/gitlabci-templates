@@ -92,7 +92,10 @@ deploy:production: # stage: deploy
 ```
 ## Configuration of prefabs
 
-### ciTestSecretsDelivery
+### ciTestSecretsDelivery, ciTestSecretsMergeRequest
+
+**`ciTestSecretsDelivery`** is invoked only after push to `master`, `stage` and `development`
+**`ciTestSecretsMergeRequest`** is invoked only after `merge_request` events
 
 | variable | description | example | required |
 | -------- | ----------- | ------- | -------- |
@@ -105,3 +108,17 @@ deploy:production: # stage: deploy
 | VAULTIER_SECRET_SPECS_PATH | path to the Vaultier specification file | `${CI_PROJECT_DIR}/secrets.yaml` | `false` |
 | VAULTIER_RUN_CAUSE | Reason of Vaultier execution, can be `delivery` or `test` | `test` | `false` |
 | VAULTIER_OUTPUT_FORMAT | Vaultier output format, can be `helm` or `dotenv` | `dotenv` | `false` |
+
+### ciTestDelivery, ciTestMergeRequest
+
+**`ciTestDelivery`** is invoked only after push to `master`, `stage` and `development`
+**`ciTestMergeRequest`** is invoked only after `merge_request` events
+
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| SSH_KEY | Base64 encoded RSA private key, it's handy when downloading private NPM packages | | true |
+
+### ciLintDelivery, ciLintMergeRequest
+
+**`ciLintDelivery`** is invoked only after push to `master`, `stage` and `development`
+**`ciLintMergeRequest`** is invoked only after `merge_request` events
