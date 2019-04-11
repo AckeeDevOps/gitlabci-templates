@@ -1,11 +1,13 @@
 # This file belongs to Ackee CICD suite for Firebase Cloud functions
 
 # required variables:
-#   DOCS_GCLOUD_SA_KEY:
-#   DOCS_GCLOUD_PROJECT_ID:
-#   DOCS_OUTPUT_DIRECTORY:
-#   DOCS_GCS_BUCKET:
-#   DOCS_GCS_PREFIX:
+#   APP_NAME
+#   PROJECT_NAME
+#   GCLOUD_SA_KEY:
+#   GCLOUD_PROJECT_ID:
+#   OUTPUT_DIRECTORY:
+#   GCS_BUCKET:
+#   GCS_PREFIX:
 
 .beforeScriptDocumentation: &preDocumentation
   # install uploader script
@@ -21,16 +23,12 @@
 # DOCS_GENERATOR_IMAGE
 .docsUpload:
   stage: documentation
-  image: ${DOCS_GENERATOR_IMAGE}
+  image: ackee/docs-generator:latest
   before_script: *preDocumentation
   variables:
-    #DOCS_OUTPUT_DIRECTORY: must be specified globally 
-    #GCS_BUKET: must be specified globally 
-    #GCS_PREFIX: must be specified globally 
-    #GCLOUD_PROJECT_ID_DOCUMENTATION: must be specified globally 
   script:
     - cd functions
-    - mkdir -p ${DOCS_OUTPUT_DIRECTORY}
+    - mkdir -p ${OUTPUT_DIRECTORY}
     - npm run docs
     - rclone-upload
     
@@ -38,7 +36,7 @@
   extends: .docsUpload
   only:
     variables:
-      - $CI_PIPELINE_SOURCE == "push"
+      - ${CI_PIPELINE_SOURCE} == "push"
     refs: ["master", "stage", "development"]
 
 .docsUploadMergeRequest:
