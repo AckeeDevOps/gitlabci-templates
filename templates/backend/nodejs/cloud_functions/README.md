@@ -142,3 +142,5 @@ deploy:production: # stage: deploy
 | GCS_BUCKET | full name of yout GCS bucker | `bucket-name-123` | `true` |
 | GCS_PREFIX | directory prefix for the target location | `/${PROJECT_NAME}-${APP_NAME}/${CI_COMMIT_REF_NAME}/` | `true` |
 
+Please note that both prefabs use external [[1](https://github.com/AckeeDevOps/gitlabci-templates/blob/master/scripts/backend/nodejs/common/rclone-install.sh), [2](https://github.com/AckeeDevOps/gitlabci-templates/blob/master/scripts/backend/nodejs/common/rclone-upload.sh)] Shell scripts from this repository. There's a goal to write all these scripts in POSIX Shell due to portability (for instance, Alpine-based Docker images don't contain Bash by default)
+
