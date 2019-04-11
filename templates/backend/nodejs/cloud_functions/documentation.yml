@@ -4,8 +4,8 @@
 #   GCLOUD_SA_KEY:
 #   GCLOUD_PROJECT_ID:
 #   DOCS_OUTPUT_DIRECTORY:
-#   GCS_BUKET:
-#   GCS_PREFIX:
+#   DOCS_GCS_BUCKET:
+#   DOCS_GCS_PREFIX:
 
 .beforeScriptDocumentation: &preDocumentation
   - export GCLOUD_PROJECT_ID=${GCLOUD_PROJECT_ID_DOCUMENTATION}
@@ -32,7 +32,6 @@
   script:
     - cd functions
     - mkdir -p ${DOCS_OUTPUT_DIRECTORY}
-    - npm install
     - npm run docs
     - rclone-upload
     
