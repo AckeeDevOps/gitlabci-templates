@@ -1,7 +1,7 @@
 # This file belongs to Ackee CICD suite for Firebase Cloud functions
 
 # required variables:
-#   GCLOUD_SA_KEY:
+#   DOCS_GCLOUD_SA_KEY:
 #   DOCS_GCLOUD_PROJECT_ID:
 #   DOCS_OUTPUT_DIRECTORY:
 #   DOCS_GCS_BUCKET:
