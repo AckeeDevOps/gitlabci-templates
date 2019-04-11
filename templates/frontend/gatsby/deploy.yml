@@ -1,6 +1,14 @@
+# Required:
+#   GCLOUD_SA_KEY
+#   GCLOUD_PROJECT_ID
+#   GCS_BUCKET_REGION
+#   GCS_BUCKET_NAME
+#   GCS_INDEX_FILE
+#   GCS_E404_FILE
+
 .initGcloud: &initGcloud |
   echo "Initializing gcloud SDK ..."
-  echo "${GCLOUD_SA_KEY_CURRENT}" | base64 -d > /tmp/key.json
+  echo "${GCLOUD_SA_KEY}" | base64 -d > /tmp/key.json
   export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
   gcloud auth activate-service-account --key-file=/tmp/key.json
 
@@ -8,18 +16,14 @@
   stage: deploy
   image: google/cloud-sdk
   script:
-    - gsutil mb -p "${GCLOUD_PROJECT_ID_CURRENT}" -c regional -l "${GCS_BUCKET_REGION_CURRENT}" "gs://${GCS_BUCKET_NAME_CURRENT}" || true
-    - gsutil -m rsync -R public "gs://${GCS_BUCKET_NAME_CURRENT}"
-    - gsutil -m acl ch -R -u AllUsers:R "gs://${GCS_BUCKET_NAME_CURRENT}"
-    - gsutil -m web set -m "${GCS_INDEX_FILE}" -e "${GCS_E404_FILE}" "gs://${GCS_BUCKET_NAME_CURRENT}"
+    - gsutil mb -p "${GCLOUD_PROJECT_ID}" -c regional -l "${GCS_BUCKET_REGION}" "gs://${GCS_BUCKET_NAME}" || true
+    - gsutil -m rsync -R public "gs://${GCS_BUCKET_NAME}"
+    - gsutil -m acl ch -R -u AllUsers:R "gs://${GCS_BUCKET_NAME}"
+    - gsutil -m web set -m "${GCS_INDEX_FILE}" -e "${GCS_E404_FILE}" "gs://${GCS_BUCKET_NAME}"
     
 .gatsbyDeployDevelopment:
   extends: .gatsbyDeploy
   before_script:
-    - export GCLOUD_SA_KEY_CURRENT=${GCLOUD_SA_KEY_DEVELOPMENT}
-    - export GCLOUD_PROJECT_ID_CURRENT=${GCLOUD_PROJECT_ID_DEVELOPMENT}
-    - export GCS_BUCKET_NAME_CURRENT=${GCS_BUCKET_NAME_DEVELOPMENT}
-    - export GCS_BUCKET_REGION_CURRENT=${GCS_BUCKET_REGION_DEVELOPMENT}
     - *initGcloud
   only:
     refs: ["development"]
@@ -29,10 +33,6 @@
 .gatsbyDeployStage:
   extends: .gatsbyDeploy
   before_script:
-    - export GCLOUD_SA_KEY_CURRENT=${GCLOUD_SA_KEY_STAGE}
-    - export GCLOUD_PROJECT_ID_CURRENT=${GCLOUD_PROJECT_ID_STAGE}
-    - export GCS_BUCKET_NAME_CURRENT=${GCS_BUCKET_NAME_STAGE}
-    - export GCS_BUCKET_REGION_CURRENT=${GCS_BUCKET_REGION_STAGE}
     - *initGcloud
   only:
     refs: ["stage"]
@@ -42,10 +42,6 @@
 .gatsbyDeployMaster:
   extends: .gatsbyDeploy
   before_script:
-    - export GCLOUD_SA_KEY_CURRENT=${GCLOUD_SA_KEY_PRODUCTION}
-    - export GCLOUD_PROJECT_ID_CURRENT=${GCLOUD_PROJECT_ID_PRODUCTION}
-    - export GCS_BUCKET_NAME_CURRENT=${GCS_BUCKET_NAME_PRODUCTION}
-    - export GCS_BUCKET_REGION_CURRENT=${GCS_BUCKET_REGION_PRODUCTION}
     - *initGcloud
   only:
     refs: ["master"]
