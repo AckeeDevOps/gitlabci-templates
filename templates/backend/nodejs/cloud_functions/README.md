@@ -1,7 +1,6 @@
 # Prefabs for Firebase Cloud Functions
 
-These prefabs are meant to be used during with 
-Firebase Cloud Functions. They rely on following 
+These prefabs are meant to be used with Firebase Cloud Functions. They rely on following 
 directory structure:
 
 ```
@@ -22,6 +21,10 @@ directory structure:
 ├── .gitlab-ci.yml
 ├── .firebaserc
 ```
+
+- all prefabs can be used independently (any of them don't rely on previously computed state)
+- you can specify majority of variables in the global `variables` section however it might cause some readability issues, hence we treat these prefabs as functions - every "call" contains all necessary variables
+- if some blocks contain the same set of variables - use YAML anchors
 
 ## Examples
 ```yaml
