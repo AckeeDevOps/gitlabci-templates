@@ -95,6 +95,7 @@ deploy:production: # stage: deploy
 ### ciTestSecretsDelivery, ciTestSecretsMergeRequest
 
 **`ciTestSecretsDelivery`** is invoked only after push to `master`, `stage` and `development`
+
 **`ciTestSecretsMergeRequest`** is invoked only after `merge_request` events
 
 | variable | description | example | required |
@@ -112,6 +113,7 @@ deploy:production: # stage: deploy
 ### ciTestDelivery, ciTestMergeRequest
 
 **`ciTestDelivery`** is invoked only after push to `master`, `stage` and `development`
+
 **`ciTestMergeRequest`** is invoked only after `merge_request` events
 
 | variable | description | example | required |
@@ -121,4 +123,5 @@ deploy:production: # stage: deploy
 ### ciLintDelivery, ciLintMergeRequest
 
 **`ciLintDelivery`** is invoked only after push to `master`, `stage` and `development`
+
 **`ciLintMergeRequest`** is invoked only after `merge_request` events
