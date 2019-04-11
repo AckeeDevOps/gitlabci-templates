@@ -1,10 +1,19 @@
+.addHelmRepo: &addHelmRepo |
+  helm plugin install https://github.com/chartmuseum/helm-push > /dev/null 2>&1
+  helm repo add \
+    --username "${HELM_REPOSITORY_USERNAME}" \
+    --password "${HELM_REPOSITORY_PASSWORD}" \
+    "${HELM_REPOSITORY_NAME}" \
+    "${HELM_REPOSITORY_URL}" > /dev/null 2>&1
+
 .beforeScriptHelmUpload: &beforeScriptHelmUpload
   #  validate input
-  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/validate.sh | sh
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/validate-upload.sh | sh
   # /validate input
   #  install and configure Helm
   - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/install_helm_alpine.sh | sh
   # /install and configure Helm
+  - *addHelmRepo
   
 .scriptHelmUpload: &scriptHelmUpload
   # replace version in Chart.yaml
