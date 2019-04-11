@@ -1,4 +1,4 @@
-# Prefabs for Firebase Cloud Function
+# Prefabs for Firebase Cloud Functions
 
 These prefabs are meant to be used during with 
 Firebase Cloud Functions. They rely on following 
@@ -91,3 +91,12 @@ deploy:production: # stage: deploy
   variables: *deploymentJobVariables
 ```
 ## Configuration of prefabs
+
+### ciTestSecretsDelivery
+
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| VAULTIER_RELEASE_LINK | url of Vaultier release, should be binary file | `https://github.com/AckeeDevOps/vaultier/releases/download/v1.0.2/vaultier-v1.0.2` | `true` |
+| SSH_KEY | Base64 encoded RSA private key, it's handy when downloading private NPM packages | | true |
+| VAULTIER_VAULT_ADDR | URL of your Vault | `https://vault.vault.co.uk` | `true` |
+| VAULTIER_VAULT_TOKEN | Vault token in plain text | | `true` |
