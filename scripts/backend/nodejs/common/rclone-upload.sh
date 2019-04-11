@@ -30,4 +30,4 @@ rclone sync "${DOCS_OUTPUT_DIRECTORY}" remote:"${DOCS_GCS_BUKET}${DOCS_GCS_PREFI
 
 # list files for logging purposes
 echo "Uploaded files:"
-rclone ls remote:"${DOCS_GCS_BUKET}${DOCS_GCS_PREFIX}"
+rclone ls remote:"${DOCS_GCS_BUCKET}${DOCS_GCS_PREFIX}"
