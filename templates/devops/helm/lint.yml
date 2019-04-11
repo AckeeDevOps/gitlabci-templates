@@ -1,6 +1,6 @@
 .beforeScriptHelmLint: &beforeScriptHelmLint
   #  validate input
-  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/validate.sh | sh
+  - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/validate-lint.sh | sh
   # /validate input
   #  install and configure Helm
   - wget -q -O - https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/devops/helm/install_helm_alpine.sh | sh
