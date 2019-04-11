@@ -10,16 +10,16 @@
 
 # Check required variables
 [ -z "${GCLOUD_SA_KEY}" ] && { echo "GCLOUD_SA_KEY is required"; exit 1; }
-[ -z "${GCLOUD_PROJECT_ID}" ] && { echo "GCLOUD_PROJECT_ID is required"; exit 1; }
-[ -z "${DOCS_OUTPUT_DIRECTORY}" ] && { echo "AGLIO_DOCS_DIRECTORY is required"; exit 1; }
-[ -z "${DOCS_GCS_BUCKET}" ] && { echo "GCS_BUKET is required"; exit 1; }
-[ -z "${DOCS_GCS_PREFIX}" ] && { echo "GCS_PREFIX is required"; exit 1; }
+[ -z "${DOCS_GCLOUD_PROJECT_ID}" ] && { echo "DOCS_GCLOUD_PROJECT_ID is required"; exit 1; }
+[ -z "${DOCS_OUTPUT_DIRECTORY}" ] && { echo "DOCS_OUTPUT_DIRECTORY is required"; exit 1; }
+[ -z "${DOCS_GCS_BUCKET}" ] && { echo "DOCS_GCS_BUCKET is required"; exit 1; }
+[ -z "${DOCS_GCS_PREFIX}" ] && { echo "DOCS_GCS_PREFIX is required"; exit 1; }
 
 # create SA key file
 echo "${GCLOUD_SA_KEY}" | base64 -d > /tmp/key.json
 
 # set rclone variables
-export RCLONE_GCS_PROJECT_NUMBER=${GCLOUD_PROJECT_ID}
+export RCLONE_GCS_PROJECT_NUMBER=${DOCS_GCLOUD_PROJECT_ID}
 export RCLONE_GCS_SERVICE_ACCOUNT_FILE=/tmp/key.json
 
 # create rclone configuration
