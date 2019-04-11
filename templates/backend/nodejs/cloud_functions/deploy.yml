@@ -1,12 +1,19 @@
 # This file belongs to Ackee CICD suite for Firebase Cloud functions
 
+# Required Variables
+#   APP_NAME
+#   PROJECT_NAME
+#   VAULTIER_RELEASE_LINK
+#   SSH_KEY
+#   FIREBASE_TOKEN <- required directly by firebase-cli tools
+
 .beforeScriptDeployWithVaultier: &preDeployWithVaultier
-  #  fixed values for deploy
-  - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
-  - export VAULTIER_SECRET_SPECS_PATH=secrets.yaml
-  - export VAULTIER_RUN_CAUSE=delivery
-  - export VAULTIER_OUTPUT_FORMAT=dotenv
-  - if [ -z "$VAULTIER_SECRET_OUTPUT_PATH" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
+  #  set default values for deployment if needed
+  - if [ -z "${VAULTIER_BRANCH}" ]; then export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}; fi
+  - if [ -z "${VAULTIER_SECRET_SPECS_PATH}" ]; then export VAULTIER_SECRET_SPECS_PATH=secrets.yaml; fi
+  - if [ -z "${VAULTIER_RUN_CAUSE}" ]; then export VAULTIER_RUN_CAUSE=delivery; fi
+  - if [ -z "${VAULTIER_OUTPUT_FORMAT}" ]; then export VAULTIER_OUTPUT_FORMAT=dotenv; fi
+  - if [ -z "${VAULTIER_SECRET_OUTPUT_PATH}" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
   # /fixed values for deploy
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
@@ -28,7 +35,6 @@
   before_script: *preDeployWithVaultier
   allow_failure: false
   variables:
-    #SSH_KEY: must be specified globally
 
 .deployBranchSecretsMater:
   extends: .deployBranchSecrets
