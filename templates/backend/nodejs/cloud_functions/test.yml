@@ -2,12 +2,12 @@
 
 .beforeScriptTestWithVaultier: &preTestWithVaultier
   #  fixed values for test
-  - export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}
+  # if not set - use default path ${CI_PROJECT_DIR}/functions/credentials.json
+  - if [ -z "$VAULTIER_SECRET_OUTPUT_PATH" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
   - export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}
-  - export VAULTIER_SECRET_SPECS_PATH=secrets.yaml
+  - export VAULTIER_SECRET_SPECS_PATH=${CI_PROJECT_DIR}/secrets.yaml
   - export VAULTIER_RUN_CAUSE=test
   - export VAULTIER_OUTPUT_FORMAT=dotenv
-  - export VAULTIER_SECRET_OUTPUT_PATH=/tmp/secrets.json
   # /fixed values for test
   - mkdir ~/.ssh/
   - echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
