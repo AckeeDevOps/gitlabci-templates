@@ -125,3 +125,20 @@ deploy:production: # stage: deploy
 **`ciLintDelivery`** is invoked only after push to `master`, `stage` and `development`
 
 **`ciLintMergeRequest`** is invoked only after `merge_request` events
+
+### docsUploadDeployment, docsUploadMergeRequest
+
+**`docsUploadDeployment`** is invoked only after push to `master`, `stage` and `development`
+
+**`docsUploadMergeRequest`** is invoked only after `merge_request` events
+
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| APP_NAME | name of the service | `api` | `true` |
+| PROJECT_NAME | name of the project, typically customer's name | `project123` | `true` |
+| GCLOUD_SA_KEY | Base64 encoded GCP Service Account key (JSON) | | `true` |
+| GCLOUD_PROJECT_ID | project id of target GCP project, note that project id is not always the same as project name | | `true` |
+| OUTPUT_DIRECTORY | directory documentation is rendered to | `${CI_PROJECT_DIR}/docs-output/.` | `true` |
+| GCS_BUCKET | full name of yout GCS bucker | `bucket-name-123` | `true` |
+| GCS_PREFIX | directory prefix for the target location | `/${PROJECT_NAME}-${APP_NAME}/${CI_COMMIT_REF_NAME}/` | `true` |
+
