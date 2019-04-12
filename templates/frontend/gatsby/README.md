@@ -39,41 +39,25 @@ stages:
   - deploy
 
 variables:
-  ### SECRETS
-  SSH_KEY: ${SECRET_SSH_KEY}
-  GCLOUD_SA_KEY_DEVELOPMENT: ${SECRET_GCLOUD_SA_KEY_DEVELOPMENT}
-  GCLOUD_SA_KEY_PRODUCTION: ${SECRET_GCLOUD_SA_KEY_PRODUCTION}
-
-  ### GCP PROJECTS
-  GCLOUD_PROJECT_ID_DEVELOPMENT: gcp-project-1234
-  GCLOUD_PROJECT_ID_PRODUCTION: gcp-project-5678
-
-  ### GCS BUCKETS
-  GCS_BUCKET_NAME_DEVELOPMENT: dev.my-fancy-domain.com
-  GCS_BUCKET_NAME_PRODUCTION: prod.my-fancy-domain.com
-
-  ### GCS BUCKETS LOCATIONS
-  GCS_BUCKET_REGION_DEVELOPMENT: europe-west3
-  GCS_BUCKET_REGION_PRODUCTION: europe-west3
-  
-  ### MICCELLANEOUS
-  GCS_INDEX_FILE: index.html
-  GCS_E404_FILE: index.html
-  NODE_IMAGE: node:8
+  DEFAULT_GCS_BUCKET_REGION: europe-west3
+  DEFAULT_GCS_INDEX_FILE: index.html
+  DEFAULT_GCS_E404_FILE: index.html
 
 # DEVELOPMENT steps
 build:development:
+  image: node:8
   extends: .gatsbyBuildDevelopment
+  variables:
+    SSH_KEY: ${SECRET_SSH_KEY}
 
 deploy:development:
   extends: .gatsbyDeployDevelopment
-  
-# PRODUCTION steps
-build:production:
-  extends: .gatsbyBuildMaster
-
-deploy:production:
-  extends: .gatsbyDeployMaster
-
+  variables:
+    GCLOUD_SA_KEY: ${SECRET_GCLOUD_SA_KEY}
+    GCLOUD_PROJECT_ID: gcp-project-123
+    GCS_BUCKET_REGION: ${DEFAULT_GCS_BUCKET_REGION}
+    GCS_BUCKET_NAME: your.dev.bucket.name
+    GCS_INDEX_FILE: ${DEFAULT_GCS_INDEX_FILE}
+    GCS_E404_FILE: ${DEFAULT_GCS_E404_FILE}
 ```
 
