@@ -61,3 +61,34 @@ deploy:development:
     GCS_E404_FILE: ${DEFAULT_GCS_E404_FILE}
 ```
 
+## Configuration of prefabs
+
+### gatsbyBuildDevelopment, gatsbyBuildStage, gatsbyBuildMaster
+
+**`gatsbyBuildDevelopment`** is invoked only after push to `development`
+
+**`gatsbyBuildStage`** is invoked only after push to `stage`
+
+**`gatsbyBuildMaster`** is invoked only after push to `master`
+
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| SSH_KEY | Base64 encoded RSA private key for accessing private NPM modules | | `true` |
+
+### gatsbyDeployDevelopment, gatsbyDeployStage, gatsbyDeployMaster
+
+
+**`gatsbyDeployDevelopment`** is invoked only after push to `development`
+
+**`gatsbyDeployStage`** is invoked only after push to `stage`
+
+**`gatsbyDeployMaster`** is invoked only after push to `master`
+
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| GCLOUD_SA_KEY | Base64 encoded GCP Service Account key (JSON) |  | `true` |
+| GCLOUD_PROJECT_ID | project id of target GCP project, note that project id is not always the same as project name | | `true` |
+| GCS_BUCKET_REGION | [location](https://cloud.google.com/storage/docs/locations) of newly created GCS bucket | `europe-west3` | `true` |
+| GCS_BUCKET_NAME | full name of target GCS bucket | `your.dev.bucket.name` | `true` |
+| GCS_INDEX_FILE | name of the file which will act as index page | `index.html` | `true` |
+| GCS_E404_FILE | name of the file which will act as error page | `e404.html` | `true` |
