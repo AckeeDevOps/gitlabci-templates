@@ -11,3 +11,4 @@ unpredictable in older version.
 ## Contents
 - [Firebase Cloud Functions with secrets injection from Vault](https://github.com/AckeeDevOps/gitlabci-templates/tree/master/templates/backend/nodejs/cloud_functions)
 - [Helm charts with Chartmuseum](https://github.com/AckeeDevOps/gitlabci-templates/tree/master/templates/devops/helm)
+- [Gatsby for micro sites](https://github.com/AckeeDevOps/gitlabci-templates/tree/master/templates/frontend/gatsby)
