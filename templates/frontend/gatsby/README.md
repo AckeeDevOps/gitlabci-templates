@@ -1,7 +1,11 @@
 # Gitlab CI bits for Gatsby
 
 These simple build step prefabs are meant to be used with [Gatsby](https://www.gatsbyjs.org/) 
-and [Google Cloud Storage](https://cloud.google.com/storage/) (used as content hosting).
+and [Google Cloud Storage](https://cloud.google.com/storage/) (used as content hosting). 
+
+please note that bits from build stage (`gatsbyBuildDevelopment`, `gatsbyBuildStage`, `gatsbyBuildMaster`) 
+are shipped to the next stage (`gatsbyDeployDevelopment`, `gatsbyDeployStage`, `gatsbyDeployMaster`) 
+via Gitlab CI artifacts so deployment prefabs can't be run independently.
 
 ## Requirements
 
@@ -14,18 +18,6 @@ and [Google Cloud Storage](https://cloud.google.com/storage/) (used as content h
 
 ### Gatsby configuration
 Please make sure that Gatsby output directory is always `public`.
-
-### Gitlab configuration
-Please make sure you have configured following variables in CI/CD settings:
-
-**`SECRET_SSH_KEY`**: base64 encoded RSA private key e.g. `cat ~/.ssh/id_rsa | base64 -w0`
-
-In the example below we use different Service Account keys for each environment hence 
-we have two secrets with Google Service Account keys.
-
-**`SECRET_GCLOUD_SA_KEY_DEVELOPMENT`**: base64 encoded GCP Service Account key
-
-**`SECRET_GCLOUD_SA_KEY_PRODUCTION`**: base64 encoded GCP Service Account key
 
 ## Example gitlab-ci.yml
 
