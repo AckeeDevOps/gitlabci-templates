@@ -42,16 +42,18 @@
    if [ -z "${HELM_USE_PRIVATE_REPOSITORY}" ]; then export HELM_USE_PRIVATE_REPOSITORY="true"; fi
 
 .gatsbyDeploy-validateEnvironmentCommon: &gatsbyDeploy-validateEnvironmentCommon |
+  if ! [ "${HELM_USE_PRIVATE_REPOSITORY}" = "true" ]; then
+    if [ -z "${HELM_REPOSITORY_URL}" ]; then echo "HELM_REPOSITORY_URL is required"; exit 1; fi
+    if [ -z "${HELM_REPOSITORY_NAME}" ]; then echo "HELM_REPOSITORY_NAME is required"; exit 1; fi
+    if [ -z "${HELM_REPOSITORY_USERNAME}" ]; then echo "HELM_REPOSITORY_USERNAME is required"; exit 1; fi
+    if [ -z "${HELM_REPOSITORY_PASSWORD}" ]; then echo "HELM_REPOSITORY_PASSWORD is required"; exit 1; fi
+  fi
   if [ -z "${GCLOUD_SA_KEY}" ]; then echo "GCLOUD_SA_KEY is required"; exit 1; fi
   if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "GCLOUD_PROJECT_ID is required"; exit 1; fi
   if [ -z "${GKE_CLUSTER}" ]; then echo "GKE_CLUSTER is required"; exit 1; fi
   if [ -z "${GKE_ZONE}" ]; then echo "GKE_CLUSTER is required"; exit 1; fi
   if [ -z "${GKE_NAMESPACE}" ]; then echo "GKE_NAMESPACE is required"; exit 1; fi
   if [ -z "${HELM_BINARIES_URL}" ]; then echo "HELM_BINARIES_URL is required"; exit 1; fi
-  if [ -z "${HELM_REPOSITORY_URL}" ]; then echo "HELM_REPOSITORY_URL is required"; exit 1; fi
-  if [ -z "${HELM_REPOSITORY_NAME}" ]; then echo "HELM_REPOSITORY_NAME is required"; exit 1; fi
-  if [ -z "${HELM_REPOSITORY_USERNAME}" ]; then echo "HELM_REPOSITORY_USERNAME is required"; exit 1; fi
-  if [ -z "${HELM_REPOSITORY_PASSWORD}" ]; then echo "HELM_REPOSITORY_PASSWORD is required"; exit 1; fi
   if [ -z "${HELM_RELEASE_NAME}" ]; then echo "HELM_RELEASE_NAME is required"; exit 1; fi
   if [ -z "${HELM_CHART_NAME}" ]; then echo "HELM_CHART_NAME is required"; exit 1; fi
   if [ -z "${HELM_VALUES_FILE}" ]; then echo "HELM_VALUES_FILE is required"; exit 1; fi
