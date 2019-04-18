@@ -46,6 +46,37 @@
   - docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${GCR_DOMAIN}/${GCLOUD_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
   - docker push ${GCR_DOMAIN}/${GCLOUD_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
 
+# Prefabs without secrets injection
+.gatsbyBuildDocker:
+  stage: build
+  image: docker
+  before_script:
+    - *validateEnvironmentCommon
+    - *initDockerGCR
+  script: *buildDockerImage
+
+.gatsbyBuildDockerDevelopment:
+  extends: .gatsbyBuildDocker
+  only:
+    refs: ["development"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+
+.gatsbyBuildDockerStage:
+  extends: .gatsbyBuildDocker
+  only:
+    refs: ["stage"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+
+.gatsbyBuildDockerMaster:
+  extends: .gatsbyBuildDocker
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+
+# prefabs with secrets injection
 .gatsbyBuildDockerSecrets:
   stage: build
   image: docker
