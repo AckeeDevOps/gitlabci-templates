@@ -57,8 +57,7 @@
   if [ -z "${RUNTIME_ENVIRONMENT}" ]; then echo "RUNTIME_ENVIRONMENT is required"; exit 1; fi
 
 .gatsbyDeploy-helmDeploy: &gatsbyDeploy-helmDeploy |
-  echo "upgrading release ${HELM_RELEASE_NAME} with chart ${HELM_CHART_NAME} ..."
-  helm upgrade \
+  echo helm upgrade \
     --install \
     --values "${HELM_VALUES_FILE}" \
     --set general.imageName="${IMAGE_NAME}" \
