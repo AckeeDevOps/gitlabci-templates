@@ -60,7 +60,7 @@
   echo "upgrading release ${HELM_RELEASE_NAME} with chart ${HELM_CHART_NAME} ..."
   helm upgrade \
     --install \
-    --set-file "${HELM_VALUES_FILE}" \
+    --values "${HELM_VALUES_FILE}" \
     --set general.imageName="${IMAGE_NAME}" \
     --set general.imageTag="${IMAGE_TAG}" \
     --set general.appName="${APP_NAME}" \
@@ -83,7 +83,6 @@
   before_script:
     - *gatsbyDeploy-validateEnvironmentCommon
     - *gatsbyDeploy-setDefaultValues
-    - *gatsbyDeploy-installKubectl
     - *gatsbyDeploy-installHelm
     - *gatsbyDeploy-initializeChartMuseum
     - *gatsbyDeploy-initializeGcpAuth
