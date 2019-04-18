@@ -36,21 +36,21 @@
     - echo works
       
 .gatsbyBuildDockerSecretsDevelopment:
-  extends: .gatsbyBuild
+  extends: .gatsbyBuildDockerSecrets
   only:
     refs: ["development"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
       
 .gatsbyBuildDockerSecretsStage:
-  extends: .gatsbyBuild
+  extends: .gatsbyBuildDockerSecrets
   only:
     refs: ["stage"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
       
 .gatsbyBuildDockerSecretsMaster:
-  extends: .gatsbyBuild
+  extends: .gatsbyBuildDockerSecrets
   only:
     refs: ["master"]
     variables:
