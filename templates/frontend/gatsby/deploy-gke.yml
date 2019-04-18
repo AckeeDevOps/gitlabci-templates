@@ -56,7 +56,7 @@
   if [ -z "${PROJECT_NAME}" ]; then echo "PROJECT_NAME is required"; exit 1; fi
   if [ -z "${RUNTIME_ENVIRONMENT}" ]; then echo "RUNTIME_ENVIRONMENT is required"; exit 1; fi
 
-.gatsbyDeploy-helmDeploy: &.gatsbyDeploy-helmDeploy |
+.gatsbyDeploy-helmDeploy: &gatsbyDeploy-helmDeploy |
   helm upgrade \
     --install \
     --set-file "${HELM_VALUES_FILE}" \
@@ -87,6 +87,7 @@
     - *gatsbyDeploy-initializeChartMuseum
     - *gatsbyDeploy-initializeGcpAuth
     - *gatsbyDeploy-initializeGkeAuth
+    - *gatsbyDeploy-helmDeploy
   script:
     - echo works
 
