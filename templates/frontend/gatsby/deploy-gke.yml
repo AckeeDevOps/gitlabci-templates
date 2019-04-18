@@ -42,26 +42,15 @@
    if [ -z "${HELM_USE_PRIVATE_REPOSITORY}" ]; then export HELM_USE_PRIVATE_REPOSITORY="true"; fi
 
 .gatsbyDeploy-validateEnvironmentCommon: &gatsbyDeploy-validateEnvironmentCommon |
+  wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/common/check_empty.sh \
+    -O /tmp/check_empty.sh > /dev/null 2>&1
+  . /tmp/check_empty.sh
   if [ "${HELM_USE_PRIVATE_REPOSITORY}" = "true" ]; then
-    if [ -z "${HELM_REPOSITORY_URL}" ]; then echo "HELM_REPOSITORY_URL is required"; exit 1; fi
-    if [ -z "${HELM_REPOSITORY_NAME}" ]; then echo "HELM_REPOSITORY_NAME is required"; exit 1; fi
-    if [ -z "${HELM_REPOSITORY_USERNAME}" ]; then echo "HELM_REPOSITORY_USERNAME is required"; exit 1; fi
-    if [ -z "${HELM_REPOSITORY_PASSWORD}" ]; then echo "HELM_REPOSITORY_PASSWORD is required"; exit 1; fi
+    check_empty_vars HELM_REPOSITORY_URL HELM_REPOSITORY_NAME HELM_REPOSITORY_USERNAME HELM_REPOSITORY_PASSWORD
   fi
-  if [ -z "${GCLOUD_SA_KEY}" ]; then echo "GCLOUD_SA_KEY is required"; exit 1; fi
-  if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "GCLOUD_PROJECT_ID is required"; exit 1; fi
-  if [ -z "${GKE_CLUSTER}" ]; then echo "GKE_CLUSTER is required"; exit 1; fi
-  if [ -z "${GKE_ZONE}" ]; then echo "GKE_CLUSTER is required"; exit 1; fi
-  if [ -z "${GKE_NAMESPACE}" ]; then echo "GKE_NAMESPACE is required"; exit 1; fi
-  if [ -z "${HELM_BINARIES_URL}" ]; then echo "HELM_BINARIES_URL is required"; exit 1; fi
-  if [ -z "${HELM_RELEASE_NAME}" ]; then echo "HELM_RELEASE_NAME is required"; exit 1; fi
-  if [ -z "${HELM_CHART_NAME}" ]; then echo "HELM_CHART_NAME is required"; exit 1; fi
-  if [ -z "${HELM_VALUES_FILE}" ]; then echo "HELM_VALUES_FILE is required"; exit 1; fi
-  if [ -z "${IMAGE_NAME}" ]; then echo "IMAGE_NAME is required"; exit 1; fi
-  if [ -z "${IMAGE_TAG}" ]; then echo "IMAGE_TAG is required"; exit 1; fi
-  if [ -z "${APP_NAME}" ]; then echo "APP_NAME is required"; exit 1; fi
-  if [ -z "${PROJECT_NAME}" ]; then echo "PROJECT_NAME is required"; exit 1; fi
-  if [ -z "${RUNTIME_ENVIRONMENT}" ]; then echo "RUNTIME_ENVIRONMENT is required"; exit 1; fi
+  check_empty_vars GCLOUD_SA_KEY GCLOUD_PROJECT_ID GKE_CLUSTER GKE_ZONE \
+    GKE_NAMESPACE HELM_BINARIES_URL HELM_RELEASE_NAME HELM_CHART_NAME \
+    HELM_VALUES_FILE IMAGE_NAME APP_NAME PROJECT_NAME RUNTIME_ENVIRONMENT
 
 .gatsbyDeploy-helmDeploy: &gatsbyDeploy-helmDeploy |
   helm upgrade \
