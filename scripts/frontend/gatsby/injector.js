@@ -5,11 +5,7 @@ try {
 	const j = JSON.parse(b);
 
 	Object.keys(j).forEach(function (key) {
-		if (!process.env.hasOwnProperty(key)) {
-			process.env[key] = j[key];
-		} else {
-			console.log(`${key} was already there ...`);
-		}
+		process.env[key] = j[key];
 	});
 
 } catch(e) {
