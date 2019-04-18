@@ -42,9 +42,10 @@
   if [ -z "${HELM_REPOSITORY_PASSWORD}" ]; then echo "HELM_REPOSITORY_PASSWORD is required"; exit 1; fi
   if [ -z "${HELM_RELEASE_NAME}" ]; then echo "HELM_RELEASE_NAME is required"; exit 1; fi
   if [ -z "${HELM_CHART_NAME}" ]; then echo "HELM_CHART_NAME is required"; exit 1; fi
-
+  if [ -z "${HELM_VALUES_FILE}" ]; then echo "HELM_VALUES_FILE is required"; exit 1; fi
 
 .gatsbyDeployGke:
+  stage: deploy
   image: google/cloud-sdk:242.0.0-alpine
   before_script:
     - *gatsbyDeploy-validateEnvironmentCommon
