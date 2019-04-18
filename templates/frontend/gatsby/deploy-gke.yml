@@ -33,7 +33,7 @@
 
 # set optional values to default values
 .gatsbyDeploy-setDefaultValues: &gatsbyDeploy-setDefaultValues |
-   if [ -z "${HELM_CHART_VERSION}" ]; then export HELM_CHART_VERSION=""; fi
+   if [ -z "${HELM_CHART_VERSION}" ]; then export HELM_CHART_VERSION="latest"; fi
    if [ -z "${HELM_FORCE_UPGRADE}" ]; then export HELM_FORCE_UPGRADE="false"; fi
 
 .gatsbyDeploy-validateEnvironmentCommon: &gatsbyDeploy-validateEnvironmentCommon |
