@@ -86,9 +86,8 @@
     - *gatsbyDeploy-initializeChartMuseum
     - *gatsbyDeploy-initializeGcpAuth
     - *gatsbyDeploy-initializeGkeAuth
-    - *gatsbyDeploy-helmDeploy
   script:
-    - echo works
+    - *gatsbyDeploy-helmDeploy
 
 .gatsbyDeployGkeMaster:
   extends: .gatsbyDeployGke
