@@ -5,6 +5,7 @@
   mv linux-amd64/helm /usr/local/bin
   rm -rf helm.tar.gz
   rm -rf linux-amd64
+  helm init --client-only
 
 # activate GCP service account
 .gatsbyDeploy-initializeGcpAuth: &gatsbyDeploy-initializeGcpAuth |
