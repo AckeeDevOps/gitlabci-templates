@@ -34,6 +34,13 @@
   echo "${GCLOUD_SA_KEY}" | base64 -d > /tmp/key.json
   cat /tmp/key.json | docker login -u _json_key --password-stdin "https://${GCR_DOMAIN}"
 
+# build commands are always the same, the secrets logic is handled in 
+# package.json file via build-ci script
+.buildDockerImage: &buildDockerImage
+  - docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
+  - docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${GCR_DOMAIN}/${GCLOUD_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
+  - docker push ${GCR_DOMAIN}/${GCLOUD_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
+
 .gatsbyBuildDockerSecrets:
   stage: build
   image: docker
@@ -44,8 +51,7 @@
     - *initDockerGCR
     - *downloadVaultier
     - vaultier
-  script:
-    - echo works
+  script: *buildDockerImage
       
 .gatsbyBuildDockerSecretsDevelopment:
   extends: .gatsbyBuildDockerSecrets
