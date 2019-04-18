@@ -1,9 +1,10 @@
 # install helm from provided URL, it should be always tar.gz file
 .gatsbyDeploy-installHelm: &gatsbyDeploy-installHelm |
   wget "${HELM_BINARIES_URL}" -O helm.tar.gz > /dev/null 2>&1
-  tar -xvf helm.tar.gz helm
-  mv helm /usr/local/bin
+  tar -xvf helm.tar.gz linux-amd64/helm
+  mv linux-amd64/helm /usr/local/bin
   rm -rf helm.tar.gz
+  rm -rf linux-amd64
 
 # activate GCP service account
 .gatsbyDeploy-initializeGcpAuth: &gatsbyDeploy-initializeGcpAuth |
