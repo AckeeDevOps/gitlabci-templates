@@ -42,6 +42,7 @@
    if [ -z "${HELM_USE_PRIVATE_REPOSITORY}" ]; then export HELM_USE_PRIVATE_REPOSITORY="true"; fi
 
 .gatsbyDeploy-validateEnvironmentCommon: &gatsbyDeploy-validateEnvironmentCommon |
+  echo "performing pre-deploy validation ..."
   wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/common/check_empty.sh \
     -O /tmp/check_empty.sh > /dev/null 2>&1
   . /tmp/check_empty.sh
