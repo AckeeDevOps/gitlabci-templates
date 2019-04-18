@@ -42,7 +42,7 @@
    if [ -z "${HELM_USE_PRIVATE_REPOSITORY}" ]; then export HELM_USE_PRIVATE_REPOSITORY="true"; fi
 
 .gatsbyDeploy-validateEnvironmentCommon: &gatsbyDeploy-validateEnvironmentCommon |
-  if ! [ "${HELM_USE_PRIVATE_REPOSITORY}" = "true" ]; then
+  if [ "${HELM_USE_PRIVATE_REPOSITORY}" = "true" ]; then
     if [ -z "${HELM_REPOSITORY_URL}" ]; then echo "HELM_REPOSITORY_URL is required"; exit 1; fi
     if [ -z "${HELM_REPOSITORY_NAME}" ]; then echo "HELM_REPOSITORY_NAME is required"; exit 1; fi
     if [ -z "${HELM_REPOSITORY_USERNAME}" ]; then echo "HELM_REPOSITORY_USERNAME is required"; exit 1; fi
