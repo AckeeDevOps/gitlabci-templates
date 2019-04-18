@@ -8,6 +8,11 @@
   rm -rf vaultier.tar.gz
   mv vaultier /usr/local/bin/vaultier
 
+# secrets injector is tiny javascript file which is pre-loaded with
+# -r flag in the ci-build script
+.downloadSecretsInjector: &downloadSecretsInjector |
+  echo downloading stuff
+
 # setVaultierEnvironment sets predictable variables
 # no need to validate them in validateEnvironment
 .setVaultierEnvironment: &setVaultierEnvironment |
@@ -50,6 +55,7 @@
     - *validateEnvironmentSecrets
     - *initDockerGCR
     - *downloadVaultier
+    - *downloadSecretsInjector
     - vaultier
   script: *buildDockerImage
       
