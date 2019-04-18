@@ -46,7 +46,6 @@
   if [ -z "${HELM_VALUES_FILE}" ]; then echo "HELM_VALUES_FILE is required"; exit 1; fi
   if [ -z "${IMAGE_NAME}" ]; then echo "IMAGE_NAME is required"; exit 1; fi
   if [ -z "${IMAGE_TAG}" ]; then echo "IMAGE_TAG is required"; exit 1; fi
-  if [ -z "${GCR_DOMAIN}" ]; then echo "GCR_DOMAIN is required"; exit 1; fi
 
 
 .gatsbyDeployGke:
