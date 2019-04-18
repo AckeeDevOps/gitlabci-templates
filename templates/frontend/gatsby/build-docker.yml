@@ -11,7 +11,7 @@
 # secrets injector is tiny javascript file which is pre-loaded with
 # -r flag in the ci-build script
 .downloadSecretsInjector: &downloadSecretsInjector |
-  echo downloading stuff
+  wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/frontend/gatsby/injector.js -O injector.js > /dev/null 2>&1
 
 # setVaultierEnvironment sets predictable variables
 # no need to validate them in validateEnvironment
