@@ -1,0 +1,53 @@
+# install helm from provided URL, it should be always tar.gz file
+.gatsbyDeploy-installHelm: &gatsbyDeploy-installHelm |
+  wget "${HELM_BINARIES_URL}" -O helm.tar.gz > /dev/null 2>&1
+  tar -xvf helm.tar.gz helm
+  mv helm /usr/local/bin
+  rm -rf helm.tar.gz
+
+# activate GCP service account
+.gatsbyDeploy-initializeGcpAuth: &gatsbyDeploy-initializeGcpAuth |
+  echo "${GCLOUD_SA_KEY}" | base64 -d > /tmp/key.json
+  gcloud auth activate-service-account --key-file=/tmp/key.json
+
+# add private chart museum
+.gatsbyDeploy-initializeChartMuseum: &gatsbyDeploy-initializeChartMuseum |
+  helm plugin install https://github.com/chartmuseum/helm-push > /dev/null 2>&1
+  helm repo add \
+    --username "${HELM_REPOSITORY_USERNAME}" \
+    --password "${HELM_REPOSITORY_PASSWORD}" \
+    "${HELM_REPOSITORY_NAME}" \
+    "${HELM_REPOSITORY_URL}"
+
+# install Gcloud component - Kubectl
+.gatsbyDeploy-installKubectl: &gatsbyDeploy-installKubectl |
+  gcloud components install kubectl -q > /dev/null 2>&1
+
+# get GKE cluster credentials
+.gatsbyDeploy-initializeGkeAuth: &gatsbyDeploy-initializeGkeAuth |
+  gcloud container clusters get-credentials "${GKE_CLUSTER}" \
+    --project="${GCLOUD_PROJECT_ID}" \
+    --zone="${GKE_ZONE}"
+
+.gatsbyDeploy-validateEnvironmentCommon: &gatsbyDeploy-validateEnvironmentCommon |
+  if [ -z "${GCLOUD_SA_KEY}" ]; then echo "GCLOUD_SA_KEY is required"; exit 1; fi
+  if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "GCLOUD_PROJECT_ID is required"; exit 1; fi
+  if [ -z "${GKE_CLUSTER}" ]; then echo "GKE_CLUSTER is required"; exit 1; fi
+  if [ -z "${GKE_ZONE}" ]; then echo "GKE_CLUSTER is required"; exit 1; fi
+  if [ -z "${GKE_NAMESPACE}" ]; then echo "GKE_NAMESPACE is required"; exit 1; fi
+  if [ -z "${HELM_BINARIES_URL}" ]; then echo "HELM_BINARIES_URL is required"; exit 1; fi
+  if [ -z "${HELM_REPOSITORY_URL}" ]; then echo "HELM_REPOSITORY_URL is required"; exit 1; fi
+  if [ -z "${HELM_REPOSITORY_NAME}" ]; then echo "HELM_REPOSITORY_NAME is required"; exit 1; fi
+  if [ -z "${HELM_REPOSITORY_USERNAME}" ]; then echo "HELM_REPOSITORY_USERNAME is required"; exit 1; fi
+  if [ -z "${HELM_REPOSITORY_PASSWORD}" ]; then echo "HELM_REPOSITORY_PASSWORD is required"; exit 1; fi
+  if [ -z "${HELM_RELEASE_NAME}" ]; then echo "HELM_RELEASE_NAME is required"; exit 1; fi
+
+.gatsbyDeployGke:
+  image: google/cloud-sdk:242.0.0-alpine
+  before_script:
+    - *gatsbyDeploy-validateEnvironmentCommon
+    - *gatsbyDeploy-installKubectl
+    - *gatsbyDeploy-installHelm
+    - *gatsbyDeploy-initializeChartMuseum
+    - *gatsbyDeploy-initializeGcpAuth
+    - *gatsbyDeploy-initializeGkeAuth
