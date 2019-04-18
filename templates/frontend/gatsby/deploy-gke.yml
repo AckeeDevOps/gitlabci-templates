@@ -54,6 +54,8 @@
     - *gatsbyDeploy-initializeChartMuseum
     - *gatsbyDeploy-initializeGcpAuth
     - *gatsbyDeploy-initializeGkeAuth
+  script:
+    - echo works
 
 .gatsbyDeployGkeMaster:
   extends: .gatsbyDeployGke
