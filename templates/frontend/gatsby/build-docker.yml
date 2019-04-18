@@ -22,11 +22,11 @@
   if [ -z "${SSH_KEY}" ]; then echo "SSH_KEY is required"; exit 1; fi
   if [ -z "${GCLOUD_SA_KEY}" ]; then echo "GCLOUD_SA_KEY is required"; exit 1; fi
   if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "GCLOUD_PROJECT_ID is required"; exit 1; fi
-  if [ -z "${VAULTIER_RELEASE_LINK}" ]; then echo "VAULTIER_RELEASE_LINK is required"; exit 1; fi
   if [ -z "${GCR_DOMAIN}" ]; then echo "GCR_DOMAIN is required"; exit 1; fi
 
 # Validation for variant with secrets
 .validateEnvironmentSecrets: &validateEnvironmentSecrets |
+  if [ -z "${VAULTIER_RELEASE_LINK}" ]; then echo "VAULTIER_RELEASE_LINK is required"; exit 1; fi
   if [ -z "${VAULTIER_VAULT_ADDR}" ]; then echo "VAULTIER_VAULT_ADDR is required"; exit 1; fi
   if [ -z "${VAULTIER_VAULT_TOKEN}" ]; then echo "VAULTIER_VAULT_TOKEN is required"; exit 1; fi
 
