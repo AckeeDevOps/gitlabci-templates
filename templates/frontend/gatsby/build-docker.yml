@@ -2,7 +2,7 @@
 #   SSH_KEY: Base64 encoded RSA private key
 
 # Download Vaultier helper https://github.com/AckeeDevOps/vaultier/releases
-.downloadVaultier: &downloadVaultier |
+.gatsbyBuild-downloadVaultier: &gatsbyBuild-downloadVaultier |
   wget "${VAULTIER_RELEASE_LINK}" -O vaultier.tar.gz > /dev/null 2>&1
   tar -xvf vaultier.tar.gz vaultier
   rm -rf vaultier.tar.gz
@@ -10,12 +10,12 @@
 
 # secrets injector is tiny javascript file which is pre-loaded with
 # -r flag in the ci-build script
-.downloadSecretsInjector: &downloadSecretsInjector |
+.gatsbyBuild-downloadSecretsInjector: &gatsbyBuild-downloadSecretsInjector |
   wget https://raw.githubusercontent.com/AckeeDevOps/gitlabci-templates/master/scripts/frontend/gatsby/injector.js -O injector.js > /dev/null 2>&1
 
 # setVaultierEnvironment sets predictable variables
 # no need to validate them in validateEnvironment
-.setVaultierEnvironment: &setVaultierEnvironment |
+.gatsbyBuild-setVaultierEnvironment: &gatsbyBuild-setVaultierEnvironment |
   if [ -z "${VAULTIER_BRANCH}" ]; then export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}; fi
   if [ -z "${VAULTIER_SECRET_SPECS_PATH}" ]; then export VAULTIER_SECRET_SPECS_PATH=secrets.yaml; fi
   if [ -z "${VAULTIER_RUN_CAUSE}" ]; then export VAULTIER_RUN_CAUSE=delivery; fi
@@ -23,25 +23,26 @@
   if [ -z "${VAULTIER_SECRET_OUTPUT_PATH}" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/secrets.json; fi
 
 # Validation for both variants - with or without secrets
-.validateEnvironmentCommon: &validateEnvironmentCommon |
+.gatsbyBuild-validateEnvironmentCommon: &gatsbyBuild-validateEnvironmentCommon |
   if [ -z "${SSH_KEY}" ]; then echo "SSH_KEY is required"; exit 1; fi
   if [ -z "${GCLOUD_SA_KEY}" ]; then echo "GCLOUD_SA_KEY is required"; exit 1; fi
   if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "GCLOUD_PROJECT_ID is required"; exit 1; fi
   if [ -z "${GCR_DOMAIN}" ]; then echo "GCR_DOMAIN is required"; exit 1; fi
 
 # Validation for variant with secrets
-.validateEnvironmentSecrets: &validateEnvironmentSecrets |
+.gatsbyBuild-validateEnvironmentSecrets: &gatsbyBuild-validateEnvironmentSecrets |
   if [ -z "${VAULTIER_RELEASE_LINK}" ]; then echo "VAULTIER_RELEASE_LINK is required"; exit 1; fi
   if [ -z "${VAULTIER_VAULT_ADDR}" ]; then echo "VAULTIER_VAULT_ADDR is required"; exit 1; fi
   if [ -z "${VAULTIER_VAULT_TOKEN}" ]; then echo "VAULTIER_VAULT_TOKEN is required"; exit 1; fi
 
-.initDockerGCR: &initDockerGCR |
+# login to Google Container Registry
+.gatsbyBuild-initDockerGCR: &gatsbyBuild-initDockerGCR |
   echo "${GCLOUD_SA_KEY}" | base64 -d > /tmp/key.json
   cat /tmp/key.json | docker login -u _json_key --password-stdin "https://${GCR_DOMAIN}"
 
 # build commands are always the same, the secrets logic is handled in 
 # package.json file via build-ci script
-.buildDockerImage: &buildDockerImage
+.gatsbyBuild-buildDockerImage: &gatsbyBuild-buildDockerImage
   - docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
   - docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${GCR_DOMAIN}/${GCLOUD_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
   - docker push ${GCR_DOMAIN}/${GCLOUD_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
@@ -51,9 +52,9 @@
   stage: build
   image: docker
   before_script:
-    - *validateEnvironmentCommon
-    - *initDockerGCR
-  script: *buildDockerImage
+    - *gatsbyBuild-validateEnvironmentCommon
+    - *gatsbyBuild-initDockerGCR
+  script: *gatsbyBuild-buildDockerImage
 
 .gatsbyBuildDockerDevelopment:
   extends: .gatsbyBuildDocker
@@ -81,14 +82,14 @@
   stage: build
   image: docker
   before_script:
-    - *setVaultierEnvironment
-    - *validateEnvironmentCommon
-    - *validateEnvironmentSecrets
-    - *initDockerGCR
-    - *downloadVaultier
-    - *downloadSecretsInjector
+    - *gatsbyBuild-setVaultierEnvironment
+    - *gatsbyBuild-validateEnvironmentCommon
+    - *gatsbyBuild-validateEnvironmentSecrets
+    - *gatsbyBuild-initDockerGCR
+    - *gatsbyBuild-downloadVaultier
+    - *gatsbyBuild-downloadSecretsInjector
     - vaultier
-  script: *buildDockerImage
+  script: *gatsbyBuild-buildDockerImage
       
 .gatsbyBuildDockerSecretsDevelopment:
   extends: .gatsbyBuildDockerSecrets
