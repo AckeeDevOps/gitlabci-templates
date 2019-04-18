@@ -54,3 +54,10 @@
     - *gatsbyDeploy-initializeChartMuseum
     - *gatsbyDeploy-initializeGcpAuth
     - *gatsbyDeploy-initializeGkeAuth
+
+.gatsbyDeployGkeMaster:
+  extends: .gatsbyDeployGke
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
