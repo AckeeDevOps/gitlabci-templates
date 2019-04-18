@@ -23,13 +23,20 @@
   if [ -z "${SSH_KEY}" ]; then echo "SSH_KEY is required"; exit 1; fi
   if [ -z "${GCLOUD_SA_KEY}" ]; then echo "GCLOUD_SA_KEY is required"; exit 1; fi
   if [ -z "${VAULTIER_RELEASE_LINK}" ]; then echo "VAULTIER_RELEASE_LINK is required"; exit 1; fi
+  if [ -z "${GCR_DOMAIN}" ]; then echo "GCR_DOMAIN is required"; exit 1; fi
+
+
+.initDockerGCR: &initDockerGCR |
+  echo "${GCLOUD_SA_KEY}" | base64 -d > /tmp/key.json
+  cat /tmp/key.json | docker login -u _json_key --password-stdin "https://${GCR_DOMAIN}"
 
 .gatsbyBuildDockerSecrets:
   stage: build
-  image: node:latest
+  image: docker
   before_script:
     - *setVaultierEnvironment
     - *validateEnvironmentSecrets
+    - *initDockerGCR
     - *downloadVaultier
     - vaultier
   script:
