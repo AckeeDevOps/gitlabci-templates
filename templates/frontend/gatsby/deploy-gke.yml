@@ -78,6 +78,7 @@
 .gatsbyDeployGke:
   stage: deploy
   image: google/cloud-sdk:242.0.0-alpine
+  environment: ${RUNTIME_ENVIRONMENT}
   before_script:
     - *gatsbyDeploy-validateEnvironmentCommon
     - *gatsbyDeploy-setDefaultValues
