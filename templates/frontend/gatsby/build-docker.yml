@@ -44,8 +44,7 @@
 # package.json file via build-ci script
 .gatsbyBuild-buildDockerImage: &gatsbyBuild-buildDockerImage
   - docker build --build-arg SSH_KEY -t ${IMAGE_NAME}:${IMAGE_TAG} .
-  - docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${GCR_DOMAIN}/${GCLOUD_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
-  - docker push ${GCR_DOMAIN}/${GCLOUD_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
+  - docker push ${IMAGE_NAME}:${IMAGE_TAG}
 
 # Prefabs without secrets injection
 .gatsbyBuildDocker:
