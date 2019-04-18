@@ -1,29 +1,36 @@
 # Required:
 #   SSH_KEY: Base64 encoded RSA private key
 
+# Download Vaultier helper https://github.com/AckeeDevOps/vaultier/releases
 .downloadVaultier: &downloadVaultier |
   wget "${VAULTIER_RELEASE_LINK}" -O vaultier.tar.gz > /dev/null 2>&1
   tar -xvf vaultier.tar.gz vaultier
   rm -rf vaultier.tar.gz
   mv vaultier /usr/local/bin/vaultier
 
-# setVaultierEnvironment sets predictable variables and validates
-# existence of VAULTIER_VAULT_TOKEN and VAULTIER_VAULT_ADDR
+# setVaultierEnvironment sets predictable variables
+# no need to validate them in validateEnvironment
 .setVaultierEnvironment: &setVaultierEnvironment |
   if [ -z "${VAULTIER_BRANCH}" ]; then export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}; fi
   if [ -z "${VAULTIER_SECRET_SPECS_PATH}" ]; then export VAULTIER_SECRET_SPECS_PATH=secrets.yaml; fi
   if [ -z "${VAULTIER_RUN_CAUSE}" ]; then export VAULTIER_RUN_CAUSE=delivery; fi
   if [ -z "${VAULTIER_OUTPUT_FORMAT}" ]; then export VAULTIER_OUTPUT_FORMAT=dotenv; fi
   if [ -z "${VAULTIER_SECRET_OUTPUT_PATH}" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/secrets.json; fi
+
+.validateEnvironmentSecrets: &validateEnvironmentSecrets |
   if [ -z "${VAULTIER_VAULT_ADDR}" ]; then echo "VAULTIER_VAULT_ADDR is required"; exit 1; fi
-  if [ -z "${VAULTIER_VAULT_TOKEN}" ]; then echo "VAULTIER_VAULT_TOKEN is required"; exit 1; fi 
+  if [ -z "${VAULTIER_VAULT_TOKEN}" ]; then echo "VAULTIER_VAULT_TOKEN is required"; exit 1; fi
+  if [ -z "${SSH_KEY}" ]; then echo "SSH_KEY is required"; exit 1; fi
+  if [ -z "${GCLOUD_SA_KEY}" ]; then echo "GCLOUD_SA_KEY is required"; exit 1; fi
+  if [ -z "${VAULTIER_RELEASE_LINK}" ]; then echo "VAULTIER_RELEASE_LINK is required"; exit 1; fi
 
 .gatsbyBuildDockerSecrets:
   stage: build
   image: node:latest
   before_script:
-    - *downloadVaultier
     - *setVaultierEnvironment
+    - *validateEnvironmentSecrets
+    - *downloadVaultier
     - vaultier
   script:
     - echo works
