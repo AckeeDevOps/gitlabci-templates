@@ -27,6 +27,27 @@
 #
 # optional DOCKERIZE_WAIT if omitted, workflow won't be waiting for services
 # optional DOCKERIZE_FLAGS has to be set when DOCKERIZE_WAIT is 'true'
+#
+# EXAMPLES:
+# variables:
+#   MYSQL_DATABASE: test
+#   MYSQL_ROOT_PASSWORD: heslojeveslo
+#   MONGO_INITDB_ROOT_USERNAME: test
+#   MONGO_INITDB_ROOT_PASSWORD: heslojeveslo
+#   MONGO_INITDB_DATABASE: test
+#
+# test:
+#   extends: .nodeGkeTest
+#   variables:
+#     SSH_KEY: ${SECRET_SSH_KEY} # <- comes from CI/CD settings
+#     DOCKERIZE_RELEASE_LINK: https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz
+#     DOCKERIZE_WAIT: 'true'
+#     DOCKERIZE_FLAGS: -wait tcp://mysql:3306 -timeout 30s -wait tcp://mongo:27017
+#   services:
+#     - name: mariadb:latest
+#       alias: mysql
+#     - name: mongo:latest
+#       alias: mongo
 
 # nodeGkeTest-initializeSSH configures SSH co private packages can be
 # installed during npm install / npm ci phase
