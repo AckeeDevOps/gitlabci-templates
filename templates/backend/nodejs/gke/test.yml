@@ -1,0 +1,125 @@
+# why all commands have nodeGkeTest- prefix?
+#
+# input params for nodeGkeTestSecrets*
+# ------------------------------------
+# required SSH_KEY: base64 encoded RSA private key
+# required DOCKERIZE_RELEASE_LINK: link to tar.gz file with Dockerize binaries
+#   https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz
+# required VAULTIER_RELEASE_LINK: link to tar.gz file with Vaultier binaries
+#   https://github.com/AckeeDevOps/vaultier/releases/download/v1.1.0/vaultier_1.1.0_Linux_x86_64.tar.gz
+#
+# required VAULTIER_VAULT_ADDR
+# required VAULTIER_VAULT_TOKEN
+# optional VAULTIER_BRANCH - determined automatically from CI environment
+# optional VAULTIER_RUN_CAUSE - set automatically to 'test'
+# optional VAULTIER_OUTPUT_FORMAT - set automatically to 'dotenv'
+# optional VAULTIER_SECRET_SPECS_PATH - set automatically to 'secrets.yaml'
+# optional VAULTIER_SECRET_OUTPUT_PATH - set automatically to 'secrets.json' in CWD
+# 
+# optional DOCKERIZE_WAIT if omitted, workflow won't be waiting for services
+# optional DOCKERIZE_FLAGS has to be set when DOCKERIZE_WAIT is 'true'
+#
+# input params for nodeGkeTest*
+# ------------------------------------
+# required SSH_KEY: base64 encoded RSA private key
+# required DOCKERIZE_RELEASE_LINK: link to tar.gz file with Dockerize binaries
+#   https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz
+#
+# optional DOCKERIZE_WAIT if omitted, workflow won't be waiting for services
+# optional DOCKERIZE_FLAGS has to be set when DOCKERIZE_WAIT is 'true'
+
+# nodeGkeTest-initializeSSH configures SSH co private packages can be
+# installed during npm install / npm ci phase
+.nodeGkeTest-initializeSSH: &nodeGkeTest-initializeSSH |
+  echo "Initializing SSH/GIT ..."
+  mkdir ~/.ssh/
+  echo ${SSH_KEY} | base64 -d > ~/.ssh/id_rsa
+  chmod 0400 ~/.ssh/id_rsa
+  eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+
+# nodeGkeTest-initializeNPM configures some NPM parameters
+# environment variables JOBS affects build performance for native extensions
+.nodeGkeTest-initializeNPM: &nodeGkeTest-initializeNPM |
+  echo "Initializing NPM ..."
+  npm set unsafe-perm true
+  npm set progress=false
+  npm set loglevel=error
+  export JOBS=max
+
+# nodeGkeTest-installDockerize installs helper tool Dockerize
+# https://github.com/jwilder/dockerize
+.nodeGkeTest-installDockerize: &nodeGkeTest-installDockerize |
+  echo "Downloading Dockerize ..."
+  wget ${DOCKERIZE_RELEASE_LINK} -O dockerize.tar.gz > /dev/null 2>&1
+  tar -xvf dockerize.tar.gz > /dev/null 2>&1
+  mv dockerize /usr/local/bin/
+  rm -rf dockerize.tar.gz
+
+# nodeGkeTest-installVaultier installs helper tool Vaultier
+# https://github.com/AckeeDevOps/vaultier
+.nodeGkeTest-installVaultier: &nodeGkeTest-installVaultier |
+  echo "Downloading Vaultier ..."
+  wget ${VAULTIER_RELEASE_LINK} -O vaultier.tar.gz > /dev/null 2>&1
+  tar -xvf vaultier.tar.gz > /dev/null 2>&1
+  mv vaultier /usr/local/bin/
+  rm -rf vaultier.tar.gz
+
+# DOCKERIZE_WAIT = true | false
+# DOCKERIZE_FLAGS = -wait tcp://db:5432 -wait http://web:80 -wait file:///tmp/generated-file -timeout 30s
+.nodeGkeTest-dockerizeWait: &nodeGkeTest-dockerizeWait |
+  echo "Waiting for runner services ..."
+  if [ "${DOCKERIZE_WAIT}" = "true" ]; then
+    if [ -z "${DOCKERIZE_FLAGS}" ]; then
+      echo "no Dockerize flags provided, skipping ..."
+    else
+      eval dockerize ${DOCKERIZE_FLAGS}
+    fi
+  else
+    echo "skipping waiting phase"
+  fi
+
+# .nodeGkeTest-setVaultierDefaults configure Vaultier values
+# which don't have to be explicitly supplies by user (but they can be)
+.nodeGkeTest-setVaultierDefaults: &nodeGkeTest-setVaultierDefaults |
+  echo "Setting Vaultier default values ..."
+  if [ -z "${VAULTIER_BRANCH}" ]; then export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}; fi
+  if [ -z "${VAULTIER_SECRET_SPECS_PATH}" ]; then export VAULTIER_SECRET_SPECS_PATH=secrets.yaml; fi
+  if [ -z "${VAULTIER_RUN_CAUSE}" ]; then export VAULTIER_RUN_CAUSE=delivery; fi
+  if [ -z "${VAULTIER_OUTPUT_FORMAT}" ]; then export VAULTIER_OUTPUT_FORMAT=dotenv; fi
+  if [ -z "${VAULTIER_SECRET_OUTPUT_PATH}" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/secrets.json; fi
+
+# Configuru: https://github.com/AckeeCZ/configuru
+# if CFG_JSON_PATH is not specified in variables
+# it will be set to ${CI_PROJECT_DIR}/secrets.json
+.nodeGkeTest-setConfiguruDefaults: &nodeGkeTest-setConfiguruDefaults |
+  echo "Configuring Configuru variables ..."
+  if [ -z "${CFG_JSON_PATH}" ]; then export CFG_JSON_PATH=${CI_PROJECT_DIR}/secrets.json; fi
+
+.nodeGkeTestSecrets:
+  image: node:latest
+  stage: test
+  before_script:
+    - *nodeGkeTest-initializeSSH
+    - *nodeGkeTest-initializeNPM
+    - *nodeGkeTest-installDockerize
+    - *nodeGkeTest-installVaultier
+    - *nodeGkeTest-setVaultierDefaults
+    - *nodeGkeTest-setConfiguruDefaults
+    - *nodeGkeTest-dockerizeWait
+  script:
+    - vaultier
+    - npm ci
+    - npm run ci-test
+
+.nodeGkeTest:
+  image: node:latest
+  stage: test
+  before_script:
+    - *nodeGkeTest-initializeSSH
+    - *nodeGkeTest-initializeNPM
+    - *nodeGkeTest-installDockerize
+    - *nodeGkeTest-setConfiguruDefaults
+    - *nodeGkeTest-dockerizeWait
+  script:
+    - npm ci
+    - npm run ci-test
