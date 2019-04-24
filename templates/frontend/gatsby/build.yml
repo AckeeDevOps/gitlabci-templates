@@ -6,7 +6,6 @@
   npm set unsafe-perm true
   npm set progress=false
   npm set loglevel=error
-  npm install -g serverless
   export JOBS=max
 
 .initSSH: &initSSH |
