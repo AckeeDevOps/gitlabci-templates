@@ -84,3 +84,34 @@ deploy:development:
 | GCS_BUCKET_NAME | full name of target GCS bucket | `your.dev.bucket.name` | `true` |
 | GCS_INDEX_FILE | name of the file which will act as index page | `index.html` | `true` |
 | GCS_E404_FILE | name of the file which will act as error page | `e404.html` | `true` |
+
+### gatsbyBuildDockerDevelopment, gatsbyBuildDockerStage, gatsbyBuildDockerMaster
+TBD
+
+### gatsbyBuildDockerSecretsDevelopment, gatsbyBuildDockerSecretsStage, gatsbyBuildDockerSecretsMaster
+TBD
+
+### gatsbyDeployGkeDevelopment, gatsbyDeployGkeStage, gatsbyDeployGkeMaster
+
+| variable | description | example | required |
+| -------- | ----------- | ------- | -------- |
+| GCLOUD_SA_KEY | Base64 encoded Service Account Key (JSON) |
+| GCLOUD_PROJECT_ID |
+| GKE_CLUSTER |
+| GKE_ZONE |
+| GKE_NAMESPACE |
+| HELM_BINARIES_URL |
+| HELM_REPOSITORY_URL |
+| HELM_REPOSITORY_NAME |
+| HELM_REPOSITORY_USERNAME |
+| HELM_REPOSITORY_PASSWORD |
+| HELM_RELEASE_NAME |
+| HELM_CHART_NAME |
+| HELM_VALUES_FILE |
+| IMAGE_NAME |
+| IMAGE_TAG |
+| APP_NAME |
+| PROJECT_NAME |
+| RUNTIME_ENVIRONMENT |
+| HELM_CHART_VERSION |
+| HELM_FORCE_UPGRADE |
