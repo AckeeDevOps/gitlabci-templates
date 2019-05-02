@@ -65,6 +65,7 @@
     --set="general.meta.buildHash=${CI_COMMIT_SHORT_SHA}" \
     --set="general.meta.branch=${CI_COMMIT_REF_NAME}" \
     --set="general.meta.repositoryUrl=${CI_PROJECT_URL}" \
+    --set="general.meta.dateHash=$(date | base64 | tr -d \\n)" \
     --set="general.gcpProjectId=${GCLOUD_PROJECT_ID}" \
     --version="${HELM_CHART_VERSION}" \
     --force="${HELM_FORCE_UPGRADE}" \
