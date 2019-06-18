@@ -23,7 +23,7 @@
   # show version in the console
   - grep "version:" chart/Chart.yaml
   # push chart to the repository
-  - helm push chart ${HELM_REPOSITORY_NAME}
+  - helm push -f chart ${HELM_REPOSITORY_NAME}
    
 .helmUploadTag:
   stage: upload
