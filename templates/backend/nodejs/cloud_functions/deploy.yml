@@ -7,11 +7,10 @@
 #   VAULTIER_VAULT_ADDR
 #   VAULTIER_VAULT_TOKEN
 # Optional Variables
-#   CI_ENVIRONMENT_NAME
-#   VAULTIER_SECRET_OUTPUT_PATH
-#   VAULTIER_SECRET_SPECS_PATH
-#   VAULTIER_RUN_CAUSE
-#   VAULTIER_OUTPUT_FORMAT
+#   VAULTIER_ENVIRONMENT <- defaults to CI_ENVIRONMENT_NAME (supplied by Gitlab CI)
+#   VAULTIER_SECRET_OUTPUT_PATH <- defaults to ${CI_PROJECT_DIR}/functions/credentials.json
+#   VAULTIER_SECRET_SPECS_PATH <- defaults to secrets.yaml
+#   VAULTIER_OUTPUT_FORMAT <- defaults to dotenv
 
 .beforeScriptDeployWithVaultier: &preDeployWithVaultier
   #  set default values for deployment if needed
