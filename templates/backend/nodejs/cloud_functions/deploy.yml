@@ -7,7 +7,7 @@
 #   VAULTIER_VAULT_ADDR
 #   VAULTIER_VAULT_TOKEN
 # Optional Variables
-#   VAULTIER_BRANCH
+#   CI_ENVIRONMENT_NAME
 #   VAULTIER_SECRET_OUTPUT_PATH
 #   VAULTIER_SECRET_SPECS_PATH
 #   VAULTIER_RUN_CAUSE
@@ -15,9 +15,8 @@
 
 .beforeScriptDeployWithVaultier: &preDeployWithVaultier
   #  set default values for deployment if needed
-  - if [ -z "${VAULTIER_BRANCH}" ]; then export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}; fi
+  - if [ -z "${VAULTIER_BRANCH}" ]; then export VAULTIER_BRANCH=${CI_ENVIRONMENT_NAME}; fi
   - if [ -z "${VAULTIER_SECRET_SPECS_PATH}" ]; then export VAULTIER_SECRET_SPECS_PATH=secrets.yaml; fi
-  - if [ -z "${VAULTIER_RUN_CAUSE}" ]; then export VAULTIER_RUN_CAUSE=delivery; fi
   - if [ -z "${VAULTIER_OUTPUT_FORMAT}" ]; then export VAULTIER_OUTPUT_FORMAT=dotenv; fi
   - if [ -z "${VAULTIER_SECRET_OUTPUT_PATH}" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
   # /fixed values for deploy
@@ -26,7 +25,9 @@
   - chmod 0400 ~/.ssh/id_rsa
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
-  - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier > /dev/null 2>&1
+  - wget ${VAULTIER_RELEASE_LINK} -O vaultier.tar.gz > /dev/null 2>&1
+  - tar -xvf vaultier.tar.gz && rm vaultier.tar.gz
+  - mv vaultier /usr/local/bin/vaultier
   - chmod +x /usr/local/bin/vaultier
   - npm set unsafe-perm true
   - npm set progress=false
@@ -44,32 +45,18 @@
 
 .deployBranchSecretsMater:
   extends: .deployBranchSecrets
+  variables:
+    DEPLOY_COMMAND: 'run deploy-production'
   script:
     - cd functions
     - npm install
-    - npm run deploy-production
+    - eval "${DEPLOY_COMMAND}"
   only:
     refs: ["master"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
-  environment:
-    name: production
   when: manual
   
-.deployBranchSecretsMaterDemo:
-  extends: .deployBranchSecrets
-  script:
-    - cd functions
-    - npm install
-    - npm run deploy-demo
-  only:
-    refs: ["master"]
-    variables:
-      - $CI_PIPELINE_SOURCE == "push"
-  environment:
-    name: demo
-  when: manual
-
 .deployBranchSecretsStage:
   extends: .deployBranchSecrets
   script:
