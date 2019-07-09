@@ -46,7 +46,7 @@
 .deployBranchSecretsMater:
   extends: .deployBranchSecrets
   variables:
-    DEPLOY_COMMAND: 'run deploy-production'
+    DEPLOY_COMMAND: 'npm run deploy-production'
   script:
     - cd functions
     - npm install
@@ -57,29 +57,15 @@
       - $CI_PIPELINE_SOURCE == "push"
   when: manual
   
-.deployBranchSecretsStage:
-  extends: .deployBranchSecrets
-  script:
-    - cd functions
-    - npm install
-    - npm run deploy-stage
-  only:
-    refs: ["stage"]
-    variables:
-      - $CI_PIPELINE_SOURCE == "push"
-  environment:
-    name: stage
-  when: manual
-  
 .deployBranchSecretsDevelopment:
   extends: .deployBranchSecrets
+  variables:
+    DEPLOY_COMMAND: 'npm run deploy-dev'
   script:
     - cd functions
     - npm install
-    - npm run deploy-dev
+    - eval "${DEPLOY_COMMAND}"
   only:
     refs: ["development"]
     variables:
       - $CI_PIPELINE_SOURCE == "push"
-  environment:
-    name: development
