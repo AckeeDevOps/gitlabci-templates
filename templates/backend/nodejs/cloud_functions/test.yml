@@ -16,11 +16,10 @@
 .beforeScriptTestWithVaultier: &preTestWithVaultier
   #  fixed values for test
   # if not set - use default path ${CI_PROJECT_DIR}/functions/credentials.json
-  - if [ -z "${VAULTIER_BRANCH}" ]; then export VAULTIER_BRANCH=${CI_COMMIT_REF_NAME}; fi
+  - if [ -z "${VAULTIER_ENVIRONMENT}" ]; then export VAULTIER_ENVIRONMENT=test; fi
   - if [ -z "${VAULTIER_SECRET_OUTPUT_PATH}" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
   - if [ -z "${CFG_JSON_PATH}" ]; then export CFG_JSON_PATH=${VAULTIER_SECRET_OUTPUT_PATH}; fi
   - if [ -z "${VAULTIER_SECRET_SPECS_PATH}" ]; then export export VAULTIER_SECRET_SPECS_PATH=${CI_PROJECT_DIR}/secrets.yaml; fi
-  - if [ -z "${VAULTIER_RUN_CAUSE}" ]; then export VAULTIER_RUN_CAUSE=test; fi
   - if [ -z "${VAULTIER_OUTPUT_FORMAT}" ]; then export VAULTIER_OUTPUT_FORMAT=dotenv; fi
   # /fixed values for test
   - mkdir ~/.ssh/
@@ -28,7 +27,9 @@
   - chmod 0400 ~/.ssh/id_rsa
   - eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
   - echo -e 'Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null' > ~/.ssh/config
-  - wget ${VAULTIER_RELEASE_LINK} -O /usr/local/bin/vaultier > /dev/null 2>&1
+  - wget ${VAULTIER_RELEASE_LINK} -O vaultier.tar.gz > /dev/null 2>&1
+  - tar -xvf vaultier.tar.gz && rm vaultier.tar.gz
+  - mv vaultier /usr/local/bin/vaultier
   - chmod +x /usr/local/bin/vaultier
   - npm set unsafe-perm true
   - npm set progress=false
