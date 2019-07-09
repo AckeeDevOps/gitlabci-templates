@@ -55,6 +55,20 @@
   environment:
     name: production
   when: manual
+  
+.deployBranchSecretsMaterDemo:
+  extends: .deployBranchSecrets
+  script:
+    - cd functions
+    - npm install
+    - npm run deploy-demo
+  only:
+    refs: ["master"]
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
+  environment:
+    name: demo
+  when: manual
 
 .deployBranchSecretsStage:
   extends: .deployBranchSecrets
