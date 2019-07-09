@@ -15,7 +15,7 @@
 
 .beforeScriptDeployWithVaultier: &preDeployWithVaultier
   #  set default values for deployment if needed
-  - if [ -z "${VAULTIER_ENVIRONMENT}" ]; then export VAULTIER_BRANCH=${CI_ENVIRONMENT_NAME}; fi
+  - if [ -z "${VAULTIER_ENVIRONMENT}" ]; then export VAULTIER_ENVIRONMENT=${CI_ENVIRONMENT_NAME}; fi
   - if [ -z "${VAULTIER_SECRET_SPECS_PATH}" ]; then export VAULTIER_SECRET_SPECS_PATH=secrets.yaml; fi
   - if [ -z "${VAULTIER_OUTPUT_FORMAT}" ]; then export VAULTIER_OUTPUT_FORMAT=dotenv; fi
   - if [ -z "${VAULTIER_SECRET_OUTPUT_PATH}" ]; then export VAULTIER_SECRET_OUTPUT_PATH=${CI_PROJECT_DIR}/functions/credentials.json; fi
