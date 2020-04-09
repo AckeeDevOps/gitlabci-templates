@@ -1,6 +1,6 @@
 # install helm from provided URL, it should be always tar.gz file
 .gatsbyDeploy-installHelm: &gatsbyDeploy-installHelm |
-  wget "${HELM_BINARIES_URL}" -O helm.tar.gz > /dev/null 2>&1
+  wget "${HELM_BINARIES_URL}" -O helm.tar.gz 2>&1
   tar -xvf helm.tar.gz linux-amd64/helm
   mv linux-amd64/helm /usr/local/bin
   rm -rf helm.tar.gz
